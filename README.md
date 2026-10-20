@@ -215,6 +215,13 @@ visitor-initiated geolocation. Set the environment variables in the build settin
 
 ### GitHub Pages
 
+The deployed GitHub repository is [089-Dusitt/starlit-tarot](https://github.com/089-Dusitt/starlit-tarot),
+with the site at [089-dusitt.github.io/starlit-tarot](https://089-dusitt.github.io/starlit-tarot/).
+`.github/workflows/pages.yml` validates, tests, builds and deploys on pushes to `master`
+or `main`, or through **Actions → Deploy Starlit Tarot to GitHub Pages → Run workflow**.
+Pages must use **GitHub Actions** as its publishing source. The workflow derives the
+site URL and base path from GitHub's Pages metadata; no secret or custom token is needed.
+
 Set `VITE_SITE_URL=https://YOUR-ACCOUNT.github.io/YOUR-REPOSITORY` and
 `VITE_BASE_PATH=/YOUR-REPOSITORY/` in your build environment, run
 `npm run build:github`, and upload `dist` with GitHub Pages Actions. The copied

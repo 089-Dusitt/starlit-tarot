@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /history
 Disallow: /r/
-Sitemap: https://starlit-tarot-th-20261021.hearty-amber-0492.chatgpt.site/sitemap.xml
+Sitemap: https://089-dusitt.github.io/starlit-tarot/sitemap.xml
