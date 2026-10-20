@@ -1,4 +1,63 @@
-import {ArrowRight,ArrowLeft,BookOpen,Heart,Sun,Moon,Sparkles,Star,Settings,Clock,X,Menu,Wind,Cloud,CloudRain,CloudLightning,CloudFog,GraduationCap,Copy,Share2,Download,Trash2,MapPin,Search,Check,Shield,RefreshCw} from 'lucide-react';
-const icons={arrow:ArrowRight,back:ArrowLeft,book:BookOpen,love:Heart,sun:Sun,moon:Moon,star:Star,sparkles:Sparkles,settings:Settings,history:Clock,close:X,menu:Menu,wind:Wind,cloud:Cloud,rain:CloudRain,storm:CloudLightning,fog:CloudFog,exam:GraduationCap,copy:Copy,share:Share2,download:Download,trash:Trash2,pin:MapPin,search:Search,check:Check,shield:Shield,refresh:RefreshCw};
-export type IconName=keyof typeof icons;
-export function Icon({name,size=20}:{name:IconName;size?:number}){const Component=icons[name];return <Component size={size} strokeWidth={1.5} aria-hidden="true"/>;}
+import {
+  ArrowRight,
+  ArrowLeft,
+  BookOpen,
+  Heart,
+  Sun,
+  Moon,
+  Sparkles,
+  Star,
+  Settings,
+  Clock,
+  X,
+  Menu,
+  Wind,
+  Cloud,
+  CloudRain,
+  CloudLightning,
+  CloudFog,
+  GraduationCap,
+  Copy,
+  Share2,
+  Download,
+  Trash2,
+  MapPin,
+  Search,
+  Check,
+  Shield,
+  RefreshCw,
+} from 'lucide-react';
+const icons = {
+  arrow: ArrowRight,
+  back: ArrowLeft,
+  book: BookOpen,
+  love: Heart,
+  sun: Sun,
+  moon: Moon,
+  star: Star,
+  sparkles: Sparkles,
+  settings: Settings,
+  history: Clock,
+  close: X,
+  menu: Menu,
+  wind: Wind,
+  cloud: Cloud,
+  rain: CloudRain,
+  storm: CloudLightning,
+  fog: CloudFog,
+  exam: GraduationCap,
+  copy: Copy,
+  share: Share2,
+  download: Download,
+  trash: Trash2,
+  pin: MapPin,
+  search: Search,
+  check: Check,
+  shield: Shield,
+  refresh: RefreshCw,
+};
+export type IconName = keyof typeof icons;
+export function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
+  const Component = icons[name];
+  return <Component size={size} strokeWidth={1.5} aria-hidden="true" />;
+}

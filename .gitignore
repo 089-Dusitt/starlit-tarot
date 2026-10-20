@@ -4,4 +4,5 @@ dist/
 !.env.example
 *.tsbuildinfo
 coverage/
+qa-artifacts/
 .openai/*.local.json

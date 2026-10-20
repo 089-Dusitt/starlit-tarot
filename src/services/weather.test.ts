@@ -1,8 +1,110 @@
-import {beforeEach,afterEach,describe,it,expect,vi} from 'vitest';
-import {getForecast,searchPlaces,clearWeatherCache,wmo,WMO_CODES,umbrella} from './weather';
-import {th,weatherCodeCopy} from '../i18n/th';
-const place={name:'Bangkok',latitude:13.75,longitude:100.5};
-const payload={daily:{time:['2026-10-21','2026-10-22','2026-10-23'],weather_code:[0,97,61],temperature_2m_max:[33,32,30],temperature_2m_min:[25,24,23],precipitation_probability_max:[0,60,30],precipitation_sum:[0,12.5,3]},current:{temperature_2m:30,weather_code:0}};
-beforeEach(clearWeatherCache);afterEach(()=>{vi.useRealTimers();vi.unstubAllGlobals();});
-describe('weather interpretation',()=>{it('covers all 29 documented Open-Meteo WMO codes including heavy thunderstorm 97',()=>{expect(Object.keys(weatherCodeCopy).map(Number).sort((a,b)=>a-b)).toEqual([...WMO_CODES]);for(const code of WMO_CODES){expect(wmo(code).category).not.toBe('unknown');expect(wmo(code).label).toBeTruthy();}expect(wmo(200).category).toBe('unknown');expect(wmo(null).label).toBe(th.weather.unknown);});it.each([[0,0],[29,0],[30,1],[59,1],[60,2],[100,2]])('umbrella threshold %s', (probability,expected)=>{expect(umbrella(probability)).toBe(th.weather.umbrella[expected]);});it('does not fabricate a dry forecast from missing probability',()=>{expect(umbrella(null)).toBe(th.weather.unknown);});});
-describe('mocked network only',()=>{it('parses success, uses a 15-minute cache, supports explicit retry',async()=>{const fetcher=vi.fn().mockResolvedValue({ok:true,json:async()=>payload});vi.stubGlobal('fetch',fetcher);const result=await getForecast(place);expect(result.days[1].code).toBe(97);expect(result.days[1].probability).toBe(60);expect(result.current.temperature).toBe(30);expect(fetcher.mock.calls[0][0]).toContain('forecast_days=7');await getForecast(place);expect(fetcher).toHaveBeenCalledTimes(1);await getForecast(place,true);expect(fetcher).toHaveBeenCalledTimes(2);});it('expires cached results after fifteen minutes',async()=>{vi.useFakeTimers();const fetcher=vi.fn().mockResolvedValue({ok:true,json:async()=>payload});vi.stubGlobal('fetch',fetcher);await getForecast(place);vi.advanceTimersByTime(900001);await getForecast(place);expect(fetcher).toHaveBeenCalledTimes(2);});it('times out even when fetch ignores AbortSignal',async()=>{vi.useFakeTimers();vi.stubGlobal('fetch',vi.fn(()=>new Promise(()=>{})));const request=getForecast(place);const rejection=expect(request).rejects.toThrow('timeout');await vi.advanceTimersByTimeAsync(8000);await rejection;});it('rejects HTTP and malformed responses without caching failures',async()=>{vi.stubGlobal('fetch',vi.fn().mockResolvedValueOnce({ok:false}).mockResolvedValueOnce({ok:true,json:async()=>({daily:{time:[]}})}));await expect(getForecast(place)).rejects.toThrow();await expect(getForecast(place)).rejects.toThrow();await expect(getForecast({...place,latitude:200})).rejects.toThrow('coordinates');});it('validates geocoding results and encodes the query',async()=>{const fetcher=vi.fn().mockResolvedValue({ok:true,json:async()=>({results:[{name:'Bangkok',country:'Thailand',latitude:13.75,longitude:100.5},{name:'bad',latitude:200,longitude:0}]})});vi.stubGlobal('fetch',fetcher);expect(await searchPlaces('Bangkok & sky')).toHaveLength(1);expect(fetcher.mock.calls[0][0]).toContain('Bangkok%20%26%20sky');expect(await searchPlaces('x')).toEqual([]);});});
+import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest';
+import { getForecast, searchPlaces, clearWeatherCache, wmo, WMO_CODES, umbrella } from './weather';
+import { th, weatherCodeCopy } from '../i18n/th';
+const place = { name: 'Bangkok', latitude: 13.75, longitude: 100.5 };
+const payload = {
+  daily: {
+    time: ['2026-10-21', '2026-10-22', '2026-10-23'],
+    weather_code: [0, 97, 61],
+    temperature_2m_max: [33, 32, 30],
+    temperature_2m_min: [25, 24, 23],
+    precipitation_probability_max: [0, 60, 30],
+    precipitation_sum: [0, 12.5, 3],
+  },
+  current: { temperature_2m: 30, weather_code: 0 },
+};
+beforeEach(clearWeatherCache);
+afterEach(() => {
+  vi.useRealTimers();
+  vi.unstubAllGlobals();
+});
+describe('weather interpretation', () => {
+  it('covers all 29 documented Open-Meteo WMO codes including heavy thunderstorm 97', () => {
+    expect(
+      Object.keys(weatherCodeCopy)
+        .map(Number)
+        .sort((a, b) => a - b),
+    ).toEqual([...WMO_CODES]);
+    for (const code of WMO_CODES) {
+      expect(wmo(code).category).not.toBe('unknown');
+      expect(wmo(code).label).toBeTruthy();
+    }
+    expect(wmo(200).category).toBe('unknown');
+    expect(wmo(null).label).toBe(th.weather.unknown);
+  });
+  it.each([
+    [0, 0],
+    [29, 0],
+    [30, 1],
+    [59, 1],
+    [60, 2],
+    [100, 2],
+  ])('umbrella threshold %s', (probability, expected) => {
+    expect(umbrella(probability)).toBe(th.weather.umbrella[expected]);
+  });
+  it('does not fabricate a dry forecast from missing probability', () => {
+    expect(umbrella(null)).toBe(th.weather.unknown);
+  });
+});
+describe('mocked network only', () => {
+  it('parses success, uses a 15-minute cache, supports explicit retry', async () => {
+    const fetcher = vi.fn().mockResolvedValue({ ok: true, json: async () => payload });
+    vi.stubGlobal('fetch', fetcher);
+    const result = await getForecast(place);
+    expect(result.days[1].code).toBe(97);
+    expect(result.days[1].probability).toBe(60);
+    expect(result.current.temperature).toBe(30);
+    expect(fetcher.mock.calls[0][0]).toContain('forecast_days=7');
+    await getForecast(place);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    await getForecast(place, true);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+  it('expires cached results after fifteen minutes', async () => {
+    vi.useFakeTimers();
+    const fetcher = vi.fn().mockResolvedValue({ ok: true, json: async () => payload });
+    vi.stubGlobal('fetch', fetcher);
+    await getForecast(place);
+    vi.advanceTimersByTime(900001);
+    await getForecast(place);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+  it('times out even when fetch ignores AbortSignal', async () => {
+    vi.useFakeTimers();
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => new Promise(() => {})),
+    );
+    const request = getForecast(place);
+    const rejection = expect(request).rejects.toThrow('timeout');
+    await vi.advanceTimersByTimeAsync(8000);
+    await rejection;
+  });
+  it('rejects HTTP and malformed responses without caching failures', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce({ ok: false })
+        .mockResolvedValueOnce({ ok: true, json: async () => ({ daily: { time: [] } }) }),
+    );
+    await expect(getForecast(place)).rejects.toThrow();
+    await expect(getForecast(place)).rejects.toThrow();
+    await expect(getForecast({ ...place, latitude: 200 })).rejects.toThrow('coordinates');
+  });
+  it('validates geocoding results and encodes the query', async () => {
+    const fetcher = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        results: [
+          { name: 'Bangkok', country: 'Thailand', latitude: 13.75, longitude: 100.5 },
+          { name: 'bad', latitude: 200, longitude: 0 },
+        ],
+      }),
+    });
+    vi.stubGlobal('fetch', fetcher);
+    expect(await searchPlaces('Bangkok & sky')).toHaveLength(1);
+    expect(fetcher.mock.calls[0][0]).toContain('Bangkok%20%26%20sky');
+    expect(await searchPlaces('x')).toEqual([]);
+  });
+});

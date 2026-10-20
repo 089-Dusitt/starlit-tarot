@@ -1,5 +1,116 @@
-import {useRef,useState} from 'react';
-import {searchPlaces,type Place} from '../../services/weather';
-import {th} from '../../i18n/th';
-import {Icon} from '../Icon';
-export function PlacePicker({place,onChange}:{place:Place;onChange:(place:Place)=>void}){const[query,setQuery]=useState('');const[results,setResults]=useState<Place[]>([]);const[status,setStatus]=useState('');const[busy,setBusy]=useState(false);const requestId=useRef(0);async function search(){const id=++requestId.current;setBusy(true);setStatus(th.weather.searching);try{const found=await searchPlaces(query);if(id!==requestId.current)return;setResults(found);setStatus(found.length?'':th.weather.notFound);}catch{if(id===requestId.current)setStatus(th.weather.locationFailed);}finally{if(id===requestId.current)setBusy(false);}}function locate(){if(!navigator.geolocation){setStatus(th.weather.locationFailed);return;}setBusy(true);setStatus(th.weather.searching);navigator.geolocation.getCurrentPosition(position=>{onChange({name:th.weather.currentLocation,latitude:position.coords.latitude,longitude:position.coords.longitude});setResults([]);setBusy(false);setStatus('');},()=>{setStatus(th.weather.locationFailed);setBusy(false);},{timeout:8000,maximumAge:900000,enableHighAccuracy:false});}return <fieldset className="place-picker"><legend>{th.weather.place}</legend><div className="place-search"><input value={query} maxLength={80} aria-label={th.weather.place} placeholder={th.weather.place} onChange={event=>setQuery(event.target.value)} onKeyDown={event=>{if(event.key==='Enter'){event.preventDefault();void search();}}}/><button type="button" className="icon-button" disabled={busy||query.trim().length<2} onClick={()=>void search()} aria-label={th.common.search}><Icon name="search"/></button></div>{results.length>0&&<ul className="place-results">{results.map(found=><li key={`${found.latitude},${found.longitude}`}><button type="button" onClick={()=>{onChange(found);setResults([]);setQuery('');}}><Icon name="pin" size={16}/>{found.name}</button></li>)}</ul>}<button type="button" className="text-link location-button" onClick={locate} disabled={busy}><Icon name="pin" size={16}/>{th.weather.current}</button><p className="selected-place small"><Icon name="check" size={15}/>{place.name}</p><p className="small muted" aria-live="polite">{status}</p></fieldset>;}
+import { useRef, useState } from 'react';
+import { searchPlaces, type Place } from '../../services/weather';
+import { th } from '../../i18n/th';
+import { Icon } from '../Icon';
+export function PlacePicker({
+  place,
+  onChange,
+}: {
+  place: Place;
+  onChange: (place: Place) => void;
+}) {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState<Place[]>([]);
+  const [status, setStatus] = useState('');
+  const [busy, setBusy] = useState(false);
+  const requestId = useRef(0);
+  async function search() {
+    const id = ++requestId.current;
+    setBusy(true);
+    setStatus(th.weather.searching);
+    try {
+      const found = await searchPlaces(query);
+      if (id !== requestId.current) return;
+      setResults(found);
+      setStatus(found.length ? '' : th.weather.notFound);
+    } catch {
+      if (id === requestId.current) setStatus(th.weather.locationFailed);
+    } finally {
+      if (id === requestId.current) setBusy(false);
+    }
+  }
+  function locate() {
+    if (!navigator.geolocation) {
+      setStatus(th.weather.locationFailed);
+      return;
+    }
+    setBusy(true);
+    setStatus(th.weather.searching);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        onChange({
+          name: th.weather.currentLocation,
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+        setResults([]);
+        setBusy(false);
+        setStatus('');
+      },
+      () => {
+        setStatus(th.weather.locationFailed);
+        setBusy(false);
+      },
+      { timeout: 8000, maximumAge: 900000, enableHighAccuracy: false },
+    );
+  }
+  return (
+    <fieldset className="place-picker">
+      <legend>{th.weather.place}</legend>
+      <div className="place-search">
+        <input
+          value={query}
+          maxLength={80}
+          aria-label={th.weather.place}
+          placeholder={th.weather.place}
+          onChange={(event) => setQuery(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault();
+              void search();
+            }
+          }}
+        />
+        <button
+          type="button"
+          className="icon-button"
+          disabled={busy || query.trim().length < 2}
+          onClick={() => void search()}
+          aria-label={th.common.search}
+        >
+          <Icon name="search" />
+        </button>
+      </div>
+      {results.length > 0 && (
+        <ul className="place-results">
+          {results.map((found) => (
+            <li key={`${found.latitude},${found.longitude}`}>
+              <button
+                type="button"
+                onClick={() => {
+                  onChange(found);
+                  setResults([]);
+                  setQuery('');
+                }}
+              >
+                <Icon name="pin" size={16} />
+                {found.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      <button type="button" className="text-link location-button" onClick={locate} disabled={busy}>
+        <Icon name="pin" size={16} />
+        {th.weather.current}
+      </button>
+      <p className="selected-place small">
+        <Icon name="check" size={15} />
+        {place.name}
+      </p>
+      <p className="small muted" aria-live="polite">
+        {status}
+      </p>
+    </fieldset>
+  );
+}

@@ -1,13 +1,159 @@
-import {SITE} from '../config';
-import type {Reading} from '../data/types';
-import {encodeReading} from '../engine/share-code';
-import {compose} from '../engine/compose';
-import {th} from '../i18n/th';
-export function shareUrl(reading:Reading){return new URL(`${SITE.base.replace(/^\//,'')}r/${encodeReading(reading)}`,`${SITE.url.replace(/\/$/,'')}/`).href;}
-export function readingText(reading:Reading){const result=compose(reading);return`${SITE.name} · ${th.topics[reading.topic].name}\n${result.headline}\n\n${result.slots.map(s=>`${s.position.label}: ${s.card.name.th}${s.reversed?` (${th.common.reversed})`:''}\n${s.meaning}`).join('\n\n')}\n\n${th.disclaimer}\n${shareUrl(reading)}`;}
-export async function copyText(text:string):Promise<boolean>{try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);return true;}}catch{/* A manual copy sheet is the final fallback. */}try{const element=document.createElement('textarea');element.value=text;element.style.cssText='position:fixed;left:-9999px;top:0';element.setAttribute('readonly','');document.body.appendChild(element);element.select();const success=document.execCommand?.('copy')??false;element.remove();return success;}catch{return false;}}
-function wrap(ctx:CanvasRenderingContext2D,text:string,width:number):string[]{const lines:string[]=[];let line='';const chunks=typeof Intl.Segmenter==='function'?Array.from(new Intl.Segmenter('th',{granularity:'grapheme'}).segment(text),segment=>segment.segment):Array.from(text);for(const char of chunks){if(char==='\n'){lines.push(line);line='';continue;}if(ctx.measureText(line+char).width>width&&line){lines.push(line);line=char;}else line+=char;}if(line)lines.push(line);return lines;}
-function paragraph(ctx:CanvasRenderingContext2D,text:string,x:number,y:number,width:number,lineHeight:number,maxLines:number){const lines=wrap(ctx,text,width);lines.slice(0,maxLines).forEach((line,i)=>{const value=i===maxLines-1&&lines.length>maxLines?`${line.slice(0,-2)}…`:line;ctx.fillText(value,x,y+i*lineHeight);});return Math.min(lines.length,maxLines)*lineHeight;}
-async function svgImage(svg:SVGSVGElement){const image=new Image();const serialized=new XMLSerializer().serializeToString(svg);image.src=`data:image/svg+xml;charset=utf-8,${encodeURIComponent(serialized)}`;await new Promise<void>((resolve,reject)=>{image.onload=()=>resolve();image.onerror=()=>reject(Error('Card SVG export failed'));});return image;}
-export async function exportReadingImage(reading:Reading):Promise<Blob>{await document.fonts?.ready;const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1350;const ctx=canvas.getContext('2d');if(!ctx)throw Error('Canvas unavailable');const gradient=ctx.createLinearGradient(0,0,1080,1350);gradient.addColorStop(0,'#17102b');gradient.addColorStop(1,'#0a0618');ctx.fillStyle=gradient;ctx.fillRect(0,0,1080,1350);ctx.strokeStyle='#e6c36a77';ctx.lineWidth=1;ctx.strokeRect(32,32,1016,1286);ctx.fillStyle='#e6c36a';for(let i=0;i<48;i++){ctx.globalAlpha=.2+(i%4)*.15;ctx.beginPath();ctx.arc(50+(i*67)%980,50+(i*139)%1220,1+i%2,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;ctx.font='30px Cinzel';ctx.fillText(SITE.name.toUpperCase(),70,98);ctx.font='20px "Noto Sans Thai"';ctx.fillStyle='#b9b2d6';ctx.fillText(`${th.topics[reading.topic].name} · ${reading.date}`,70,138);const composed=compose(reading);ctx.fillStyle='#f3efff';ctx.font='36px "Noto Serif Thai"';paragraph(ctx,composed.headline,70,200,940,55,2);const svgElements=Array.from(document.querySelectorAll<SVGSVGElement>('.reading-spread .tarot-front .card-art')).slice(0,reading.cards.length);const cardWidth=reading.cards.length>3?132:155;const gap=26;const start=(1080-(cardWidth*reading.cards.length+gap*(reading.cards.length-1)))/2;for(let i=0;i<svgElements.length;i++){const image=await svgImage(svgElements[i]);ctx.drawImage(image,start+i*(cardWidth+gap),320,cardWidth,cardWidth*12/7);}let y=reading.cards.length>3?590:635;for(const slot of composed.slots){ctx.font='22px "Noto Sans Thai"';ctx.fillStyle='#e6c36a';y+=paragraph(ctx,`${slot.position.label} · ${slot.card.name.th}${slot.reversed?` (${th.common.reversed})`:''}`,70,y,940,32,1);ctx.font='21px "Noto Sans Thai"';ctx.fillStyle='#d9d0e7';y+=paragraph(ctx,slot.meaning,70,y+5,940,33,reading.cards.length>3?2:3)+18;}ctx.fillStyle='#e6c36a';ctx.font='20px "Noto Sans Thai"';paragraph(ctx,`${th.reading.tips}: ${composed.tips[0]}`,70,Math.min(y+18,1210),940,32,2);ctx.fillStyle='#b9b2d6';ctx.font='17px "Noto Sans Thai"';paragraph(ctx,th.disclaimer,70,1265,940,26,2);return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(Error('PNG unavailable')),'image/png'));}
-
+import { SITE } from '../config';
+import type { Reading } from '../data/types';
+import { encodeReading } from '../engine/share-code';
+import { compose } from '../engine/compose';
+import { th } from '../i18n/th';
+export function shareUrl(reading: Reading) {
+  return new URL(`r/${encodeReading(reading)}`, `${SITE.url.replace(/\/$/, '')}/`).href;
+}
+export function readingText(reading: Reading) {
+  const result = compose(reading);
+  return `${SITE.name} · ${th.topics[reading.topic].name}\n${result.headline}\n\n${result.slots.map((s) => `${s.position.label}: ${s.card.name.th}${s.reversed ? ` (${th.common.reversed})` : ''}\n${s.meaning}`).join('\n\n')}\n\n${th.disclaimer}\n${shareUrl(reading)}`;
+}
+export async function copyText(text: string): Promise<boolean> {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {
+    /* A manual copy sheet is the final fallback. */
+  }
+  try {
+    const element = document.createElement('textarea');
+    element.value = text;
+    element.style.cssText = 'position:fixed;left:-9999px;top:0';
+    element.setAttribute('readonly', '');
+    document.body.appendChild(element);
+    element.select();
+    const success = document.execCommand?.('copy') ?? false;
+    element.remove();
+    return success;
+  } catch {
+    return false;
+  }
+}
+function wrap(ctx: CanvasRenderingContext2D, text: string, width: number): string[] {
+  const lines: string[] = [];
+  let line = '';
+  const chunks =
+    typeof Intl.Segmenter === 'function'
+      ? Array.from(
+          new Intl.Segmenter('th', { granularity: 'grapheme' }).segment(text),
+          (segment) => segment.segment,
+        )
+      : Array.from(text);
+  for (const char of chunks) {
+    if (char === '\n') {
+      lines.push(line);
+      line = '';
+      continue;
+    }
+    if (ctx.measureText(line + char).width > width && line) {
+      lines.push(line);
+      line = char;
+    } else line += char;
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+function paragraph(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  width: number,
+  lineHeight: number,
+  maxLines: number,
+) {
+  const lines = wrap(ctx, text, width);
+  lines.slice(0, maxLines).forEach((line, i) => {
+    const value = i === maxLines - 1 && lines.length > maxLines ? `${line.slice(0, -2)}…` : line;
+    ctx.fillText(value, x, y + i * lineHeight);
+  });
+  return Math.min(lines.length, maxLines) * lineHeight;
+}
+async function svgImage(svg: SVGSVGElement) {
+  const image = new Image();
+  const serialized = new XMLSerializer().serializeToString(svg);
+  image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(serialized)}`;
+  await new Promise<void>((resolve, reject) => {
+    image.onload = () => resolve();
+    image.onerror = () => reject(Error('Card SVG export failed'));
+  });
+  return image;
+}
+export async function exportReadingImage(reading: Reading): Promise<Blob> {
+  await document.fonts?.ready;
+  const canvas = document.createElement('canvas');
+  canvas.width = 1080;
+  canvas.height = 1350;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw Error('Canvas unavailable');
+  const gradient = ctx.createLinearGradient(0, 0, 1080, 1350);
+  gradient.addColorStop(0, '#17102b');
+  gradient.addColorStop(1, '#0a0618');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 1080, 1350);
+  ctx.strokeStyle = '#e6c36a77';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(32, 32, 1016, 1286);
+  ctx.fillStyle = '#e6c36a';
+  for (let i = 0; i < 48; i++) {
+    ctx.globalAlpha = 0.2 + (i % 4) * 0.15;
+    ctx.beginPath();
+    ctx.arc(50 + ((i * 67) % 980), 50 + ((i * 139) % 1220), 1 + (i % 2), 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  ctx.font = '30px Cinzel';
+  ctx.fillText(SITE.name.toUpperCase(), 70, 98);
+  ctx.font = '20px "Noto Sans Thai"';
+  ctx.fillStyle = '#b9b2d6';
+  ctx.fillText(`${th.topics[reading.topic].name} · ${reading.date}`, 70, 138);
+  const composed = compose(reading);
+  ctx.fillStyle = '#f3efff';
+  ctx.font = '36px "Noto Serif Thai"';
+  paragraph(ctx, composed.headline, 70, 200, 940, 55, 2);
+  if (reading.topic === 'weather') {
+    ctx.font = '20px "Noto Sans Thai"';
+    ctx.fillStyle = '#a8c9e7';
+    ctx.fillText(th.weather.symbolNote, 70, 283);
+  }
+  const svgElements = Array.from(
+    document.querySelectorAll<SVGSVGElement>('.reading-spread .tarot-front .card-art'),
+  ).slice(0, reading.cards.length);
+  const cardWidth = reading.cards.length > 3 ? 132 : 155;
+  const gap = 26;
+  const start = (1080 - (cardWidth * reading.cards.length + gap * (reading.cards.length - 1))) / 2;
+  for (let i = 0; i < svgElements.length; i++) {
+    const image = await svgImage(svgElements[i]);
+    ctx.drawImage(image, start + i * (cardWidth + gap), 320, cardWidth, (cardWidth * 12) / 7);
+  }
+  let y = reading.cards.length > 3 ? 590 : 635;
+  for (const slot of composed.slots) {
+    ctx.font = '22px "Noto Sans Thai"';
+    ctx.fillStyle = '#e6c36a';
+    y += paragraph(
+      ctx,
+      `${slot.position.label} · ${slot.card.name.th}${slot.reversed ? ` (${th.common.reversed})` : ''}`,
+      70,
+      y,
+      940,
+      32,
+      1,
+    );
+    ctx.font = '21px "Noto Sans Thai"';
+    ctx.fillStyle = '#d9d0e7';
+    y += paragraph(ctx, slot.meaning, 70, y + 5, 940, 33, reading.cards.length > 3 ? 2 : 3) + 18;
+  }
+  ctx.fillStyle = '#e6c36a';
+  ctx.font = '20px "Noto Sans Thai"';
+  paragraph(ctx, `${th.reading.tips}: ${composed.tips[0]}`, 70, Math.min(y + 18, 1210), 940, 32, 2);
+  ctx.fillStyle = '#b9b2d6';
+  ctx.font = '17px "Noto Sans Thai"';
+  paragraph(ctx, th.disclaimer, 70, 1265, 940, 26, 2);
+  return new Promise((resolve, reject) =>
+    canvas.toBlob((blob) => (blob ? resolve(blob) : reject(Error('PNG unavailable'))), 'image/png'),
+  );
+}

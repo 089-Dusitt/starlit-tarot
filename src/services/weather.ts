@@ -1,15 +1,140 @@
-import {th,weatherCodeCopy} from '../i18n/th';
-export interface Place{name:string;latitude:number;longitude:number}
-export interface ForecastDay{date:string;code:number|null;max:number|null;min:number|null;probability:number|null;precipitation:number|null}
-export interface Forecast{days:ForecastDay[];current:{temperature:number|null;code:number|null};updated:number}
-export const WMO_CODES=[0,1,2,3,45,48,51,53,55,56,57,61,63,65,66,67,71,73,75,77,80,81,82,85,86,95,96,97,99] as const;
-export function wmo(code:number|null){return code!==null&&Object.hasOwn(weatherCodeCopy,code)?weatherCodeCopy[code as keyof typeof weatherCodeCopy]:{label:th.weather.unknown,icon:'cloud' as const,category:'unknown'};}
-export function umbrella(probability:number|null){return probability===null?th.weather.unknown:th.weather.umbrella[probability>=60?2:probability>=30?1:0];}
-const cache=new Map<string,{expires:number;value:unknown}>();
-export function clearWeatherCache(){cache.clear();}
-function record(value:unknown):Record<string,unknown>{if(typeof value!=='object'||!value||Array.isArray(value))throw Error('Invalid response');return value as Record<string,unknown>;}
-function finite(value:unknown):number|null{return typeof value==='number'&&Number.isFinite(value)?value:null;}
-function validPlace(p:Place){return Number.isFinite(p.latitude)&&Math.abs(p.latitude)<=90&&Number.isFinite(p.longitude)&&Math.abs(p.longitude)<=180;}
-async function request(url:string):Promise<unknown>{const controller=typeof AbortController==='function'?new AbortController():null;let timer:ReturnType<typeof setTimeout>|undefined;try{return await Promise.race([fetch(url,{signal:controller?.signal,credentials:'omit',referrerPolicy:'no-referrer'}).then(response=>{if(!response.ok)throw Error('Weather request failed');return response.json() as Promise<unknown>;}),new Promise<never>((_,reject)=>{timer=setTimeout(()=>{controller?.abort();reject(Error('Weather timeout'));},8000);})]);}finally{clearTimeout(timer);}}
-export async function searchPlaces(query:string):Promise<Place[]>{const name=query.trim().slice(0,80);if(name.length<2)return[];const url=`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(name)}&count=6&language=th&format=json`;const saved=cache.get(url);if(saved&&saved.expires>Date.now())return saved.value as Place[];const body=record(await request(url));if(body.results===undefined)return[];if(!Array.isArray(body.results))throw Error('Invalid places');const result=body.results.slice(0,6).flatMap((value:unknown)=>{const p=record(value);const latitude=finite(p.latitude),longitude=finite(p.longitude);if(typeof p.name!=='string'||latitude===null||longitude===null)return[];const place={name:[p.name,p.admin1,p.country].filter((v):v is string=>typeof v==='string'&&v.length>0).join(' · ').slice(0,140),latitude,longitude};return validPlace(place)?[place]:[];});cache.set(url,{expires:Date.now()+900000,value:result});return result;}
-export async function getForecast(place:Place,retry=false):Promise<Forecast>{if(!validPlace(place))throw Error('Invalid coordinates');const url=`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&timezone=auto&forecast_days=7&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum&current=temperature_2m,weather_code`;const saved=cache.get(url);if(!retry&&saved&&saved.expires>Date.now())return saved.value as Forecast;const body=record(await request(url));const daily=record(body.daily);const current=body.current?record(body.current):{};if(!Array.isArray(daily.time)||daily.time.length<1||daily.time.length>16)throw Error('Invalid forecast dates');const field=(key:string,index:number)=>{const values=daily[key];return Array.isArray(values)?finite(values[index]):null;};const days=daily.time.map((date:unknown,index:number):ForecastDay=>{if(typeof date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(date))throw Error('Invalid forecast date');const probability=field('precipitation_probability_max',index);const code=field('weather_code',index);return{date,code:code!==null&&Number.isInteger(code)?code:null,max:field('temperature_2m_max',index),min:field('temperature_2m_min',index),probability:probability!==null&&probability>=0&&probability<=100?probability:null,precipitation:field('precipitation_sum',index)};});const result:Forecast={days,current:{temperature:finite(current.temperature_2m),code:finite(current.weather_code)},updated:Date.now()};cache.set(url,{expires:Date.now()+900000,value:result});return result;}
+import { th, weatherCodeCopy } from '../i18n/th';
+export interface Place {
+  name: string;
+  latitude: number;
+  longitude: number;
+}
+export interface ForecastDay {
+  date: string;
+  code: number | null;
+  max: number | null;
+  min: number | null;
+  probability: number | null;
+  precipitation: number | null;
+}
+export interface Forecast {
+  days: ForecastDay[];
+  current: { temperature: number | null; code: number | null };
+  updated: number;
+}
+export const WMO_CODES = [
+  0, 1, 2, 3, 45, 48, 51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 71, 73, 75, 77, 80, 81, 82, 85, 86,
+  95, 96, 97, 99,
+] as const;
+export function wmo(code: number | null) {
+  return code !== null && Object.hasOwn(weatherCodeCopy, code)
+    ? weatherCodeCopy[code as keyof typeof weatherCodeCopy]
+    : { label: th.weather.unknown, icon: 'cloud' as const, category: 'unknown' };
+}
+export function umbrella(probability: number | null) {
+  return probability === null
+    ? th.weather.unknown
+    : th.weather.umbrella[probability >= 60 ? 2 : probability >= 30 ? 1 : 0];
+}
+const cache = new Map<string, { expires: number; value: unknown }>();
+export function clearWeatherCache() {
+  cache.clear();
+}
+function record(value: unknown): Record<string, unknown> {
+  if (typeof value !== 'object' || !value || Array.isArray(value)) throw Error('Invalid response');
+  return value as Record<string, unknown>;
+}
+function finite(value: unknown): number | null {
+  return typeof value === 'number' && Number.isFinite(value) ? value : null;
+}
+function validPlace(p: Place) {
+  return (
+    Number.isFinite(p.latitude) &&
+    Math.abs(p.latitude) <= 90 &&
+    Number.isFinite(p.longitude) &&
+    Math.abs(p.longitude) <= 180
+  );
+}
+async function request(url: string): Promise<unknown> {
+  const controller = typeof AbortController === 'function' ? new AbortController() : null;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      fetch(url, {
+        signal: controller?.signal,
+        credentials: 'omit',
+        referrerPolicy: 'no-referrer',
+      }).then((response) => {
+        if (!response.ok) throw Error('Weather request failed');
+        return response.json() as Promise<unknown>;
+      }),
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => {
+          controller?.abort();
+          reject(Error('Weather timeout'));
+        }, 8000);
+      }),
+    ]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+export async function searchPlaces(query: string): Promise<Place[]> {
+  const name = query.trim().slice(0, 80);
+  if (name.length < 2) return [];
+  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(name)}&count=6&language=th&format=json`;
+  const saved = cache.get(url);
+  if (saved && saved.expires > Date.now()) return saved.value as Place[];
+  const body = record(await request(url));
+  if (body.results === undefined) return [];
+  if (!Array.isArray(body.results)) throw Error('Invalid places');
+  const result = body.results.slice(0, 6).flatMap((value: unknown) => {
+    const p = record(value);
+    const latitude = finite(p.latitude),
+      longitude = finite(p.longitude);
+    if (typeof p.name !== 'string' || latitude === null || longitude === null) return [];
+    const place = {
+      name: [p.name, p.admin1, p.country]
+        .filter((v): v is string => typeof v === 'string' && v.length > 0)
+        .join(' · ')
+        .slice(0, 140),
+      latitude,
+      longitude,
+    };
+    return validPlace(place) ? [place] : [];
+  });
+  cache.set(url, { expires: Date.now() + 900000, value: result });
+  return result;
+}
+export async function getForecast(place: Place, retry = false): Promise<Forecast> {
+  if (!validPlace(place)) throw Error('Invalid coordinates');
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&timezone=auto&forecast_days=7&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum&current=temperature_2m,weather_code`;
+  const saved = cache.get(url);
+  if (!retry && saved && saved.expires > Date.now()) return saved.value as Forecast;
+  const body = record(await request(url));
+  const daily = record(body.daily);
+  const current = body.current ? record(body.current) : {};
+  if (!Array.isArray(daily.time) || daily.time.length < 1 || daily.time.length > 16)
+    throw Error('Invalid forecast dates');
+  const field = (key: string, index: number) => {
+    const values = daily[key];
+    return Array.isArray(values) ? finite(values[index]) : null;
+  };
+  const days = daily.time.map((date: unknown, index: number): ForecastDay => {
+    if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date))
+      throw Error('Invalid forecast date');
+    const probability = field('precipitation_probability_max', index);
+    const code = field('weather_code', index);
+    return {
+      date,
+      code: code !== null && Number.isInteger(code) ? code : null,
+      max: field('temperature_2m_max', index),
+      min: field('temperature_2m_min', index),
+      probability:
+        probability !== null && probability >= 0 && probability <= 100 ? probability : null,
+      precipitation: field('precipitation_sum', index),
+    };
+  });
+  const result: Forecast = {
+    days,
+    current: { temperature: finite(current.temperature_2m), code: finite(current.weather_code) },
+    updated: Date.now(),
+  };
+  cache.set(url, { expires: Date.now() + 900000, value: result });
+  return result;
+}

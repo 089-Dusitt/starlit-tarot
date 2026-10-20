@@ -1,7 +1,123 @@
-import type {CardIdentity,Suit} from '../types';
-const majorNames=[['fool','เดอะ ฟูล (ผู้เริ่มต้น)','The Fool'],['magician','นักมายากล','The Magician'],['high-priestess','มหาปุโรหิตหญิง','The High Priestess'],['empress','จักรพรรดินี','The Empress'],['emperor','จักรพรรดิ','The Emperor'],['hierophant','มหาปุโรหิต','The Hierophant'],['lovers','คู่รัก','The Lovers'],['chariot','รถศึก','The Chariot'],['strength','พละกำลัง','Strength'],['hermit','ฤๅษี','The Hermit'],['wheel','กงล้อแห่งโชคชะตา','Wheel of Fortune'],['justice','ความยุติธรรม','Justice'],['hanged-man','ผู้ห้อยหัว','The Hanged Man'],['death','การเปลี่ยนผ่าน','Death'],['temperance','ความพอดี','Temperance'],['devil','พันธนาการ','The Devil'],['tower','หอคอย','The Tower'],['star','ดวงดาว','The Star'],['moon','ดวงจันทร์','The Moon'],['sun','ดวงอาทิตย์','The Sun'],['judgement','เสียงเรียกให้ตื่น','Judgement'],['world','โลก','The World']] as const;
-const ranks=['','เอซ','2','3','4','5','6','7','8','9','10','เพจ','อัศวิน','ราชินี','ราชา'];
-const englishRanks=['','Ace','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Page','Knight','Queen','King'];
-export const suitInfo:Record<Suit,{th:string;en:string;element:CardIdentity['element'];color:string}>={wands:{th:'ไม้เท้า',en:'Wands',element:'fire',color:'#efb078'},cups:{th:'ถ้วย',en:'Cups',element:'water',color:'#82d4d1'},swords:{th:'ดาบ',en:'Swords',element:'air',color:'#c3d1ef'},pentacles:{th:'เหรียญ',en:'Pentacles',element:'earth',color:'#86cca3'}};
-export const identities:CardIdentity[]=[...majorNames.map(([id,th,en],number):CardIdentity=>({id:`major-${String(number).padStart(2,'0')}-${id}`,arcana:'major',number,name:{th,en},element:([0,1,6,11,17].includes(number)?'air':[2,7,12,18].includes(number)?'water':[4,8,16,19,20].includes(number)?'fire':[3,5,9,15,21].includes(number)?'earth':'spirit')})),...(['wands','cups','swords','pentacles'] as const).flatMap(suit=>Array.from({length:14},(_,i):CardIdentity=>({id:`${suit}-${String(i+1).padStart(2,'0')}`,arcana:'minor',suit,number:i+1,name:{th:`${ranks[i+1]}${suitInfo[suit].th}`,en:`${englishRanks[i+1]} of ${suitInfo[suit].en}`},element:suitInfo[suit].element})))];
-export const roman=(n:number)=>['0','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI'][n]||String(n);
+import type { CardIdentity, Suit } from '../types';
+const majorNames = [
+  ['fool', 'เดอะ ฟูล (ผู้เริ่มต้น)', 'The Fool'],
+  ['magician', 'นักมายากล', 'The Magician'],
+  ['high-priestess', 'มหาปุโรหิตหญิง', 'The High Priestess'],
+  ['empress', 'จักรพรรดินี', 'The Empress'],
+  ['emperor', 'จักรพรรดิ', 'The Emperor'],
+  ['hierophant', 'มหาปุโรหิต', 'The Hierophant'],
+  ['lovers', 'คู่รัก', 'The Lovers'],
+  ['chariot', 'รถศึก', 'The Chariot'],
+  ['strength', 'พละกำลัง', 'Strength'],
+  ['hermit', 'ฤๅษี', 'The Hermit'],
+  ['wheel', 'กงล้อแห่งโชคชะตา', 'Wheel of Fortune'],
+  ['justice', 'ความยุติธรรม', 'Justice'],
+  ['hanged-man', 'ผู้ห้อยหัว', 'The Hanged Man'],
+  ['death', 'การเปลี่ยนผ่าน', 'Death'],
+  ['temperance', 'ความพอดี', 'Temperance'],
+  ['devil', 'พันธนาการ', 'The Devil'],
+  ['tower', 'หอคอย', 'The Tower'],
+  ['star', 'ดวงดาว', 'The Star'],
+  ['moon', 'ดวงจันทร์', 'The Moon'],
+  ['sun', 'ดวงอาทิตย์', 'The Sun'],
+  ['judgement', 'เสียงเรียกให้ตื่น', 'Judgement'],
+  ['world', 'โลก', 'The World'],
+] as const;
+const ranks = [
+  '',
+  'เอซ',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  'เพจ',
+  'อัศวิน',
+  'ราชินี',
+  'ราชา',
+];
+const englishRanks = [
+  '',
+  'Ace',
+  'Two',
+  'Three',
+  'Four',
+  'Five',
+  'Six',
+  'Seven',
+  'Eight',
+  'Nine',
+  'Ten',
+  'Page',
+  'Knight',
+  'Queen',
+  'King',
+];
+export const suitInfo: Record<
+  Suit,
+  { th: string; en: string; element: CardIdentity['element']; color: string }
+> = {
+  wands: { th: 'ไม้เท้า', en: 'Wands', element: 'fire', color: '#efb078' },
+  cups: { th: 'ถ้วย', en: 'Cups', element: 'water', color: '#82d4d1' },
+  swords: { th: 'ดาบ', en: 'Swords', element: 'air', color: '#c3d1ef' },
+  pentacles: { th: 'เหรียญ', en: 'Pentacles', element: 'earth', color: '#86cca3' },
+};
+export const identities: CardIdentity[] = [
+  ...majorNames.map(([id, th, en], number): CardIdentity => ({
+    id: `major-${String(number).padStart(2, '0')}-${id}`,
+    arcana: 'major',
+    number,
+    name: { th, en },
+    element: [0, 1, 6, 11, 17].includes(number)
+      ? 'air'
+      : [2, 7, 12, 18].includes(number)
+        ? 'water'
+        : [4, 8, 16, 19, 20].includes(number)
+          ? 'fire'
+          : [3, 5, 9, 15, 21].includes(number)
+            ? 'earth'
+            : 'spirit',
+  })),
+  ...(['wands', 'cups', 'swords', 'pentacles'] as const).flatMap((suit) =>
+    Array.from({ length: 14 }, (_, i): CardIdentity => ({
+      id: `${suit}-${String(i + 1).padStart(2, '0')}`,
+      arcana: 'minor',
+      suit,
+      number: i + 1,
+      name: {
+        th: `${ranks[i + 1]}${suitInfo[suit].th}`,
+        en: `${englishRanks[i + 1]} of ${suitInfo[suit].en}`,
+      },
+      element: suitInfo[suit].element,
+    })),
+  ),
+];
+export const roman = (n: number) =>
+  [
+    '0',
+    'I',
+    'II',
+    'III',
+    'IV',
+    'V',
+    'VI',
+    'VII',
+    'VIII',
+    'IX',
+    'X',
+    'XI',
+    'XII',
+    'XIII',
+    'XIV',
+    'XV',
+    'XVI',
+    'XVII',
+    'XVIII',
+    'XIX',
+    'XX',
+    'XXI',
+  ][n] || String(n);

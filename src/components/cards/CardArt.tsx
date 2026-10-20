@@ -1,12 +1,456 @@
-import {memo,useId} from 'react';
-import type {CardIdentity,Suit} from '../../data/types';
-import {suitInfo} from '../../data/cards/identities';
-function Star({x=0,y=0,r=14}:{x?:number;y?:number;r?:number}){return <path d={`M${x} ${y-r}l${r*.26} ${r*.74} ${r*.74} ${r*.26}-${r*.74} ${r*.26}-${r*.26} ${r*.74}-${r*.26}-${r*.74}-${r*.74}-${r*.26} ${r*.74}-${r*.26}Z`}/>;}
-function Sun({x=105,y=155,r=34}:{x?:number;y?:number;r?:number}){return <g><circle cx={x} cy={y} r={r}/><circle cx={x} cy={y} r={r-7}/>{Array.from({length:16},(_,i)=><path key={i} d={`M${x} ${y-r-5}v-14`} transform={`rotate(${i*22.5} ${x} ${y})`}/>)}</g>;}
-function Moon({x=105,y=150,r=43}:{x?:number;y?:number;r?:number}){return <path d={`M${x+12} ${y-r}A${r} ${r} 0 1 0 ${x+12} ${y+r}A${r*.8} ${r*.8} 0 0 1 ${x+12} ${y-r}Z`}/>;}
-function Eye(){return <g><path d="M54 152Q105 95 156 152Q105 207 54 152Z"/><circle cx="105" cy="152" r="19"/><circle cx="105" cy="152" r="6"/><path d="M105 104V86m-31 28-10-15m71 15 10-15"/></g>;}
-function Crown({y=115}:{y?:number}){return <g transform={`translate(0 ${y-115})`}><path d="m65 100 17 13 23-32 23 32 17-13-9 44H74Z"/><path d="M75 136h60m-30-45v39"/><circle cx="105" cy="119" r="4"/></g>;}
-function Chalice({x=105,y=157,scale=1}:{x?:number;y?:number;scale?:number}){return <g transform={`translate(${x} ${y}) scale(${scale})`}><path d="M-23-25h46v12A23 23 0 0 1 0 10 23 23 0 0 1-23-13ZM0 10v26m-15 0h30M-23-20h-10v10q0 15 18 15m38-25h10v10Q33 5 15 5"/><path d="M-15-18h30"/></g>;}
-export function SuitGlyph({suit,x,y,scale=1}:{suit:Suit;x:number;y:number;scale?:number}){return <g transform={`translate(${x} ${y}) scale(${scale})`}>{suit==='cups'?<Chalice x={0} y={0} scale={.7}/>:suit==='wands'?<g><path d="m-6 30 12-60M0 1Q-22-20-14-28 5-19 0 1m2-12Q22-23 22-10 17 1 1 2"/><circle cx="-6" cy="30" r="2"/></g>:suit==='swords'?<g><path d="M0-36 7-18 4 20h-8l-3-38ZM-14 20h28M0 20v16m-6 0h12"/></g>:<g><circle r="25"/><circle r="20"/><path d="m0-17 10 30-25-19h30L-10 13Z"/></g>}</g>;}
-function MajorEmblem({number}:{number:number}){switch(number){case 0:return <g><path d="M42 238h48l-12-29 20-45 23 13 18-28m-43 22-10-32 16-16 20 20m-19-19 6-29m5 13 29-6m-9-10 13 32"/><circle cx="111" cy="92" r="10"/><Sun x={66} y={94} r={13}/><path d="M95 234 130 263 156 231m-4-19 10 10-15 7"/></g>;case 1:return <g><path d="M82 124q-24-24-36 0 12 24 36 0t36 0q12 24 36 0"/><path d="M105 102v-35m-14 10 14-10 14 10M65 198h80m-73 0v42m66-42v42M105 150v43m-29-32 29-15 29 15"/><circle cx="105" cy="140" r="10"/><SuitGlyph suit="wands" x={80} y={184} scale={.35}/><SuitGlyph suit="cups" x={129} y={184} scale={.35}/></g>;case 2:return <g><path d="M58 115v116m94-116v116M48 115h20m74 0h20M48 231h20m74 0h20"/><Moon x={105} y={129} r={22}/><Eye/><path d="M83 207h44l-6 20H89Z"/></g>;case 3:return <g><Crown/><path d="M105 155v64m-15-10h30"/><circle cx="105" cy="167" r="19"/><path d="M57 244q-10-45 9-63m-9 38 18-10m-18 24-15-10m111 21q10-45-9-63m9 38-18-10m18 24 15-10"/></g>;case 4:return <g><Crown/><path d="M65 161h80v74H65Zm20 0v74m40-74v74M54 144v97m102-97v97M77 189h56"/><Star x={105} y={191} r={17}/></g>;case 5:return <g><path d="M105 81v91m-21-66h42m-34 15h26m-26 17h26m-54 75 65-43m17 43-65-43"/><circle cx="60" cy="219" r="10"/><circle cx="150" cy="219" r="10"/><path d="M105 172 86 185l10 15m9-28 19 13-10 15"/></g>;case 6:return <g><path d="M105 176c-65-35-43-78-17-61 10 4 17 16 17 16s6-12 17-16c26-17 48 26-17 61Z"/><Sun x={105} y={84} r={12}/><path d="M61 226q10-34 30-39m58 39q-10-34-30-39m-27 18 13 13 13-13"/></g>;case 7:return <g><path d="M73 144h64v65H73Zm32-65v65m-32-28h64l-32-37Z"/><circle cx="75" cy="219" r="16"/><circle cx="135" cy="219" r="16"/><path d="M75 211v16m60-16v16m-52-67h44"/><Star x={105} y={183} r={15}/></g>;case 8:return <g><path d="M105 109c-35-45-65 11-29 17 14 4 29-17 29-17s15-21 29-17c36 6 6 62-29 17Z"/><path d="M75 188q-7-45 30-45t30 45l-9 36-21 14-21-14Z"/><path d="m87 181 10 6m26-6-10 6m-17 16 9 6 9-6m-9 6v13m-12-3 12 3 12-3"/></g>;case 9:return <g><path d="M95 127 80 205h51l-16-78M105 83v22m-10 0h20l9 22-19 28-19-28Z"/><Star x={105} y={126} r={12}/><path d="m149 131-8 110M58 254l45-26 36 26"/></g>;case 10:return <g><circle cx="105" cy="160" r="58"/><circle cx="105" cy="160" r="44"/><circle cx="105" cy="160" r="13"/>{Array.from({length:8},(_,i)=><path key={i} d="M105 147v-45" transform={`rotate(${i*45} 105 160)`}/>)}<Star x={105} y={82} r={10}/></g>;case 11:return <g><path d="M105 89v146m-24 0h48m-62-109h76m-76 0-23 50h46Zm76 0-23 50h46Z"/><circle cx="105" cy="113" r="10"/><path d="M44 176q23 20 46 0m30 0q23 20 46 0"/></g>;case 12:return <g><path d="M55 93h100m-50 0v66l-23 34 23 14m0-48 25 34m-25 14v18m-23-32-8-26m56 26 9-23"/><circle cx="105" cy="236" r="11"/><circle cx="105" cy="236" r="24"/></g>;case 13:return <g><path d="M105 98v137m-30-64 30-12 30 12m-53 35 23-10 23 10m-34-64 11-25 11 25"/><path d="M58 222q47 47 94 0M64 123l17-22m65 22-17-22"/><Moon x={105} y={87} r={14}/><Star x={105} y={181} r={8}/></g>;case 14:return <g><Chalice x={74} y={133} scale={.8}/><Chalice x={135} y={200} scale={.8}/><path d="M86 142q60 9 41 39m-43-36 35 38m-58 63q44-24 88 0"/><Star x={105} y={87} r={15}/></g>;case 15:return <g><path d="M79 160v-23a26 26 0 0 1 52 0v23"/><rect x="70" y="160" width="70" height="55" rx="5"/><circle cx="105" cy="181" r="6"/><path d="M105 187v14m-35-14H46q-20 0-10 23t30 0m74-23h24q20 0 10 23t-30 0"/><path d="m87 96 18-19 18 19"/></g>;case 16:return <g><path d="M76 238 84 132h43l8 106Zm7-106-5-20h13v10h9v-10h12v10h10v-10h13l-8 20m-25 31h10v21h-10Zm-1 40h12v35"/><path d="m139 69-31 39h19l-28 42m-37 18-14-19m105 30 14-18"/></g>;case 17:return <g><Star x={105} y={135} r={52}/><Star x={105} y={135} r={35}/>{[[58,89],[152,89],[48,171],[162,171],[71,214],[139,214],[105,69]].map(([x,y],i)=><Star x={x} y={y} r={7} key={i}/>)}<path d="M47 246q29-15 58 0t58 0M58 257q24-10 47 0t47 0"/></g>;case 18:return <g><Moon/><circle cx="105" cy="150" r="59" strokeDasharray="1 7"/><path d="M57 229h96M66 229v-38h18v38m42 0v-38h18v38m-60 14 21-19 21 19m-32 15 11-11 11 11"/><Star x={150} y={100} r={9}/></g>;case 19:return <g><Sun x={105} y={143} r={45}/><path d="M52 232q53-28 106 0M66 245q39-22 78 0m-39-32v32"/><Star x={62} y={92} r={5}/><Star x={151} y={191} r={5}/></g>;case 20:return <g><path d="m74 123 55-22 12 31-55 22-19 25-10-27ZM80 143l16 38m27-38 9 22m-3-64 15-14m0 29 21-1m-24 17 18 14"/><path d="M63 240v-37h25v37m34 0v-37h25v37m-59-13 17-25 17 25"/><Star x={105} y={79} r={12}/></g>;default:return <g><path d="M81 89C20 133 36 213 81 241m48-152c61 44 45 124 0 152"/>{Array.from({length:6},(_,i)=><g key={i} transform={`translate(0 ${i*22})`}><path d="m65 109-16-8 5 18m91-10 16-8-5 18"/></g>)}<circle cx="105" cy="163" r="37"/><path d="M68 163h74m-37-37q-25 37 0 74 25-37 0-74"/><Star x={105} y={91} r={14}/><Star x={105} y={241} r={10}/></g>;}}
-export const CardArt=memo(function CardArt({card,back=false,reversed=false}:{card?:CardIdentity;back?:boolean;reversed?:boolean}){const id=useId().replace(/:/g,'');const color=card?.suit?suitInfo[card.suit].color:'#e6c36a';const pips=card?.number||1;return <svg className="card-art" viewBox="0 0 210 360" role="img" aria-label={back?'ลายดาวบนหลังไพ่':`${card?.name.th}${reversed?' กลับหัว':''}`}><defs><radialGradient id={`bg-${id}`} cx="50%" cy="35%" r="80%"><stop stopColor={card?.suit?'#26333b':'#302441'}/><stop offset="1" stopColor="#100d23"/></radialGradient><radialGradient id={`glow-${id}`}><stop stopColor={color} stopOpacity=".16"/><stop offset="1" stopColor={color} stopOpacity="0"/></radialGradient></defs><rect x="1" y="1" width="208" height="358" rx="10" fill={`url(#bg-${id})`} stroke={color} strokeOpacity=".7"/><rect x="9" y="9" width="192" height="342" rx="6" fill="none" stroke={color} strokeWidth=".6" opacity=".45"/><path d="M15 48V16h32m116 0h32v32M15 312v32h32m116 0h32v-32" stroke={color} fill="none" strokeWidth="1"/><g stroke={color} fill="none" strokeWidth=".8" opacity=".6">{[[20,25],[190,25],[20,335],[190,335]].map(([x,y],i)=><Star key={i} x={x} y={y} r={5}/>)}</g><g transform={reversed?'rotate(180 105 170)':undefined}><circle cx="105" cy="170" r="110" fill={`url(#glow-${id})`}/><g stroke={color} strokeWidth="1.15" fill="none" strokeLinejoin="round" strokeLinecap="round">{back?<><rect x="38" y="65" width="134" height="230" rx="70"/><rect x="48" y="77" width="114" height="206" rx="58" opacity=".5"/><circle cx="105" cy="180" r="51"/><circle cx="105" cy="180" r="40"/><Star x={105} y={180} r={58}/><Star x={105} y={180} r={35}/><Eye/>{Array.from({length:12},(_,i)=><path d="M105 102v-12m0 168v12" transform={`rotate(${i*30} 105 180)`} key={i}/>)}<Moon x={105} y={87} r={11}/><Star x={105} y={275} r={11}/></>:card?.arcana==='major'?<MajorEmblem number={card.number}/>:card?.suit?card.number===1?<><circle cx="105" cy="166" r="57"/><circle cx="105" cy="166" r="49" strokeDasharray="2 6"/><SuitGlyph suit={card.suit} x={105} y={166} scale={1.5}/><Star x={105} y={88} r={13}/></>:card.number>10?<><Crown y={94}/><path d="M63 144h84v50q-2 34-42 52-40-18-42-52Z"/><SuitGlyph suit={card.suit} x={105} y={184} scale={.85}/>{card.number===12&&<path d="m75 113 30-30 30 30m-45 0 15-15 15 15"/>}{card.number===13&&<Moon x={105} y={270} r={10}/>}<Star x={105} y={263} r={card.number===14?16:7}/></>:Array.from({length:pips},(_,i)=>{const cols=pips<=3?1:2;const rows=Math.ceil(pips/cols);const x=cols===1?105:75+(i%2)*60;const y=100+Math.floor(i/cols)*(150/Math.max(1,rows-1));return <SuitGlyph suit={card.suit!} key={i} x={pips%2!==0&&i===pips-1?105:x} y={y} scale={pips>6?.56:.72}/>;}):null}</g>{!back&&<g stroke={color} strokeWidth=".7" fill="none" opacity=".45"><path d="M31 278 66 247 89 269 127 243 177 278m-141 6h138"/>{[[37,68],[172,64],[42,113],[163,231],[152,83]].map(([x,y],i)=><Star x={x} y={y} r={i===0?4:2.5} key={i}/>)}</g>}</g><path d="M38 299h134" stroke={color} opacity=".4"/></svg>;});
+import { memo, useId } from 'react';
+import type { CardIdentity, Suit } from '../../data/types';
+import { suitInfo } from '../../data/cards/identities';
+import { th } from '../../i18n/th';
+function Star({ x = 0, y = 0, r = 14 }: { x?: number; y?: number; r?: number }) {
+  return (
+    <path
+      d={`M${x} ${y - r}l${r * 0.26} ${r * 0.74} ${r * 0.74} ${r * 0.26}-${r * 0.74} ${r * 0.26}-${r * 0.26} ${r * 0.74}-${r * 0.26}-${r * 0.74}-${r * 0.74}-${r * 0.26} ${r * 0.74}-${r * 0.26}Z`}
+    />
+  );
+}
+function Sun({ x = 105, y = 155, r = 34 }: { x?: number; y?: number; r?: number }) {
+  return (
+    <g>
+      <circle cx={x} cy={y} r={r} />
+      <circle cx={x} cy={y} r={r - 7} />
+      {Array.from({ length: 16 }, (_, i) => (
+        <path key={i} d={`M${x} ${y - r - 5}v-14`} transform={`rotate(${i * 22.5} ${x} ${y})`} />
+      ))}
+    </g>
+  );
+}
+function Moon({ x = 105, y = 150, r = 43 }: { x?: number; y?: number; r?: number }) {
+  return (
+    <path
+      d={`M${x + 12} ${y - r}A${r} ${r} 0 1 0 ${x + 12} ${y + r}A${r * 0.8} ${r * 0.8} 0 0 1 ${x + 12} ${y - r}Z`}
+    />
+  );
+}
+function Eye() {
+  return (
+    <g>
+      <path d="M54 152Q105 95 156 152Q105 207 54 152Z" />
+      <circle cx="105" cy="152" r="19" />
+      <circle cx="105" cy="152" r="6" />
+      <path d="M105 104V86m-31 28-10-15m71 15 10-15" />
+    </g>
+  );
+}
+function Crown({ y = 115 }: { y?: number }) {
+  return (
+    <g transform={`translate(0 ${y - 115})`}>
+      <path d="m65 100 17 13 23-32 23 32 17-13-9 44H74Z" />
+      <path d="M75 136h60m-30-45v39" />
+      <circle cx="105" cy="119" r="4" />
+    </g>
+  );
+}
+function Chalice({ x = 105, y = 157, scale = 1 }: { x?: number; y?: number; scale?: number }) {
+  return (
+    <g transform={`translate(${x} ${y}) scale(${scale})`}>
+      <path d="M-23-25h46v12A23 23 0 0 1 0 10 23 23 0 0 1-23-13ZM0 10v26m-15 0h30M-23-20h-10v10q0 15 18 15m38-25h10v10Q33 5 15 5" />
+      <path d="M-15-18h30" />
+    </g>
+  );
+}
+export function SuitGlyph({
+  suit,
+  x,
+  y,
+  scale = 1,
+}: {
+  suit: Suit;
+  x: number;
+  y: number;
+  scale?: number;
+}) {
+  return (
+    <g transform={`translate(${x} ${y}) scale(${scale})`}>
+      {suit === 'cups' ? (
+        <Chalice x={0} y={0} scale={0.7} />
+      ) : suit === 'wands' ? (
+        <g>
+          <path d="m-6 30 12-60M0 1Q-22-20-14-28 5-19 0 1m2-12Q22-23 22-10 17 1 1 2" />
+          <circle cx="-6" cy="30" r="2" />
+        </g>
+      ) : suit === 'swords' ? (
+        <g>
+          <path d="M0-36 7-18 4 20h-8l-3-38ZM-14 20h28M0 20v16m-6 0h12" />
+        </g>
+      ) : (
+        <g>
+          <circle r="25" />
+          <circle r="20" />
+          <path d="m0-17 10 30-25-19h30L-10 13Z" />
+        </g>
+      )}
+    </g>
+  );
+}
+function MajorEmblem({ number }: { number: number }) {
+  switch (number) {
+    case 0:
+      return (
+        <g>
+          <path d="M42 238h48l-12-29 20-45 23 13 18-28m-43 22-10-32 16-16 20 20m-19-19 6-29m5 13 29-6m-9-10 13 32" />
+          <circle cx="111" cy="92" r="10" />
+          <Sun x={66} y={94} r={13} />
+          <path d="M95 234 130 263 156 231m-4-19 10 10-15 7" />
+        </g>
+      );
+    case 1:
+      return (
+        <g>
+          <path d="M82 124q-24-24-36 0 12 24 36 0t36 0q12 24 36 0" />
+          <path d="M105 102v-35m-14 10 14-10 14 10M65 198h80m-73 0v42m66-42v42M105 150v43m-29-32 29-15 29 15" />
+          <circle cx="105" cy="140" r="10" />
+          <SuitGlyph suit="wands" x={80} y={184} scale={0.35} />
+          <SuitGlyph suit="cups" x={129} y={184} scale={0.35} />
+        </g>
+      );
+    case 2:
+      return (
+        <g>
+          <path d="M58 115v116m94-116v116M48 115h20m74 0h20M48 231h20m74 0h20" />
+          <Moon x={105} y={129} r={22} />
+          <Eye />
+          <path d="M83 207h44l-6 20H89Z" />
+        </g>
+      );
+    case 3:
+      return (
+        <g>
+          <Crown />
+          <path d="M105 155v64m-15-10h30" />
+          <circle cx="105" cy="167" r="19" />
+          <path d="M57 244q-10-45 9-63m-9 38 18-10m-18 24-15-10m111 21q10-45-9-63m9 38-18-10m18 24 15-10" />
+        </g>
+      );
+    case 4:
+      return (
+        <g>
+          <Crown />
+          <path d="M65 161h80v74H65Zm20 0v74m40-74v74M54 144v97m102-97v97M77 189h56" />
+          <Star x={105} y={191} r={17} />
+        </g>
+      );
+    case 5:
+      return (
+        <g>
+          <path d="M105 81v91m-21-66h42m-34 15h26m-26 17h26m-54 75 65-43m17 43-65-43" />
+          <circle cx="60" cy="219" r="10" />
+          <circle cx="150" cy="219" r="10" />
+          <path d="M105 172 86 185l10 15m9-28 19 13-10 15" />
+        </g>
+      );
+    case 6:
+      return (
+        <g>
+          <path d="M105 176c-65-35-43-78-17-61 10 4 17 16 17 16s6-12 17-16c26-17 48 26-17 61Z" />
+          <Sun x={105} y={84} r={12} />
+          <path d="M61 226q10-34 30-39m58 39q-10-34-30-39m-27 18 13 13 13-13" />
+        </g>
+      );
+    case 7:
+      return (
+        <g>
+          <path d="M73 144h64v65H73Zm32-65v65m-32-28h64l-32-37Z" />
+          <circle cx="75" cy="219" r="16" />
+          <circle cx="135" cy="219" r="16" />
+          <path d="M75 211v16m60-16v16m-52-67h44" />
+          <Star x={105} y={183} r={15} />
+        </g>
+      );
+    case 8:
+      return (
+        <g>
+          <path d="M105 109c-35-45-65 11-29 17 14 4 29-17 29-17s15-21 29-17c36 6 6 62-29 17Z" />
+          <path d="M75 188q-7-45 30-45t30 45l-9 36-21 14-21-14Z" />
+          <path d="m87 181 10 6m26-6-10 6m-17 16 9 6 9-6m-9 6v13m-12-3 12 3 12-3" />
+        </g>
+      );
+    case 9:
+      return (
+        <g>
+          <path d="M95 127 80 205h51l-16-78M105 83v22m-10 0h20l9 22-19 28-19-28Z" />
+          <Star x={105} y={126} r={12} />
+          <path d="m149 131-8 110M58 254l45-26 36 26" />
+        </g>
+      );
+    case 10:
+      return (
+        <g>
+          <circle cx="105" cy="160" r="58" />
+          <circle cx="105" cy="160" r="44" />
+          <circle cx="105" cy="160" r="13" />
+          {Array.from({ length: 8 }, (_, i) => (
+            <path key={i} d="M105 147v-45" transform={`rotate(${i * 45} 105 160)`} />
+          ))}
+          <Star x={105} y={82} r={10} />
+        </g>
+      );
+    case 11:
+      return (
+        <g>
+          <path d="M105 89v146m-24 0h48m-62-109h76m-76 0-23 50h46Zm76 0-23 50h46Z" />
+          <circle cx="105" cy="113" r="10" />
+          <path d="M44 176q23 20 46 0m30 0q23 20 46 0" />
+        </g>
+      );
+    case 12:
+      return (
+        <g>
+          <path d="M55 93h100m-50 0v66l-23 34 23 14m0-48 25 34m-25 14v18m-23-32-8-26m56 26 9-23" />
+          <circle cx="105" cy="236" r="11" />
+          <circle cx="105" cy="236" r="24" />
+        </g>
+      );
+    case 13:
+      return (
+        <g>
+          <path d="M105 98v137m-30-64 30-12 30 12m-53 35 23-10 23 10m-34-64 11-25 11 25" />
+          <path d="M58 222q47 47 94 0M64 123l17-22m65 22-17-22" />
+          <Moon x={105} y={87} r={14} />
+          <Star x={105} y={181} r={8} />
+        </g>
+      );
+    case 14:
+      return (
+        <g>
+          <Chalice x={74} y={133} scale={0.8} />
+          <Chalice x={135} y={200} scale={0.8} />
+          <path d="M86 142q60 9 41 39m-43-36 35 38m-58 63q44-24 88 0" />
+          <Star x={105} y={87} r={15} />
+        </g>
+      );
+    case 15:
+      return (
+        <g>
+          <path d="M79 160v-23a26 26 0 0 1 52 0v23" />
+          <rect x="70" y="160" width="70" height="55" rx="5" />
+          <circle cx="105" cy="181" r="6" />
+          <path d="M105 187v14m-35-14H46q-20 0-10 23t30 0m74-23h24q20 0 10 23t-30 0" />
+          <path d="m87 96 18-19 18 19" />
+        </g>
+      );
+    case 16:
+      return (
+        <g>
+          <path d="M76 238 84 132h43l8 106Zm7-106-5-20h13v10h9v-10h12v10h10v-10h13l-8 20m-25 31h10v21h-10Zm-1 40h12v35" />
+          <path d="m139 69-31 39h19l-28 42m-37 18-14-19m105 30 14-18" />
+        </g>
+      );
+    case 17:
+      return (
+        <g>
+          <Star x={105} y={135} r={52} />
+          <Star x={105} y={135} r={35} />
+          {[
+            [58, 89],
+            [152, 89],
+            [48, 171],
+            [162, 171],
+            [71, 214],
+            [139, 214],
+            [105, 69],
+          ].map(([x, y], i) => (
+            <Star x={x} y={y} r={7} key={i} />
+          ))}
+          <path d="M47 246q29-15 58 0t58 0M58 257q24-10 47 0t47 0" />
+        </g>
+      );
+    case 18:
+      return (
+        <g>
+          <Moon />
+          <circle cx="105" cy="150" r="59" strokeDasharray="1 7" />
+          <path d="M57 229h96M66 229v-38h18v38m42 0v-38h18v38m-60 14 21-19 21 19m-32 15 11-11 11 11" />
+          <Star x={150} y={100} r={9} />
+        </g>
+      );
+    case 19:
+      return (
+        <g>
+          <Sun x={105} y={143} r={45} />
+          <path d="M52 232q53-28 106 0M66 245q39-22 78 0m-39-32v32" />
+          <Star x={62} y={92} r={5} />
+          <Star x={151} y={191} r={5} />
+        </g>
+      );
+    case 20:
+      return (
+        <g>
+          <path d="m74 123 55-22 12 31-55 22-19 25-10-27ZM80 143l16 38m27-38 9 22m-3-64 15-14m0 29 21-1m-24 17 18 14" />
+          <path d="M63 240v-37h25v37m34 0v-37h25v37m-59-13 17-25 17 25" />
+          <Star x={105} y={79} r={12} />
+        </g>
+      );
+    default:
+      return (
+        <g>
+          <path d="M81 89C20 133 36 213 81 241m48-152c61 44 45 124 0 152" />
+          {Array.from({ length: 6 }, (_, i) => (
+            <g key={i} transform={`translate(0 ${i * 22})`}>
+              <path d="m65 109-16-8 5 18m91-10 16-8-5 18" />
+            </g>
+          ))}
+          <circle cx="105" cy="163" r="37" />
+          <path d="M68 163h74m-37-37q-25 37 0 74 25-37 0-74" />
+          <Star x={105} y={91} r={14} />
+          <Star x={105} y={241} r={10} />
+        </g>
+      );
+  }
+}
+export const CardArt = memo(function CardArt({
+  card,
+  back = false,
+  reversed = false,
+}: {
+  card?: CardIdentity;
+  back?: boolean;
+  reversed?: boolean;
+}) {
+  const id = useId().replace(/:/g, '');
+  const color = card?.suit ? suitInfo[card.suit].color : '#e6c36a';
+  const pips = card?.number || 1;
+  return (
+    <svg
+      className="card-art"
+      viewBox="0 0 210 360"
+      role="img"
+      aria-label={
+        back
+          ? th.common.cardBack
+          : `${card?.name.th}${reversed ? `, ${th.common.reversed}` : ''}${card?.keywords ? `, ${card.keywords[reversed ? 'reversed' : 'upright'].join(', ')}` : ''}`
+      }
+    >
+      <defs>
+        <radialGradient id={`bg-${id}`} cx="50%" cy="35%" r="80%">
+          <stop stopColor={card?.suit ? '#26333b' : '#302441'} />
+          <stop offset="1" stopColor="#100d23" />
+        </radialGradient>
+        <radialGradient id={`glow-${id}`}>
+          <stop stopColor={color} stopOpacity=".16" />
+          <stop offset="1" stopColor={color} stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <rect
+        x="1"
+        y="1"
+        width="208"
+        height="358"
+        rx="10"
+        fill={`url(#bg-${id})`}
+        stroke={color}
+        strokeOpacity=".7"
+      />
+      <rect
+        x="9"
+        y="9"
+        width="192"
+        height="342"
+        rx="6"
+        fill="none"
+        stroke={color}
+        strokeWidth=".6"
+        opacity=".45"
+      />
+      <path
+        d="M15 48V16h32m116 0h32v32M15 312v32h32m116 0h32v-32"
+        stroke={color}
+        fill="none"
+        strokeWidth="1"
+      />
+      <g stroke={color} fill="none" strokeWidth=".8" opacity=".6">
+        {[
+          [20, 25],
+          [190, 25],
+          [20, 335],
+          [190, 335],
+        ].map(([x, y], i) => (
+          <Star key={i} x={x} y={y} r={5} />
+        ))}
+      </g>
+      <g transform={reversed ? 'rotate(180 105 170)' : undefined}>
+        <circle cx="105" cy="170" r="110" fill={`url(#glow-${id})`} />
+        <g
+          stroke={color}
+          strokeWidth="1.15"
+          fill="none"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        >
+          {back ? (
+            <>
+              <rect x="38" y="65" width="134" height="230" rx="70" />
+              <rect x="48" y="77" width="114" height="206" rx="58" opacity=".5" />
+              <circle cx="105" cy="180" r="51" />
+              <circle cx="105" cy="180" r="40" />
+              <Star x={105} y={180} r={58} />
+              <Star x={105} y={180} r={35} />
+              <Eye />
+              {Array.from({ length: 12 }, (_, i) => (
+                <path d="M105 102v-12m0 168v12" transform={`rotate(${i * 30} 105 180)`} key={i} />
+              ))}
+              <Moon x={105} y={87} r={11} />
+              <Star x={105} y={275} r={11} />
+            </>
+          ) : card?.arcana === 'major' ? (
+            <MajorEmblem number={card.number} />
+          ) : card?.suit ? (
+            card.number === 1 ? (
+              <>
+                <circle cx="105" cy="166" r="57" />
+                <circle cx="105" cy="166" r="49" strokeDasharray="2 6" />
+                <SuitGlyph suit={card.suit} x={105} y={166} scale={1.5} />
+                <Star x={105} y={88} r={13} />
+              </>
+            ) : card.number > 10 ? (
+              <>
+                <Crown y={94} />
+                <path d="M63 144h84v50q-2 34-42 52-40-18-42-52Z" />
+                <SuitGlyph suit={card.suit} x={105} y={184} scale={0.85} />
+                {card.number === 12 && <path d="m75 113 30-30 30 30m-45 0 15-15 15 15" />}
+                {card.number === 13 && <Moon x={105} y={270} r={10} />}
+                <Star x={105} y={263} r={card.number === 14 ? 16 : 7} />
+              </>
+            ) : (
+              Array.from({ length: pips }, (_, i) => {
+                const cols = pips <= 3 ? 1 : 2;
+                const rows = Math.ceil(pips / cols);
+                const x = cols === 1 ? 105 : 75 + (i % 2) * 60;
+                const y = 100 + Math.floor(i / cols) * (150 / Math.max(1, rows - 1));
+                return (
+                  <SuitGlyph
+                    suit={card.suit!}
+                    key={i}
+                    x={pips % 2 !== 0 && i === pips - 1 ? 105 : x}
+                    y={y}
+                    scale={pips > 6 ? 0.56 : 0.72}
+                  />
+                );
+              })
+            )
+          ) : null}
+        </g>
+        {!back && (
+          <g stroke={color} strokeWidth=".7" fill="none" opacity=".45">
+            <path d="M31 278 66 247 89 269 127 243 177 278m-141 6h138" />
+            {[
+              [37, 68],
+              [172, 64],
+              [42, 113],
+              [163, 231],
+              [152, 83],
+            ].map(([x, y], i) => (
+              <Star x={x} y={y} r={i === 0 ? 4 : 2.5} key={i} />
+            ))}
+          </g>
+        )}
+      </g>
+      <path d="M38 299h134" stroke={color} opacity=".4" />
+    </svg>
+  );
+});

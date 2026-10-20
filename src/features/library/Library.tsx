@@ -1,9 +1,145 @@
-import {useMemo,useState} from 'react';
-import {Link,useParams} from 'react-router-dom';
-import {cards} from '../../data/cards';
-import {th} from '../../i18n/th';
-import {TarotCard} from '../../components/cards/TarotCard';
-import {Icon} from '../../components/Icon';
-export default function Library(){const[query,setQuery]=useState('');const[filter,setFilter]=useState('all');const filtered=useMemo(()=>cards.filter(card=>(filter==='all'||card.arcana===filter||card.suit===filter)&&`${card.name.th} ${card.name.en} ${card.keywords.upright.join(" ")} ${card.keywords.reversed.join(" ")}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())),[query,filter]);return <div className="page"><div className="section-intro"><p className="eyebrow">{th.library.eyebrow}</p><h1>{th.library.title}</h1><p>{th.library.body}</p></div><div className="library-tools"><label className="search-input"><Icon name="search"/><input value={query} onChange={event=>setQuery(event.target.value)} placeholder={th.library.search} aria-label={th.library.search}/></label><div className="chips" aria-label={th.nav.cards}>{(['all','major','minor','wands','cups','swords','pentacles'] as const).map(value=><button key={value} className={filter===value?'chip active':'chip'} onClick={()=>setFilter(value)} aria-pressed={filter===value}>{value==='all'?th.common.all:th.library[value]}</button>)}</div></div><p className="muted small result-count" aria-live="polite">{filtered.length} / 78 {th.library.count}</p><div className="library-grid">{filtered.map(card=><Link className="library-item" key={card.id} to={`/cards/${card.id}`}><TarotCard card={card}/><h2>{card.name.th}</h2><p>{card.name.en}</p></Link>)}</div>{filtered.length===0&&<p className="empty-state">{th.library.none}</p>}</div>;}
-export function CardDetail(){const{id}=useParams();const card=cards.find(c=>c.id===id);const[reversed,setReversed]=useState(false);if(!card)return <div className="page center"><h1>{th.common.error}</h1><Link className="button" to="/cards">{th.nav.cards}</Link></div>;return <div className="page"><Link className="text-link" to="/cards"><Icon name="back"/>{th.nav.cards}</Link><div className="card-detail"><TarotCard card={card} reversed={reversed}/><div><p className="eyebrow">{card.name.en}</p><h1>{card.name.th}</h1><p className="muted">{card.arcana==='major'?th.library.major:th.library[card.suit!]}</p><div className="chips">{[false,true].map(value=><button className={value===reversed?'chip active':'chip'} key={String(value)} onClick={()=>setReversed(value)} aria-pressed={value===reversed}>{value?th.common.reversed:th.common.upright}</button>)}</div><div className="keywords">{card.keywords[reversed?"reversed":"upright"].map(keyword=><span key={keyword}>{keyword}</span>)}</div><div className="detail-meanings">{(["general","love","exam","weather"] as const).map(topic=><section key={topic}><h2>{th.topics[topic].name}</h2><p>{card.meanings[topic][reversed?"reversed":"upright"]}</p>{topic==="weather"&&<small className="muted">{th.weather.symbolNote}</small>}</section>)}</div><p className="advice-line">{card.advice[reversed?"reversed":"upright"]}</p><Link className="button gold" to="/read/general">{th.common.start}<Icon name="arrow"/></Link></div></div><h2 className="related-title">{th.library.related}</h2><div className="related-grid">{cards.filter(c=>c.id!==card.id&&(card.suit?c.suit===card.suit:c.arcana==='major')).slice(0,4).map(c=><Link className="library-item" to={`/cards/${c.id}`} key={c.id}><TarotCard card={c}/><h3>{c.name.th}</h3></Link>)}</div></div>;}
-
+import { useMemo, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { cards } from '../../data/cards';
+import { th } from '../../i18n/th';
+import { TarotCard } from '../../components/cards/TarotCard';
+import { Icon } from '../../components/Icon';
+export default function Library() {
+  const [query, setQuery] = useState('');
+  const [filter, setFilter] = useState('all');
+  const filtered = useMemo(
+    () =>
+      cards.filter(
+        (card) =>
+          (filter === 'all' || card.arcana === filter || card.suit === filter) &&
+          `${card.name.th} ${card.name.en} ${card.keywords.upright.join(' ')} ${card.keywords.reversed.join(' ')}`
+            .toLocaleLowerCase()
+            .includes(query.trim().toLocaleLowerCase()),
+      ),
+    [query, filter],
+  );
+  return (
+    <div className="page">
+      <div className="section-intro">
+        <p className="eyebrow">{th.library.eyebrow}</p>
+        <h1>{th.library.title}</h1>
+        <p>{th.library.body}</p>
+      </div>
+      <div className="library-tools">
+        <label className="search-input">
+          <Icon name="search" />
+          <input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder={th.library.search}
+            aria-label={th.library.search}
+          />
+        </label>
+        <div className="chips" aria-label={th.nav.cards}>
+          {(['all', 'major', 'minor', 'wands', 'cups', 'swords', 'pentacles'] as const).map(
+            (value) => (
+              <button
+                key={value}
+                className={filter === value ? 'chip active' : 'chip'}
+                onClick={() => setFilter(value)}
+                aria-pressed={filter === value}
+              >
+                {value === 'all' ? th.common.all : th.library[value]}
+              </button>
+            ),
+          )}
+        </div>
+      </div>
+      <p className="muted small result-count" aria-live="polite">
+        {filtered.length} / 78 {th.library.count}
+      </p>
+      <div className="library-grid">
+        {filtered.map((card) => (
+          <Link className="library-item" key={card.id} to={`/cards/${card.id}`}>
+            <TarotCard card={card} />
+            <h2>{card.name.th}</h2>
+            <p>{card.name.en}</p>
+          </Link>
+        ))}
+      </div>
+      {filtered.length === 0 && <p className="empty-state">{th.library.none}</p>}
+    </div>
+  );
+}
+export function CardDetail() {
+  const { id } = useParams();
+  const card = cards.find((c) => c.id === id);
+  const [reversed, setReversed] = useState(false);
+  if (!card)
+    return (
+      <div className="page center">
+        <h1>{th.common.error}</h1>
+        <Link className="button" to="/cards">
+          {th.nav.cards}
+        </Link>
+      </div>
+    );
+  return (
+    <div className="page">
+      <Link className="text-link" to="/cards">
+        <Icon name="back" />
+        {th.nav.cards}
+      </Link>
+      <div className="card-detail">
+        <TarotCard card={card} reversed={reversed} />
+        <div>
+          <p className="eyebrow">{card.name.en}</p>
+          <h1>{card.name.th}</h1>
+          <p className="muted">
+            {card.arcana === 'major' ? th.library.major : th.library[card.suit!]}
+          </p>
+          <div className="chips">
+            {[false, true].map((value) => (
+              <button
+                className={value === reversed ? 'chip active' : 'chip'}
+                key={String(value)}
+                onClick={() => setReversed(value)}
+                aria-pressed={value === reversed}
+              >
+                {value ? th.common.reversed : th.common.upright}
+              </button>
+            ))}
+          </div>
+          <div className="keywords">
+            {card.keywords[reversed ? 'reversed' : 'upright'].map((keyword) => (
+              <span key={keyword}>{keyword}</span>
+            ))}
+          </div>
+          <div className="detail-meanings">
+            {(['general', 'love', 'exam', 'weather'] as const).map((topic) => (
+              <section key={topic}>
+                <h2>{th.topics[topic].name}</h2>
+                <p>{card.meanings[topic][reversed ? 'reversed' : 'upright']}</p>
+                {topic === 'weather' && <small className="muted">{th.weather.symbolNote}</small>}
+              </section>
+            ))}
+          </div>
+          <p className="advice-line">{card.advice[reversed ? 'reversed' : 'upright']}</p>
+          <Link className="button gold" to="/read/general">
+            {th.common.start}
+            <Icon name="arrow" />
+          </Link>
+        </div>
+      </div>
+      <h2 className="related-title">{th.library.related}</h2>
+      <div className="related-grid">
+        {cards
+          .filter(
+            (c) => c.id !== card.id && (card.suit ? c.suit === card.suit : c.arcana === 'major'),
+          )
+          .slice(0, 4)
+          .map((c) => (
+            <Link className="library-item" to={`/cards/${c.id}`} key={c.id}>
+              <TarotCard card={c} />
+              <h3>{c.name.th}</h3>
+            </Link>
+          ))}
+      </div>
+    </div>
+  );
+}
