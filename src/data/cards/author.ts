@@ -47,21 +47,30 @@ export function authorBatch(
         value.length >= 60
           ? value
           : `${value} ${topic === 'weather' ? `ภาพนี้ชวนสำรวจ${keywords[orientation].join('และ')}ในใจคุณ` : advice}`;
+      const meanings = Object.fromEntries(
+        (Object.keys(pairs) as Topic[]).map((topic) => [
+          topic,
+          {
+            upright: expand(pairs[topic][0], au, topic, 'upright'),
+            reversed: expand(pairs[topic][1], ar, topic, 'reversed'),
+          },
+        ]),
+      ) as TarotCard['meanings'];
+      const gentle = meanings.general;
       return {
         ...identities[offset + index],
+        contentVersion: 1,
         keywords,
         tone: { upright: u, reversed: r },
         skyMood,
         luckyColor: { th: color[0], hex: color[1] },
-        meanings: Object.fromEntries(
-          (Object.keys(pairs) as Topic[]).map((topic) => [
-            topic,
-            {
-              upright: expand(pairs[topic][0], au, topic, 'upright'),
-              reversed: expand(pairs[topic][1], ar, topic, 'reversed'),
-            },
-          ]),
-        ) as TarotCard['meanings'],
+        meanings,
+        gentleMeanings: meanings,
+        bite: Object.fromEntries(
+          Object.keys(pairs).map((t) => [t, { upright: au, reversed: ar }]),
+        ) as TarotCard['bite'],
+        voice: { blunt: gentle, oracle: gentle, bestie: gentle, mu: gentle, gentle },
+        omen: { upright: keywords.upright[0], reversed: keywords.reversed[0] },
         advice: { upright: au, reversed: ar },
       };
     });

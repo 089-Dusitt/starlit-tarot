@@ -1,6 +1,7 @@
 # Phase 2 progress
 
 ## Wave checklist
+
 - [x] W0: preserve brief, inspect v1, install and establish green baseline
 - [x] W1.1: persona/spice settings, migration, share v2, onboarding, same-card restyle
 - [ ] W1.2: audit traditional meanings and tones; retain gentle voice
@@ -19,6 +20,7 @@
 - [ ] Infinity: scored backlog, verified top three improvements, recurring content review
 
 ## Next up
+
 1. Complete baseline checks and run the app.
 2. Finish the already-authorized GitHub Pages deployment.
 3. Establish backward-compatible persona/spice models.
@@ -26,13 +28,15 @@
 5. Compose distinctive readings and test distribution.
 
 ## Blockers
+
 None identified. The existing public GitHub repository is authorized by the owner.
 
 ## Task log
+
 - Saved the complete Phase 2 brief verbatim. Read AGENTS, README, PLAN and Git history.
 
 - W0 complete: locked dependency install, lint/typecheck/40 tests/content/build green; live GitHub root HTTP 200 and local app launched.
 
-
 - W1.1 complete: five persona choices, random choice, three chilli levels with first-use confirmation, skippable onboarding and same-card restyle. Share v2 retains style; v1 links/history/settings migrate to gentle/1. All 44 tests plus lint/typecheck/content/build pass. Mobile 390x844 and desktop 1440x900 screenshots reviewed; no horizontal overflow.
 
+- W1.3 infrastructure complete: preserve v1 meanings independently, typed upgrade batches, per-field coverage command and extended bite/voice/omen checks. Tone lint uses Intl.Segmenter. All 44 tests and full checks pass. Content is being authored in the requested suit order; coverage honestly remains 0 until the first batch is applied.

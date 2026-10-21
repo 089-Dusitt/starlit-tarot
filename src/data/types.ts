@@ -1,5 +1,6 @@
 import { topicIds } from './topic-ids';
 import type { Persona, Spice } from './cards/phase2-types';
+import type { Pair } from './cards/phase2-types';
 export type { Persona, Spice } from './cards/phase2-types';
 export type Topic = (typeof topicIds)[number];
 export type Suit = 'wands' | 'cups' | 'swords' | 'pentacles';
@@ -26,12 +27,17 @@ export interface CardIdentity {
   element?: 'fire' | 'water' | 'air' | 'earth' | 'spirit';
 }
 export interface TarotCard extends CardIdentity {
+  contentVersion: 1 | 2;
   keywords: Record<Orientation, string[]>;
   tone: Record<Orientation, Tone>;
   skyMood: SkyMood;
   luckyColor: { th: string; hex: string };
   meanings: Record<Topic, Record<Orientation, string>>;
   advice: Record<Orientation, string>;
+  gentleMeanings: Record<Topic, Pair>;
+  bite: Record<Topic, Pair>;
+  voice: Record<Persona, Pair>;
+  omen: Pair;
 }
 export interface Position {
   id: string;

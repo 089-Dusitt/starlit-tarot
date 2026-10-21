@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { cards } from '../src/data/cards';
 import type { TarotCard } from '../src/data/types';
 import { topicIds } from '../src/data/topic-ids';
+import { personaIds } from '../src/data/personas';
 export function validateContent(deck: TarotCard[] = cards): string[] {
   const errors: string[] = [];
   const ids = new Set<string>();
@@ -34,6 +35,21 @@ export function validateContent(deck: TarotCard[] = cards): string[] {
         errors.push(`${c.id}: keywords`);
       if (![-2, -1, 0, 1, 2].includes(c.tone[orientation])) errors.push(`${c.id}: tone`);
       if (!c.advice[orientation]?.trim()) errors.push(`${c.id}: advice`);
+      if (c.contentVersion === 2) {
+        const omen = c.omen[orientation];
+        if (!omen?.trim() || omen.length > 40)
+          errors.push(`${c.id} ${orientation}: omen length ${omen?.length}`);
+        for (const persona of personaIds) {
+          const voice = c.voice[persona][orientation];
+          if (!voice?.trim() || voice.length > 240)
+            errors.push(`${c.id} ${persona} ${orientation}: voice length`);
+        }
+        for (const topic of topicIds) {
+          const bite = c.bite[topic][orientation];
+          if (!bite?.trim() || bite.length > 110)
+            errors.push(`${c.id} ${topic} ${orientation}: bite length ${bite?.length}`);
+        }
+      }
       for (const topic of topicIds) {
         const value = c.meanings[topic][orientation];
         if (!value || value.length < 60 || value.length > 180)
@@ -43,6 +59,13 @@ export function validateContent(deck: TarotCard[] = cards): string[] {
     for (const value of [
       ...Object.values(c.meanings).flatMap((pair) => Object.values(pair)),
       ...Object.values(c.advice),
+      ...(c.contentVersion === 2
+        ? [
+            ...Object.values(c.bite).flatMap((p) => Object.values(p)),
+            ...Object.values(c.voice).flatMap((p) => Object.values(p)),
+            ...Object.values(c.omen),
+          ]
+        : []),
     ]) {
       if (deny.test(value)) errors.push(`${c.id}: prohibited wording`);
       for (const sentence of value
@@ -64,6 +87,6 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     process.exitCode = 1;
   } else
     console.log(
-      '78 cards · 624 complete topic meanings · no missing fields, duplicates or prohibited wording',
+      `78 cards · 624 complete topic meanings · ${cards.filter((c) => c.contentVersion === 2).length}/78 Phase 2 audits · no invalid fields, duplicates or prohibited wording`,
     );
 }
