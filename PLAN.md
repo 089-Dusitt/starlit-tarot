@@ -29,3 +29,12 @@
 - Site URL is configured by VITE_SITE_URL; hosting stays private by default.
 - No stretch features until every required milestone is complete.
 - All checks are offline after dependency installation; external requests are mocked.
+
+## Phase2 continuation
+
+Wave0 establishes a green v1 baseline. Wave1 rewires tone and is the primary priority:
+compatible settings/links,78 audited card upgrades,90 combinations, seeded voices,
+pendulum, restrained theatre, microcopy, calibration and a30-reading editorial test.
+Only after Wave1 is verified proceed to the sequential Wave2 games, Wave3 art/sound,
+Wave4 reach and Wave5 hardening. See docs/PROGRESS.md for exact completion and Next up.
+Keep working through the requested improvement loop until the owner interrupts.

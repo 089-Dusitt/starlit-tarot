@@ -83,10 +83,10 @@ short meanings with that card's own advice (or its symbolic keywords), then vali
 that every final meaning is 60–180 characters. No sentence repeats across different
 cards. The content validator is also part of the test suite.
 
-When editing a card, preserve its ID/order and modern, empowering tone. Use probabilistic
-wording, specific topic framing, practical actions and gender-neutral Thai. Avoid
-fatalistic claims, mind-reading, predicted scores, gambling references and professional
-outcome predictions. The standard deck deliberately validates exactly 78 identities.
+When editing a card, preserve its ID/order and honest traditional meaning. Follow the
+Phase2 Tone Bible: specific Thai, wit aimed at behaviour, and care around vulnerability.
+Do not assert medical, legal, financial, accident, cheating or exam outcomes. Keep
+professional decisions grounded in real information. The deck validates exactly78 identities.
 Replacing/correcting a card is data-only; a nonstandard larger deck needs an explicit
 schema/codec version decision to protect existing links.
 
@@ -243,7 +243,7 @@ sharing requires the owner to choose a suitable audience or a public host.
 - Missing exam days use the weekly plan; only a coarse window is shared via seed bits.
 - In-app browser APIs are optional: clipboard has manual-copy fallback, Web Share falls
   back to a text sheet, location falls back to search, and PNG failure falls back to text.
-- No vibration is used. No English switch, PWA/service worker, extra topic, Celtic Cross,
+- Optional vibration is off by default. No English switch, PWA/service worker, extra topic, Celtic Cross,
   static prerendering or other stretch feature is included.
 - The initial hosted Site stays private. Commercial weather licensing is the owner's
   deployment decision; the app does not include a paid account or key.
@@ -271,3 +271,35 @@ sharing requires the owner to choose a suitable audience or a public host.
 Original SVG card art and Thai interpretation copy created for this site. Icon line art:
 Lucide (ISC). Self-hosted Noto Serif Thai, Noto Sans Thai and Cinzel: SIL Open Font License;
 license copies are in `public/licenses/`. Weather attribution and sources are linked above.
+
+## Phase 2 — current
+
+The Tone Bible in [docs/PHASE2_BRIEF.md](docs/PHASE2_BRIEF.md) supersedes the original
+always-encouraging interpretations. [Progress](docs/PROGRESS.md) records every task.
+
+- Five personas: blunt, oracle, bestie, mu and gentle; three spice levels. New default
+  is blunt/2. A skippable first-run sheet previews voices; spice3 needs confirmation once.
+- Every card has honest traditional meanings/tones, four-topic bites, four new voice
+  packs plus the preserved gentle text, and two omens. `content:coverage` is100%.
+- 90 notable pairs/triples supply720 topic/spice lines, including positional stories.
+  Seeded composition has short card-specific headlines, warnings, bounded tips,
+  persona closings and spice3 verdict/cliffhanger. Negative strength slots and positive
+  caution slots receive an explicit contextual reading; other-person slots are questions.
+- An accessible pendulum replaces the bar. Theatre is finite and respects reduced
+  motion; darkest card opens last at spice3. Optional haptics are off by default.
+- Version2 links preserve persona/spice. Frozen v1 encoding remains decodable as
+  gentle/1; old settings/history migrate to versioned local records with opt-in context.
+- 145 tests cover migration, all60 persona/spice/topic modes, all624 legacy gentle
+  meanings, combination detection and20,000-draw calibration for every topic/spread.
+  Mobile/desktop browser QA covered120 reading cases; screenshots are delivered separately.
+
+```sh
+npm run check             # complete offline quality gate
+npm run content:coverage  # per-field and suit audit coverage
+npm run lint:tone         # cheer phrases, lengths via validation, Thai repetition
+npm run sample:readings   # regenerate30 deterministic editorial samples
+```
+
+The fun review records24/30 passes after a candid18/30 first pass and targeted fixes.
+This is an editorial simulation, not a real user study. Six weaker low-spice/gentle
+samples remain documented for later content passes; no claim of universal accuracy is made.

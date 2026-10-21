@@ -16,7 +16,8 @@
     "build:github": "npm run build && node scripts/github-pages.mjs",
     "content:coverage": "tsx scripts/content-coverage.ts",
     "check": "node scripts/check.mjs",
-    "lint:tone": "tsx scripts/lint-tone.ts"
+    "lint:tone": "tsx scripts/lint-tone.ts",
+    "sample:readings": "tsx scripts/sample-readings.ts"
   },
   "dependencies": {
     "@fontsource/cinzel": "^5.2.4",

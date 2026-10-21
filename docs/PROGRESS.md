@@ -12,7 +12,7 @@
 - [x] W1.7: reduced-motion-safe ominous theatre and accents
 - [x] W1.8: UI microcopy sweep
 - [x] W1.9: tone lint, 20k distribution simulations, migrations and compatibility tests
-- [ ] W1.10: 30 sample readings and skeptical fun review
+- [x] W1.10: 30 sample readings and skeptical fun review
 - [ ] W2: daily blessing/curse; oracle; duel; collection; check-in; spreads; topics
 - [ ] W3: original art; sound; motion; share images; home
 - [ ] W4: prerender; PWA; CI; optional English UI
@@ -21,13 +21,13 @@
 
 ## Next up
 
-1. Complete baseline checks and run the app.
-2. Finish the already-authorized GitHub Pages deployment.
-3. Establish backward-compatible persona/spice models.
-4. Author and audit the five deck batches.
-5. Compose distinctive readings and test distribution.
+1. W2.1 daily blessings/mini-curses, streak and harmless mu item.
+2. W2.2 yes/no oracle with cooldown and repeat-question refusal.
+3. W2.3 backend-free duel links and comparison.
+4. W2.4 collection, achievements, foil and personal stats.
+5. W2.5 check-ins and weather comparison.
 
-## Blockers
+Blockers
 
 None identified. The existing public GitHub repository is authorized by the owner.
 
@@ -66,3 +66,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W1.5 complete: persona/spice seeded composer, six variants per bank slot/persona, card-specific omen headlines(max55chars), warnings, persona voice and closing, spice3verdict/cliffhanger. Position frames explain difficult strengths/bright cautions and avoid mind-reading. Restyled share links use displayed style and route changes reset correctly. Browser120mobile/desktop cases pass; screenshots reviewed. All145 tests/full checks pass.
 
 - W1.9 complete:66 additional engine contract cases plus migration/combination/position tests; known frozen v1 code and all624 gentle meanings retained. Every persona/spice/topic mode shares/replays deterministically; every headline template checked against all156 omens (maximum55chars). Global UI/bank/combo cheer lint and Thai4word voice repetition enforced. Total145 tests and all checks pass.
+
+- W1.10 complete: sample generator writes30 deterministic readings matching visible spice anatomy. Editorial first pass18/30(60%); fixed12 card lines, clause-like headlines, positional contradictions, repetitive verdicts and duplicategentle display. Re-read24/30(80%) passes, sixexplicit weaknesses retained in FUN_REVIEW. This is an editorial simulation, not real-user validation. Full145 tests/checks and120browser cases pass. Wave1 complete; proceed to sequential Wave2.
