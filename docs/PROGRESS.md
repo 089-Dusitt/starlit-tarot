@@ -11,7 +11,7 @@
 - [x] W1.6: accessible pendulum gauge
 - [x] W1.7: reduced-motion-safe ominous theatre and accents
 - [x] W1.8: UI microcopy sweep
-- [ ] W1.9: tone lint, 20k distribution simulations, migrations and compatibility tests
+- [x] W1.9: tone lint, 20k distribution simulations, migrations and compatibility tests
 - [ ] W1.10: 30 sample readings and skeptical fun review
 - [ ] W2: daily blessing/curse; oracle; duel; collection; check-in; spreads; topics
 - [ ] W3: original art; sound; motion; share images; home
@@ -64,3 +64,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W1.4 complete:90 unique notable pairs/triples,720 distinct topic-aware medium/hot lines. Pure detection respects presence and explicit positions, independent of orientation. All145 tests/full checks pass.
 
 - W1.5 complete: persona/spice seeded composer, six variants per bank slot/persona, card-specific omen headlines(max55chars), warnings, persona voice and closing, spice3verdict/cliffhanger. Position frames explain difficult strengths/bright cautions and avoid mind-reading. Restyled share links use displayed style and route changes reset correctly. Browser120mobile/desktop cases pass; screenshots reviewed. All145 tests/full checks pass.
+
+- W1.9 complete:66 additional engine contract cases plus migration/combination/position tests; known frozen v1 code and all624 gentle meanings retained. Every persona/spice/topic mode shares/replays deterministically; every headline template checked against all156 omens (maximum55chars). Global UI/bank/combo cheer lint and Thai4word voice repetition enforced. Total145 tests and all checks pass.

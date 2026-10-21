@@ -1,5 +1,9 @@
 import { cards } from '../src/data/cards';
 import { personaIds } from '../src/data/personas';
+import { th, styleCopy } from '../src/i18n/th';
+import { ritualCopy } from '../src/i18n/ritual';
+import { voiceBanks } from '../src/data/voice-banks';
+import { combos } from '../src/data/combos';
 export const cheerPhrases = [
   'คุณทำได้',
   'เชื่อมั่นในตัวเอง',
@@ -10,6 +14,24 @@ export const cheerPhrases = [
 ];
 export function lintTone(): string[] {
   const errors: string[] = [];
+  const strings = (value: unknown): string[] =>
+    typeof value === 'string'
+      ? [value]
+      : value && typeof value === 'object'
+        ? Object.values(value).flatMap(strings)
+        : [];
+  const globalCopy = [
+    ...strings(th),
+    ...strings(styleCopy),
+    ...strings(ritualCopy),
+    ...Object.entries(voiceBanks)
+      .filter(([persona]) => persona !== 'gentle')
+      .flatMap(([, bank]) => strings(bank)),
+    ...combos.flatMap((combo) => strings(combo.lines)),
+  ];
+  for (const text of globalCopy)
+    if (cheerPhrases.some((phrase) => text.includes(phrase)))
+      errors.push(`Global copy contains banned cheer: ${text}`);
   const voices: { id: string; persona: string; text: string }[] = [];
   for (const card of cards.filter((c) => c.contentVersion === 2)) {
     for (const persona of personaIds)

@@ -1,6 +1,6 @@
 import { spawnSync } from 'node:child_process';
 import process from 'node:process';
-const tasks = ['lint', 'typecheck', 'test', 'validate:content', 'build:github'];
+const tasks = ['lint', 'typecheck', 'test', 'validate:content', 'lint:tone', 'build:github'];
 for (const task of tasks) {
   const result = spawnSync(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', task], {
     stdio: 'inherit',
