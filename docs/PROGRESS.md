@@ -96,3 +96,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W2.7 work MajorArcana staged:22card-specific meanings and bites about scope, evidence, collaboration, change and delivery.199tests/fullchecks pass; topic hidden until complete. Pushed completed features through gaming to main40b0a0d for Pages deployment.
 
 - W2.7 work Wands staged:14cards about initiative, plans, disagreement, recognition and workload.36/78 authored;199tests/fullchecks pass.
+
+- W2.7 work Cups staged:14cards about collaboration, belonging, boredom, feedback and emotional boundaries.50/78 authored;199tests/fullchecks pass. Pages deployment39657601487 succeeded for completed gaming build40b0a0d.
