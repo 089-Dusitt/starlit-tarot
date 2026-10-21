@@ -42,3 +42,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W1.3 infrastructure complete: preserve v1 meanings independently, typed upgrade batches, per-field coverage command and extended bite/voice/omen checks. Tone lint uses Intl.Segmenter. All 44 tests and full checks pass. Content is being authored in the requested suit order; coverage honestly remains 0 until the first batch is applied.
 
 - W1.2/W1.3 Major Arcana complete: 22 cards audited (176 meanings, 176 bites, 176 new voice lines, 44 omens). Death/Devil/Tower retain real endings, entanglement and disruption. Gentle keeps all v1 topic meanings. Coverage 28.2%; tone lint and all 44 tests/full checks pass.
+
+- W1.2/W1.3 Wands complete: 14 cards, honest momentum/conflict/burden and court reversals; all topic meanings, bites, voices and omens. Coverage 36/78 (46.2%). Full checks and tone lint pass.
