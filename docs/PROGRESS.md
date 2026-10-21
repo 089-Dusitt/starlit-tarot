@@ -46,3 +46,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W1.2/W1.3 Wands complete: 14 cards, honest momentum/conflict/burden and court reversals; all topic meanings, bites, voices and omens. Coverage 36/78 (46.2%). Full checks and tone lint pass.
 
 - W1.2/W1.3 Cups complete: 14 cards with attraction, disappointment, nostalgia, avoidance and honest court reversals. Coverage 50/78 (64.1%). Full checks/tone lint pass; gentle preserved.
+
+- W1.2/W1.3 Swords complete: 14 cards retain conflict, heartbreak, exhausted arguments and endings. Roasts target avoidance and reasoning, never distress. Coverage 64/78 (82.1%). Full checks and tone lint pass.
