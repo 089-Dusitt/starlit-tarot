@@ -1,5 +1,6 @@
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { DailyFatePanel, dailyFeature } from '../components/reading/DailyFatePanel';
+import { oracleAnswer } from '../services/oracle';
 import { decodeReading } from '../engine/share-code';
 import { th, decor } from '../i18n/th';
 import { ReadingView } from '../components/reading/ReadingView';
@@ -30,7 +31,16 @@ export default function Shared() {
         feature={
           params.get('daily') === '1' && reading.topic === 'general' && reading.spread === 'one'
             ? (current) => <DailyFatePanel reading={current} />
-            : undefined
+            : params.get('oracle') === '1' &&
+                reading.topic === 'general' &&
+                reading.spread === 'one'
+              ? (current) => (
+                  <section className="reading-panel oracle-result">
+                    <h2>{oracleAnswer(current).title}</h2>
+                    <p>{oracleAnswer(current).body}</p>
+                  </section>
+                )
+              : undefined
         }
         actions={(current) => (
           <ShareActions
@@ -38,10 +48,19 @@ export default function Shared() {
             daily={
               params.get('daily') === '1' && reading.topic === 'general' && reading.spread === 'one'
             }
+            oracle={
+              params.get('oracle') === '1' &&
+              reading.topic === 'general' &&
+              reading.spread === 'one'
+            }
             feature={
               params.get('daily') === '1' && reading.topic === 'general' && reading.spread === 'one'
                 ? dailyFeature(current)
-                : undefined
+                : params.get('oracle') === '1' &&
+                    reading.topic === 'general' &&
+                    reading.spread === 'one'
+                  ? oracleAnswer(current)
+                  : undefined
             }
           />
         )}

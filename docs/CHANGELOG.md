@@ -11,3 +11,7 @@
 ## W2.1 — daily blessings and mini-curses
 
 -80 authored dailyfates, frozen cards, streaks, harmless mu item and shareimages/links;13new regressiontests.
+
+## W2.2 — yes/no oracle
+
+- Persona-aware answers, sixty-second cooldown, repeat-question refusal and private question handling;3new regressiontests.

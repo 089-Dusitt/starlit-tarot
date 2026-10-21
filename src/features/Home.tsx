@@ -4,6 +4,7 @@ import { topicIds } from '../data/topic-ids';
 import { topics } from '../data/topics';
 import type { CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
+import { PlayLinks } from '../components/PlayLinks';
 import { th, decor } from '../i18n/th';
 import { Icon } from '../components/Icon';
 export default function Home() {
@@ -97,6 +98,7 @@ export default function Home() {
           </Link>
         </div>
       </section>
+      <PlayLinks />
       <section className="container how-section">
         <div className="section-intro">
           <p className="eyebrow">{decor.ritual}</p>

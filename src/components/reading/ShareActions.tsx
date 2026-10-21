@@ -10,15 +10,17 @@ export function ShareActions({
   reading,
   feature,
   daily = false,
+  oracle = false,
 }: {
   reading: Reading;
   feature?: { title: string; body: string };
   daily?: boolean;
+  oracle?: boolean;
 }) {
   const [status, setStatus] = useState('');
   const [fallback, setFallback] = useState('');
   const [busy, setBusy] = useState(false);
-  const url = shareUrl(reading) + (daily ? '?daily=1' : '');
+  const url = shareUrl(reading) + (daily ? '?daily=1' : oracle ? '?oracle=1' : '');
   const text = feature
     ? `${SITE.name}\n${feature.title}: ${feature.body}\n${playCopy.caption}\n${url}`
     : readingText(reading);

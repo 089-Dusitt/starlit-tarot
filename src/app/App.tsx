@@ -3,6 +3,7 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { LazyMotion, domAnimation, MotionConfig } from 'framer-motion';
 import { SITE } from '../config';
 import { th, decor, styleCopy } from '../i18n/th';
+import { playCopy } from '../i18n/play';
 import { StylePicker } from '../components/StylePicker';
 import { Icon } from '../components/Icon';
 import { Sheet } from '../components/Sheet';
@@ -21,6 +22,7 @@ const CardDetail = lazy(() =>
   import('../features/library/Library').then((module) => ({ default: module.CardDetail })),
 );
 const Home = lazy(() => import('../features/Home'));
+const Oracle = lazy(() => import('../features/Oracle'));
 function Meta() {
   const location = useLocation();
   useEffect(() => {
@@ -158,6 +160,7 @@ function Shell() {
                 <Route path="/read/:topic" element={<Flow />} />
                 <Route path="/read/:topic/:spread" element={<Flow />} />
                 <Route path="/daily" element={<Daily />} />
+                <Route path="/oracle" element={<Oracle />} />
                 <Route path="/cards" element={<Library />} />
                 <Route path="/cards/:id" element={<CardDetail />} />
                 <Route
@@ -184,6 +187,7 @@ function Shell() {
               </Link>
               <p>{th.footer}</p>
               <Link to="/about">{th.nav.about}</Link>
+              <Link to="/oracle">{playCopy.oracle}</Link>
             </div>
             <p className="disclaimer">
               <Icon name="shield" size={15} />

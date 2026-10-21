@@ -248,3 +248,31 @@ hard-truth {
   margin-top: 1rem;
   padding-top: 1rem;
 }
+.oracle-result {
+  margin-block: 2rem;
+}
+.oracle-result > h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 7vw, 3rem);
+  color: #e6c36a;
+}
+.oracle-result .daily-card {
+  padding-block: 1rem;
+}
+.play-links {
+  padding-block: 3rem;
+}
+.play-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.play-grid a {
+  display: block;
+  text-decoration: none;
+}
+.play-grid h3 {
+  color: #e6c36a;
+  margin-bottom: 0.8rem;
+}
