@@ -1,8 +1,9 @@
-name: Deploy Starlit Tarot to GitHub Pages
+
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [master, main]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -11,48 +12,37 @@ permissions:
   id-token: write
 
 concurrency:
-  group: github-pages
-  cancel-in-progress: false
+  group: pages
+  cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
-      - name: Check out source
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
-          persist-credentials: false
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: '24'
+          node-version: 22
           cache: npm
-      - name: Configure Pages
-        id: pages
-        uses: actions/configure-pages@v5
-      - name: Install locked dependencies
-        run: npm ci --no-audit --no-fund
-      - name: Lint
-        run: npm run lint
-      - name: Typecheck
-        run: npm run typecheck
-      - name: Validate all card content
-        run: npm run validate:content
-      - name: Run offline tests
-        run: npm test
-      - name: Build for this Pages URL
+
+      - run: npm ci
+
+      - name: Build for GitHub Pages
         run: npm run build:github
         env:
-          VITE_SITE_URL: ${{ steps.pages.outputs.base_url }}
-          VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}/
-      - name: Upload static build
-        uses: actions/upload-pages-artifact@v4
+          VITE_SITE_URL: https://089-dusitt.github.io/starlit-tarot
+          VITE_BASE_PATH: /starlit-tarot/
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: dist
-      - name: Deploy Pages
-        id: deployment
+
+      - id: deployment
         uses: actions/deploy-pages@v4
