@@ -27,6 +27,7 @@ import {
   Shield,
   RefreshCw,
   Gamepad2,
+  BriefcaseBusiness,
 } from 'lucide-react';
 const icons = {
   arrow: ArrowRight,
@@ -57,6 +58,7 @@ const icons = {
   shield: Shield,
   refresh: RefreshCw,
   game: Gamepad2,
+  work: BriefcaseBusiness,
 };
 export type IconName = keyof typeof icons;
 export function Icon({ name, size = 20 }: { name: IconName; size?: number }) {

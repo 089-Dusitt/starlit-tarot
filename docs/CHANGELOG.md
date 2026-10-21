@@ -29,3 +29,5 @@
 - W2.6: four new spreads, proper Celtic Cross layout and count-aware manual/random selection.
 
 - W2.7 gaming: complete78card meanings/bites, teamplay/rank/tilt/resource themes and deterministic persona/share support.
+
+- W2.7 work: complete78card interpretations about scope, workload, evidence and collaboration.

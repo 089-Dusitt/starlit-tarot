@@ -220,6 +220,12 @@ export const th = {
     reload: 'โหลดอีกครั้ง',
   },
   topics: {
+    work: {
+      name: 'การงาน',
+      en: 'WORK & BOUNDARIES',
+      desc: 'งานเยอะหรือขอบเขตบาง ไพ่ขอดูบรีฟ',
+      placeholder: 'วิธีทำงานหรือขอบเขตไหนที่ฉันควรกลับมาดู',
+    },
     gaming: {
       name: 'ดวงเกม',
       en: 'PLAY, RANK & REALITY',

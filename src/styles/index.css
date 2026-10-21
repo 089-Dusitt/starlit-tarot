@@ -537,6 +537,9 @@ header {
 .gaming {
   --accent: #b5a1ff;
 }
+.work {
+  --accent: #f6b47f;
+}
 .topic-tile:hover {
   transform: translateY(-5px);
   border-color: var(--accent);
