@@ -220,6 +220,12 @@ export const th = {
     reload: 'โหลดอีกครั้ง',
   },
   topics: {
+    gaming: {
+      name: 'ดวงเกม',
+      en: 'PLAY, RANK & REALITY',
+      desc: 'แรงค์ยังไม่ขยับ แต่นิ้วกดคิวคล่องมาก',
+      placeholder: 'วิธีเล่นหรือจังหวะคุยกับทีมของฉันควรแก้ตรงไหน',
+    },
     love: {
       name: 'ความรัก',
       en: 'LOVE & CONNECTION',

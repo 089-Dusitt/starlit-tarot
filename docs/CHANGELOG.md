@@ -27,3 +27,5 @@
 - W2.5: local follow-up appointments, due banner, user feedback scoreboard and opt-in archived weather comparison.
 
 - W2.6: four new spreads, proper Celtic Cross layout and count-aware manual/random selection.
+
+- W2.7 gaming: complete78card meanings/bites, teamplay/rank/tilt/resource themes and deterministic persona/share support.

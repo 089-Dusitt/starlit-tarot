@@ -1,12 +1,13 @@
 import { identities } from './cards/identities';
 import type { CoreTopic } from './cards/phase2-types';
-import type { DrawnCard, Position, Suit } from './types';
+import type { DrawnCard, Position, Suit, Topic } from './types';
 
 export interface Combo {
   id: string;
   cards: string[];
   positions?: string[];
-  lines: Record<CoreTopic, { medium: string; hot: string }>;
+  lines: Record<CoreTopic, { medium: string; hot: string }> &
+    Partial<Record<Topic, { medium: string; hot: string }>>;
 }
 type Lines = readonly [string, string, string, string, string, string, string, string];
 const major = (n: number) => identities[n].id;

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { cards } from '../../data/cards';
+import { topicIds } from '../../data/topic-ids';
 import { th } from '../../i18n/th';
 import { TarotCard } from '../../components/cards/TarotCard';
 import { Icon } from '../../components/Icon';
@@ -111,7 +112,7 @@ export function CardDetail() {
             ))}
           </div>
           <div className="detail-meanings">
-            {(['general', 'love', 'exam', 'weather'] as const).map((topic) => (
+            {(['general', ...topicIds.filter((t) => t !== 'general')] as const).map((topic) => (
               <section key={topic}>
                 <h2>{th.topics[topic].name}</h2>
                 <p>{card.meanings[topic][reversed ? 'reversed' : 'upright']}</p>

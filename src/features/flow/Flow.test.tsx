@@ -36,6 +36,7 @@ describe('reading flow', () => {
     ['exam', 'study'],
     ['weather', 'three-skies'],
     ['general', 'timeline'],
+    ['gaming', 'timeline'],
     ['general', 'celtic'],
     ['general', 'week'],
     ['love', 'love-autopsy'],

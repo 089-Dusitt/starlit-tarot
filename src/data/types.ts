@@ -1,6 +1,6 @@
 import { topicIds } from './topic-ids';
 import type { Persona, Spice } from './cards/phase2-types';
-import type { Pair } from './cards/phase2-types';
+import type { Pair, CoreTopic } from './cards/phase2-types';
 export type { Persona, Spice } from './cards/phase2-types';
 export type Topic = (typeof topicIds)[number];
 export type Suit = 'wands' | 'cups' | 'swords' | 'pentacles';
@@ -39,6 +39,11 @@ export interface TarotCard extends CardIdentity {
   voice: Record<Persona, Pair>;
   omen: Pair;
 }
+export type CoreTarotCard = Omit<TarotCard, 'meanings' | 'gentleMeanings' | 'bite'> & {
+  meanings: Record<CoreTopic, Pair>;
+  gentleMeanings: Record<CoreTopic, Pair>;
+  bite: Record<CoreTopic, Pair>;
+};
 export interface Position {
   id: string;
   label: string;

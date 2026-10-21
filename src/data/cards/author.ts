@@ -1,10 +1,11 @@
-import type { SkyMood, TarotCard, Tone, Topic } from '../types';
+import type { SkyMood, CoreTarotCard, Tone } from '../types';
+import type { CoreTopic } from './phase2-types';
 import { identities } from './identities';
 export function authorBatch(
   offset: number,
   text: string,
   tones: readonly (readonly [Tone, Tone, SkyMood])[],
-): TarotCard[] {
+): CoreTarotCard[] {
   return text
     .trim()
     .split('\n')
@@ -32,7 +33,7 @@ export function authorBatch(
           changeable: ['ชมพูกุหลาบ', '#e4a4bb'],
         } satisfies Record<SkyMood, string[]>
       )[skyMood];
-      const pairs: Record<Topic, [string, string]> = {
+      const pairs: Record<CoreTopic, [string, string]> = {
         general: [gu, gr],
         love: [lu, lr],
         exam: [eu, er],
@@ -41,21 +42,21 @@ export function authorBatch(
       const expand = (
         value: string,
         advice: string,
-        topic: Topic,
+        topic: CoreTopic,
         orientation: 'upright' | 'reversed',
       ) =>
         value.length >= 60
           ? value
           : `${value} ${topic === 'weather' ? `ภาพนี้ชวนสำรวจ${keywords[orientation].join('และ')}ในใจคุณ` : advice}`;
       const meanings = Object.fromEntries(
-        (Object.keys(pairs) as Topic[]).map((topic) => [
+        (Object.keys(pairs) as CoreTopic[]).map((topic) => [
           topic,
           {
             upright: expand(pairs[topic][0], au, topic, 'upright'),
             reversed: expand(pairs[topic][1], ar, topic, 'reversed'),
           },
         ]),
-      ) as TarotCard['meanings'];
+      ) as CoreTarotCard['meanings'];
       const gentle = meanings.general;
       return {
         ...identities[offset + index],
@@ -68,7 +69,7 @@ export function authorBatch(
         gentleMeanings: meanings,
         bite: Object.fromEntries(
           Object.keys(pairs).map((t) => [t, { upright: au, reversed: ar }]),
-        ) as TarotCard['bite'],
+        ) as CoreTarotCard['bite'],
         voice: { blunt: gentle, oracle: gentle, bestie: gentle, mu: gentle, gentle },
         omen: { upright: keywords.upright[0], reversed: keywords.reversed[0] },
         advice: { upright: au, reversed: ar },

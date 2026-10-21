@@ -171,7 +171,8 @@ describe('Phase 2 content and v1 compatibility', () => {
     expect(oldDeck).toHaveLength(78);
     cards.forEach((card, i) => {
       expect(card.id).toBe(oldDeck[i].id);
-      expect(card.gentleMeanings).toEqual(oldDeck[i].meanings);
+      for (const topic of legacyTopics)
+        expect(card.gentleMeanings[topic]).toEqual(oldDeck[i].meanings[topic]);
       expect(card.voice.gentle).toEqual(oldDeck[i].meanings.general);
     });
     for (const topic of legacyTopics) {

@@ -90,3 +90,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W2.7 gaming Swords staged:14cards about evidence, chatconflict, rest, overthinking and honest leadership.64/78 authored;180tests/fullchecks pass.
 
 - W2.7 gaming Pentacles staged:final14cards cover training, time/resources, equipment and sustainable teamplay.78/78 gaming meanings/bites complete;180tests/fullchecks pass before activation.
+
+- W2.7 gaming shipped:all78cards have156originalmeanings/156bites; topic appended without codec index changes,1/3card flows, library and share replay integrated. Core content types preserve legacy624meanings exactly; newtopic gentle uses its new authored copy. No unrelated core-topic combo fallback.198tests/fullchecks pass and30browser persona/spice/mobile-desktop cases/screenshots reviewed. Next:work, then spending/saving.

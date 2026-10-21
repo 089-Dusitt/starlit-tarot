@@ -21,3 +21,5 @@
 - Collection stores compact validated readingcodes only, canonicalized without voice/spice so restyling cannot inflate counts. Foil is deterministic perdraw/slot, purely visual and never sold. It does not alter cards/tones/answers. Cardbacks use SVG/CSS without importing deckcontent into the homepage. Optional cardBack keeps existing v2settings compatible.
 
 - Check-ins retain readingcodes/dates/votes, never questions. A canonical reading can have only one appointment/vote; restyling does not inflate scores. Calendar due dates use local date with UTC calendar arithmetic. Open-Meteo past_days contains archived model output, so UI compares symbolic wet/dry only and explicitly avoids claiming observed accuracy or a scientifically valid forecast contest. City retention requires a separate checkbox; no notifications/backend.
+
+- New topics activate only after all78rows pass staging checks. CoreTarotCard keeps legacy authoring honest while the final deck joins complete topic batches. New-topic gentle uses authored topic meanings because no v1 text exists. Missing topic-specific combo lines fall back to that exact drawn card bite, never unrelated general copy.

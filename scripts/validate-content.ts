@@ -88,6 +88,6 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     process.exitCode = 1;
   } else
     console.log(
-      `78 cards · 624 complete topic meanings · ${cards.filter((c) => c.contentVersion === 2).length}/78 Phase 2 audits · no invalid fields, duplicates or prohibited wording`,
+      `78 cards · ${cards.length * topicIds.length * 2} complete topic meanings · ${cards.filter((c) => c.contentVersion === 2).length}/78 Phase 2 audits · no invalid fields, duplicates or prohibited wording`,
     );
 }

@@ -26,6 +26,7 @@ import {
   Check,
   Shield,
   RefreshCw,
+  Gamepad2,
 } from 'lucide-react';
 const icons = {
   arrow: ArrowRight,
@@ -55,6 +56,7 @@ const icons = {
   check: Check,
   shield: Shield,
   refresh: RefreshCw,
+  game: Gamepad2,
 };
 export type IconName = keyof typeof icons;
 export function Icon({ name, size = 20 }: { name: IconName; size?: number }) {

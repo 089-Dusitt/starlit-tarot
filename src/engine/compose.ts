@@ -64,13 +64,14 @@ export function compose(reading: Reading) {
         b.cards.length - a.cards.length,
     )
     .slice(0, 2);
-  const comboLines = matched.map(
-    (combo) => combo.lines[reading.topic][spice === 3 ? 'hot' : 'medium'],
-  );
+  const comboLines = matched.flatMap((combo) => {
+    const lines = combo.lines[reading.topic];
+    return lines ? [lines[spice === 3 ? 'hot' : 'medium']] : [];
+  });
   const truthCombo = matched.find((combo) => combo.cards.includes(weakest.card.id));
   const hardTruth =
     spice >= 2
-      ? truthCombo?.lines[reading.topic][spice === 3 ? 'hot' : 'medium'] || weakest.bite
+      ? truthCombo?.lines[reading.topic]?.[spice === 3 ? 'hot' : 'medium'] || weakest.bite
       : '';
   const omens =
     spice >= 2
