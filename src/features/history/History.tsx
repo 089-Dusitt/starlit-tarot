@@ -29,6 +29,7 @@ export default function History() {
           {th.history.title}
         </button>
         <ReadingView
+          key={selected.id}
           reading={selected.reading}
           context={context}
           actions={(current) => <ShareActions reading={current} />}

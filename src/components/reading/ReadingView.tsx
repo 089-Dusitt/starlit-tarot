@@ -1,15 +1,15 @@
 import { useState, type ReactNode, type CSSProperties } from 'react';
-import { Pendulum } from './Pendulum';
-import { readingStyle, personas } from '../../data/personas';
-import { StylePicker } from '../StylePicker';
-import { styleCopy } from '../../i18n/th';
 import { Link } from 'react-router-dom';
 import { compose } from '../../engine/compose';
 import type { Reading } from '../../data/types';
 import { getSpread } from '../../data/spreads';
-import { th, engineCopy, decor } from '../../i18n/th';
+import { th, engineCopy, decor, styleCopy } from '../../i18n/th';
+import { ritualCopy } from '../../i18n/ritual';
 import { TarotCard } from '../cards/TarotCard';
 import { Icon } from '../Icon';
+import { Pendulum } from './Pendulum';
+import { StylePicker } from '../StylePicker';
+import { readingStyle, personas } from '../../data/personas';
 import type { ReadingContext } from '../../features/flow/state';
 export function ReadingView({
   reading: initialReading,
@@ -31,12 +31,10 @@ export function ReadingView({
   const reading: Reading = { ...initialReading, version: 2, ...style };
   const result = compose(reading);
   const spread = getSpread(reading.spread)!;
-  const situation = spread.situation;
-  const situationIndex = situation ? th.situations.indexOf(situation) : -1;
-  const tips = [...result.tips, ...engineCopy.tips].slice(0, 3);
+  const situationIndex = spread.situation ? th.situations.indexOf(spread.situation) : -1;
   return (
     <div
-      className={`reading-view ${reading.topic}`}
+      className={`reading-view ${reading.topic} persona-${style.persona} spice-${style.spice}`}
       style={{ '--persona-accent': personas[style.persona].accent } as CSSProperties}
     >
       <div className="reading-heading center">
@@ -69,6 +67,12 @@ export function ReadingView({
           <p>{context.question}</p>
         </div>
       )}
+      {style.spice >= 2 && (
+        <section className="reading-panel hard-truth">
+          <p className="eyebrow">{ritualCopy.hardTruth}</p>
+          <h2>{result.hardTruth}</h2>
+        </section>
+      )}
       <div className={`reading-spread count-${reading.cards.length}`}>
         {result.slots.map((slot) => (
           <div className="spread-slot" key={slot.position.id}>
@@ -93,39 +97,70 @@ export function ReadingView({
         <p>{result.overview}</p>
       </section>
       <div className="meaning-list">
-        {result.slots.map((slot, i) => (
-          <article
-            className={`meaning-card ${style.spice === 3 && (slot.card.tone[slot.reversed ? 'reversed' : 'upright'] === -2 || slot.card.id === 'major-18-moon') ? `ominous theatre-${slot.card.id === 'major-16-tower' ? 'tower' : slot.card.id === 'major-18-moon' ? 'moon' : 'shadow'}` : ''}`}
-            key={slot.position.id}
-          >
-            <Link
-              to={`/cards/${slot.card.id}`}
-              className="meaning-art"
-              aria-label={`${th.common.read} ${slot.card.name.th}`}
+        {result.slots.map((slot, i) => {
+          const ominous =
+            style.spice === 3 &&
+            (slot.tone === -2 || (slot.card.number === 18 && slot.card.arcana === 'major'));
+          const effect =
+            slot.card.arcana === 'major' && slot.card.number === 16
+              ? 'tower'
+              : slot.card.arcana === 'major' && slot.card.number === 18
+                ? 'moon'
+                : 'shadow';
+          return (
+            <article
+              className={`meaning-card ${ominous ? `ominous theatre-${effect}` : ''}`}
+              key={slot.position.id}
             >
-              <TarotCard card={slot.card} reversed={slot.reversed} />
-            </Link>
-            <div>
-              <p className="eyebrow">
-                {String(i + 1).padStart(2, '0')} · {slot.position.label}
-              </p>
-              <h2>
-                {slot.card.name.th}
-                {slot.reversed && <span className="inline-reversed">{th.common.reversed}</span>}
-              </h2>
-              <p className="english-name">{slot.card.name.en}</p>
-              <div className="keywords">
-                {slot.keywords.map((keyword) => (
-                  <span key={keyword}>{keyword}</span>
-                ))}
+              <Link
+                to={`/cards/${slot.card.id}`}
+                className="meaning-art"
+                aria-label={`${th.common.read} ${slot.card.name.th}`}
+              >
+                <TarotCard card={slot.card} reversed={slot.reversed} />
+              </Link>
+              <div>
+                <p className="eyebrow">
+                  {String(i + 1).padStart(2, '0')} · {slot.position.label}
+                </p>
+                <h2>
+                  {slot.card.name.th}
+                  {slot.reversed && <span className="inline-reversed">{th.common.reversed}</span>}
+                </h2>
+                <p className="english-name">{slot.card.name.en}</p>
+                {slot.positionFrame && <p className="position-frame">{slot.positionFrame}</p>}
+                {style.spice === 3 && <p className="card-bite">{slot.bite}</p>}
+                <div className="keywords">
+                  {slot.keywords.map((keyword) => (
+                    <span key={keyword}>{keyword}</span>
+                  ))}
+                </div>
+                {reading.topic === 'weather' && (
+                  <h3 className="symbol-label">{th.weather.symbol}</h3>
+                )}
+                {style.spice === 3 && slot.voice !== slot.meaning && (
+                  <p className="voice-line">{slot.voice}</p>
+                )}
+                <p>{slot.meaning}</p>
+                {style.spice < 3 && slot.voice !== slot.meaning && (
+                  <p className="voice-line">{slot.voice}</p>
+                )}
               </div>
-              {reading.topic === 'weather' && <h3 className="symbol-label">{th.weather.symbol}</h3>}
-              <p>{slot.meaning}</p>
-            </div>
-          </article>
-        ))}
+            </article>
+          );
+        })}
       </div>
-      {result.insights.length > 0 && (
+      {result.omens.length > 0 && (
+        <section className="reading-panel omen-panel">
+          <h2>{ritualCopy.omens}</h2>
+          <ul>
+            {result.omens.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {style.spice === 1 && result.insights.length > 0 && (
         <section className="reading-panel">
           <h2>{th.reading.patterns}</h2>
           <ul className="insight-list">
@@ -142,43 +177,21 @@ export function ReadingView({
         <p className="eyebrow">{decor.steps}</p>
         <h2>{reading.topic === 'exam' ? th.reading.examTips : th.reading.tips}</h2>
         <ol>
-          {tips.map((tip) => (
+          {result.tips.map((tip) => (
             <li key={tip}>{tip}</li>
           ))}
         </ol>
         {reading.topic === 'exam' && <p className="small muted">{th.reading.examNote}</p>}
         {reading.topic === 'love' && <p className="small muted">{th.reading.loveNote}</p>}
       </section>
-      {reading.topic === 'weather' && (
-        <section className="sky-moods">
-          <h2>{th.weather.symbol}</h2>
-          <div>
-            {result.slots.map((slot) => (
-              <span key={slot.card.id}>
-                <Icon
-                  name={
-                    slot.card.skyMood === 'sunny'
-                      ? 'sun'
-                      : slot.card.skyMood === 'clear-night'
-                        ? 'moon'
-                        : slot.card.skyMood === 'rainy'
-                          ? 'rain'
-                          : slot.card.skyMood === 'stormy'
-                            ? 'storm'
-                            : slot.card.skyMood === 'misty'
-                              ? 'fog'
-                              : slot.card.skyMood === 'windy'
-                                ? 'wind'
-                                : 'cloud'
-                  }
-                />
-                {slot.position.label} · {slot.keywords[0]}
-              </span>
-            ))}
-          </div>
-          <p className="small muted">{th.weather.symbolNote}</p>
+      {style.spice === 3 && (
+        <section className="reading-panel verdict-panel">
+          <p className="eyebrow">{ritualCopy.verdict}</p>
+          <h2>{result.verdict}</h2>
+          <p>{result.cliffhanger}</p>
         </section>
       )}
+      <p className="reading-closing center">{result.closing}</p>
       <p className="disclaimer reading-disclaimer">
         <Icon name="shield" />
         {th.disclaimer}

@@ -180,3 +180,51 @@ html[data-page-hidden='true'] *::before,
 html[data-page-hidden='true'] *::after {
   animation-play-state: paused !important;
 }
+hard-truth {
+  border-color: var(--persona-accent);
+  background: linear-gradient(125deg, #271b2c, #171322);
+}
+.hard-truth h2 {
+  font-size: clamp(1.2rem, 3vw, 1.65rem);
+  line-height: 1.8;
+  margin: 0;
+}
+.card-bite {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  color: #f8d8b6;
+}
+.voice-line {
+  padding-left: 1rem;
+  border-left: 2px solid var(--persona-accent);
+  margin-block: 1rem;
+}
+.omen-panel li {
+  margin-block: 0.65rem;
+}
+.verdict-panel {
+  background: radial-gradient(ellipse at top, #38223e, #151121);
+}
+.verdict-panel h2 {
+  line-height: 1.8;
+  font-size: 1.3rem;
+}
+.reading-closing {
+  font-family: var(--font-heading);
+  color: var(--persona-accent);
+  margin: 2.5rem auto;
+  max-width: 650px;
+  font-size: 1.15rem;
+}
+.reading-view .eyebrow,
+.reading-view .text-button,
+.reading-view .voice-line {
+  color: var(--persona-accent);
+}
+.position-frame {
+  padding: 0.8rem;
+  border-radius: 10px;
+  background: #ffffff08;
+  color: #cec4da;
+  font-size: 0.9rem;
+}

@@ -7,7 +7,7 @@
 - [x] W1.2: audit traditional meanings and tones; retain gentle voice
 - [x] W1.3: all 78 cards bite/voice/omen; coverage and validation
 - [x] W1.4: at least 80 topic-aware combinations
-- [ ] W1.5: deterministic persona/spice composer and template banks
+- [x] W1.5: deterministic persona/spice composer and template banks
 - [x] W1.6: accessible pendulum gauge
 - [x] W1.7: reduced-motion-safe ominous theatre and accents
 - [x] W1.8: UI microcopy sweep
@@ -62,3 +62,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W1 content safety/editorial fix: replaced12 weak lines across4batches, removing coercion-blame implications, recovery commands, topic-specific email leakage and repetitive weather reminders. Tones/identities unchanged; all145 tests/full checks pass.
 
 - W1.4 complete:90 unique notable pairs/triples,720 distinct topic-aware medium/hot lines. Pure detection respects presence and explicit positions, independent of orientation. All145 tests/full checks pass.
+
+- W1.5 complete: persona/spice seeded composer, six variants per bank slot/persona, card-specific omen headlines(max55chars), warnings, persona voice and closing, spice3verdict/cliffhanger. Position frames explain difficult strengths/bright cautions and avoid mind-reading. Restyled share links use displayed style and route changes reset correctly. Browser120mobile/desktop cases pass; screenshots reviewed. All145 tests/full checks pass.

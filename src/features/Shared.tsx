@@ -22,6 +22,7 @@ export default function Shared() {
   return (
     <div className="page">
       <ReadingView
+        key={code}
         reading={reading}
         shared
         actions={(current) => <ShareActions reading={current} />}
