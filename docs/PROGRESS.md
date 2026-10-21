@@ -84,3 +84,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W2.7 gaming MajorArcana staged:22card-specific upright/reversed meanings and bites audited for length, uniqueness and restricted claims. New topic stays hidden until all78cards are ready.180tests/fullchecks pass.
 
 - W2.7 gaming Wands staged:14cards cover initiative, teamcalls, conflict, recognition, overload and court leadership.36/78 authored;180tests/fullchecks pass.
+
+- W2.7 gaming Cups staged:14cards about team trust, boredom, nostalgia, choice, leaving, satisfaction and emotional boundaries.50/78 authored;180tests/fullchecks pass.
