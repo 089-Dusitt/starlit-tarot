@@ -1,7 +1,8 @@
 import { expect, it } from 'vitest';
 import { moneyMajor } from './money-major';
+import { moneyWands } from './money-wands';
 it('audits every staged money meaning and bite', () => {
-  const rows = [...moneyMajor];
+  const rows = [...moneyMajor, ...moneyWands];
 
   expect(new Set(rows.map((r) => r.index)).size).toBe(rows.length);
   const seen = new Set<string>();

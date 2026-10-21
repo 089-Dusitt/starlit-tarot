@@ -106,3 +106,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W2.7 work shipped:all78cards have originalupright/reversed meanings/bites; complete1/3card flows, library, persona/spice and stable sharing integrated. Fullchecks pass including newtopic distribution and composer contracts;30browser cases at390/1440 pass/screenshots reviewed. Next:spending/saving-only money topic.
 
 - W2.7 money MajorArcana staged:22cards about spending/saving habits, subscriptions, impulsebuying, sharedbills and comparison. No instruments, returns or lottery.218tests/fullchecks pass; topic hidden until78complete.
+
+- W2.7 money Wands staged:14cards about plans, impulse, comparison, boundaries and sharedspending.36/78 authored;218tests/fullchecks pass.
