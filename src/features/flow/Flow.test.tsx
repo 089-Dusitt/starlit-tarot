@@ -36,6 +36,10 @@ describe('reading flow', () => {
     ['exam', 'study'],
     ['weather', 'three-skies'],
     ['general', 'timeline'],
+    ['general', 'celtic'],
+    ['general', 'week'],
+    ['love', 'love-autopsy'],
+    ['exam', 'exam-audit'],
   ])('renders and completes %s', (topic, spread) => {
     show(`/read/${topic}/${spread}`);
     expect(screen.getByRole('heading', { name: th.flow.context })).toBeInTheDocument();
@@ -77,6 +81,20 @@ describe('reading flow', () => {
   });
   it('keeps the daily card stable for the same device and day', () => {
     expect(dailyReading(true, '2026-10-21')).toEqual(dailyReading(true, '2026-10-21'));
+  });
+  it('supports manual ten-card selection, arrow navigation, restoration and share replay', () => {
+    const view = show('/read/general/celtic');
+    skipToPick();
+    const first = screen.getByRole('button', { name: 'ใบ 1' });
+    fireEvent.keyDown(first, { key: 'End' });
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'ใบ 13' }));
+    for (let n = 1; n <= 10; n++) fireEvent.click(screen.getByRole('button', { name: `ใบ ${n}` }));
+    const stored = JSON.parse(sessionStorage.getItem('starlit:flow:general:celtic')!);
+    expect(validFlow(stored)).toBe(true);
+    expect(flowReading(stored).cards).toHaveLength(10);
+    view.unmount();
+    show('/read/general/celtic');
+    expect(screen.getByRole('button', { name: th.flow.revealAll })).toBeInTheDocument();
   });
 });
 

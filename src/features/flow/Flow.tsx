@@ -136,6 +136,7 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
   );
   const spread = getSpread(state.spread)!;
   const count = spread.positions.length;
+  const fanCount = Math.max(7, count + 3);
   const revealSequence = revealOrder(
     state.selected.map((i) => state.deck[i]),
     state.spice || 1,
@@ -193,12 +194,13 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
     setState((old) => ({ ...old, selected, stage: selected.length === count ? 'reveal' : 'pick' }));
     setAnnouncement(`${th.flow.chosen} ${selected.length} / ${count}`);
     const next =
-      Array.from({ length: 7 }, (_, n) => (index + n + 1) % 7).find((n) => !selected.includes(n)) ??
-      0;
+      Array.from({ length: fanCount }, (_, n) => (index + n + 1) % fanCount).find(
+        (n) => !selected.includes(n),
+      ) ?? 0;
     setActive(next);
   }
   function randomPick() {
-    const candidates = Array.from({ length: 7 }, (_, i) => i).filter(
+    const candidates = Array.from({ length: fanCount }, (_, i) => i).filter(
       (i) => !state.selected.includes(i),
     );
     const chosen = [...state.selected];
@@ -454,13 +456,21 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
               ? `${th.flow.chosen} ${state.selected.length} / ${count} · ${th.flow.pickSub}`
               : th.flow.revealSub}
           </p>
-          <div className={`flow-spread count-${count}`}>
+          <div className={`flow-spread count-${count} layout-${spread.id}`}>
             {spread.positions.map((position, i) => {
               const selected = state.selected[i];
               const drawn = selected === undefined ? null : state.deck[selected];
               const faceUp = state.revealed.includes(i);
               return (
-                <div className="spread-slot" key={position.id}>
+                <div
+                  className="spread-slot"
+                  key={position.id}
+                  style={
+                    spread.id === 'celtic'
+                      ? { gridColumn: position.layout.x + 1, gridRow: position.layout.y + 1 }
+                      : undefined
+                  }
+                >
                   <p className="slot-label">{position.label}</p>
                   {drawn ? (
                     <m.div
@@ -508,9 +518,13 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
           </div>
           {state.stage === 'pick' ? (
             <>
-              <div className="card-fan" role="group" aria-label={th.flow.pick}>
+              <div
+                className={`card-fan ${fanCount > 7 ? 'large-fan' : ''}`}
+                role="group"
+                aria-label={th.flow.pick}
+              >
                 {Array.from(
-                  { length: 7 },
+                  { length: fanCount },
                   (_, index) =>
                     !state.selected.includes(index) && (
                       <m.button
@@ -536,7 +550,7 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
                           if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key))
                             return;
                           event.preventDefault();
-                          const available = Array.from({ length: 7 }, (_, i) => i).filter(
+                          const available = Array.from({ length: fanCount }, (_, i) => i).filter(
                             (i) => !state.selected.includes(i),
                           );
                           const current = available.indexOf(index);

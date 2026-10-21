@@ -116,7 +116,9 @@ export function validFlow(value: unknown): value is FlowState {
   if (
     s.selected.length > spread.positions.length ||
     new Set(s.selected).size !== s.selected.length ||
-    !s.selected.every((n) => Number.isInteger(n) && n >= 0 && n < 7) ||
+    !s.selected.every(
+      (n) => Number.isInteger(n) && n >= 0 && n < Math.max(7, spread.positions.length + 3),
+    ) ||
     new Set(s.revealed).size !== s.revealed.length ||
     !s.revealed.every((n) => Number.isInteger(n) && n >= 0 && n < s.selected.length)
   )

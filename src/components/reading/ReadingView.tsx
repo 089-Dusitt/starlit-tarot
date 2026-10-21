@@ -78,9 +78,17 @@ export function ReadingView({
           <h2>{result.hardTruth}</h2>
         </section>
       )}
-      <div className={`reading-spread count-${reading.cards.length}`}>
+      <div className={`reading-spread count-${reading.cards.length} layout-${spread.id}`}>
         {result.slots.map((slot, i) => (
-          <div className="spread-slot" key={slot.position.id}>
+          <div
+            className="spread-slot"
+            key={slot.position.id}
+            style={
+              spread.id === 'celtic'
+                ? { gridColumn: slot.position.layout.x + 1, gridRow: slot.position.layout.y + 1 }
+                : undefined
+            }
+          >
             <p className="slot-label">{slot.position.label}</p>
             <TarotCard card={slot.card} reversed={slot.reversed} foil={foilFace(reading, i)} />
           </div>

@@ -37,7 +37,7 @@ export function positionFrame(
   const tone = card.tone[reversed ? 'reversed' : 'upright'];
   if (/อีกฝ่าย/.test(label)) return frames[persona].other;
   if (/จุดแข็ง/.test(label) && tone < 0) return `${frames[persona].strength} — “${card.name.th}”`;
-  if (/อุปสรรค|ต้องระวัง/.test(label) && tone > 0)
+  if (/อุปสรรค|ต้องระวัง|สิ่งที่ขวาง/.test(label) && tone > 0)
     return `${frames[persona].caution}: ${card.bite[topic][reversed ? 'upright' : 'reversed']}`;
   return '';
 }
