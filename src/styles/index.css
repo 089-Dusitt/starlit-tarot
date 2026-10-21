@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './phase2.css';
 @theme {
   --color-gold: #e6c36a;
   --color-moon: #cfd3ff;
@@ -2296,3 +2297,5 @@ footer a,
 .empty-slot {
   color: #b1a2c6;
 }
+
+

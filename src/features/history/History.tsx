@@ -31,7 +31,7 @@ export default function History() {
         <ReadingView
           reading={selected.reading}
           context={context}
-          actions={<ShareActions reading={selected.reading} />}
+          actions={(current) => <ShareActions reading={current} />}
           weather={
             selected.reading.topic === 'weather' ? (
               <WeatherPanel

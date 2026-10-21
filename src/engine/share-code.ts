@@ -2,12 +2,14 @@ import type { Reading, Topic } from '../data/types';
 import { spreads, getSpread } from '../data/spreads';
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 import { topicIds } from '../data/topic-ids';
+import { isPersona, isSpice, personaIds, upgradeReading } from '../data/personas';
 const epoch = Date.UTC(2020, 0, 1);
 export function validReading(value: unknown): value is Reading {
   if (typeof value !== 'object' || !value) return false;
   const r = value as Record<string, unknown>;
   if (
-    r.version !== 1 ||
+    ![1, 2].includes(r.version as number) ||
+    (r.version === 2 && (!isPersona(r.persona) || !isSpice(r.spice))) ||
     !topicIds.includes(r.topic as Topic) ||
     typeof r.spread !== 'string' ||
     !Number.isInteger(r.seed) ||
@@ -84,11 +86,12 @@ export function encodeReading(reading: Reading): string {
   if (!validReading(reading)) throw Error('Invalid reading');
   const days = Math.round((Date.parse(`${reading.date}T00:00:00Z`) - epoch) / 86400000);
   const bytes = [
-    1,
+    reading.version,
     topicIds.indexOf(reading.topic),
     spreads.findIndex((s) => s.id === reading.spread),
     reading.cards.length,
     ...reading.cards.map((c) => c.index * 2 + Number(c.reversed)),
+    ...(reading.version === 2 ? [personaIds.indexOf(reading.persona!), reading.spice!] : []),
     reading.seed >>> 24,
     (reading.seed >>> 16) & 255,
     (reading.seed >>> 8) & 255,
@@ -106,10 +109,13 @@ export function decodeReading(code: string): Reading | null {
     if (code.length < 16 || code.length > 96 || !/^[\w-]+$/.test(code)) return null;
     const bytes = unpack(code);
     const count = bytes[3];
-    if (bytes.length !== count + 12) return null;
+    const version = bytes[0];
+    if (![1, 2].includes(version) || bytes.length !== count + (version === 2 ? 14 : 12))
+      return null;
     const checksum = bytes.slice(0, -1).reduce((sum, b) => (sum * 31 + b) & 255, 0);
     if (checksum !== bytes.at(-1)) return null;
-    const offset = 4 + count;
+    const cardEnd = 4 + count;
+    const offset = cardEnd + (version === 2 ? 2 : 0);
     const seed =
       (bytes[offset] * 16777216 +
         (bytes[offset + 1] << 16) +
@@ -118,14 +124,19 @@ export function decodeReading(code: string): Reading | null {
       0;
     const days = bytes[offset + 4] * 65536 + bytes[offset + 5] * 256 + bytes[offset + 6];
     const reading: Reading = {
-      version: bytes[0] as 1,
+      version: version as 1 | 2,
+      ...(version === 2
+        ? { persona: personaIds[bytes[cardEnd]], spice: bytes[cardEnd + 1] as 1 | 2 | 3 }
+        : {}),
       topic: topicIds[bytes[1]],
       spread: spreads[bytes[2]]?.id,
-      cards: bytes.slice(4, offset).map((v) => ({ index: v >>> 1, reversed: Boolean(v & 1) })),
+      cards: bytes.slice(4, cardEnd).map((v) => ({ index: v >>> 1, reversed: Boolean(v & 1) })),
       seed,
       date: new Date(epoch + days * 86400000).toISOString().slice(0, 10),
     };
-    return validReading(reading) && encodeReading(reading) === code ? reading : null;
+    return validReading(reading) && encodeReading(reading) === code
+      ? upgradeReading(reading)
+      : null;
   } catch {
     return null;
   }

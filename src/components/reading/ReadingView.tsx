@@ -1,4 +1,7 @@
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
+import { readingStyle, personas } from '../../data/personas';
+import { StylePicker } from '../StylePicker';
+import { styleCopy } from '../../i18n/th';
 import { Link } from 'react-router-dom';
 import { compose } from '../../engine/compose';
 import type { Reading } from '../../data/types';
@@ -8,7 +11,7 @@ import { TarotCard } from '../cards/TarotCard';
 import { Icon } from '../Icon';
 import type { ReadingContext } from '../../features/flow/state';
 export function ReadingView({
-  reading,
+  reading: initialReading,
   context,
   shared = false,
   onNew,
@@ -19,9 +22,12 @@ export function ReadingView({
   context?: ReadingContext;
   shared?: boolean;
   onNew?: () => void;
-  actions?: ReactNode;
+  actions?: (reading: Reading) => ReactNode;
   weather?: ReactNode;
 }) {
+  const [style, setStyle] = useState(() => readingStyle(initialReading));
+  const [editing, setEditing] = useState(false);
+  const reading: Reading = { ...initialReading, version: 2, ...style };
   const result = compose(reading);
   const spread = getSpread(reading.spread)!;
   const situation = spread.situation;
@@ -33,6 +39,7 @@ export function ReadingView({
         <p className="eyebrow">{shared ? th.reading.shared : th.reading.eyebrow}</p>
         <h1>{result.headline}</h1>
         <p className="reading-meta">
+          {personas[style.persona].name} · {styleCopy.spice[style.spice]} <span>✦</span>{' '}
           {th.topics[reading.topic].name} <span>✦</span> {spread.name.th} <span>✦</span>{' '}
           {new Date(`${reading.date}T12:00:00`).toLocaleDateString('th-TH', {
             day: 'numeric',
@@ -40,6 +47,16 @@ export function ReadingView({
             year: 'numeric',
           })}
         </p>
+      </div>
+      <div className="restyle-controls center">
+        <button
+          className="text-button"
+          aria-expanded={editing}
+          onClick={() => setEditing(!editing)}
+        >
+          {styleCopy.restyle}
+        </button>
+        {editing && <StylePicker value={style} onChange={setStyle} />}
       </div>
       {context?.question && (
         <div className="question-note">
@@ -172,7 +189,7 @@ export function ReadingView({
         <Icon name="shield" />
         {th.disclaimer}
       </p>
-      {actions}
+      {actions?.(reading)}
       <div className="reading-end">
         {onNew ? (
           <button className="button gold" onClick={onNew}>

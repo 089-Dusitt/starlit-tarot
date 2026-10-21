@@ -1,4 +1,5 @@
-import type { DrawnCard, Reading, Topic } from '../../data/types';
+import type { DrawnCard, Reading, Topic, Persona, Spice } from '../../data/types';
+import { isPersona, isSpice } from '../../data/personas';
 import { getSpread } from '../../data/spreads';
 import { draw } from '../../engine/draw';
 import { randomSeed } from '../../engine/rng';
@@ -23,7 +24,9 @@ export const defaultContext: ReadingContext = {
 };
 export type Stage = 'context' | 'breathe' | 'shuffle' | 'pick' | 'reveal' | 'reading' | 'crisis';
 export interface FlowState {
-  version: 1;
+  version: 1 | 2;
+  persona?: Persona;
+  spice?: Spice;
   topic: Topic;
   spread: string;
   context: ReadingContext;
@@ -34,9 +37,17 @@ export interface FlowState {
   seed: number;
   date: string;
 }
-export function createFlow(topic: Topic, spread: string, reversed: boolean): FlowState {
+export function createFlow(
+  topic: Topic,
+  spread: string,
+  reversed: boolean,
+  persona: Persona = 'blunt',
+  spice: Spice = 2,
+): FlowState {
   return {
-    version: 1,
+    version: 2,
+    persona,
+    spice,
     topic,
     spread,
     context: { ...defaultContext, place: { ...defaultContext.place } },
@@ -78,7 +89,8 @@ export function validFlow(value: unknown): value is FlowState {
   const s = value as FlowState;
   const spread = getSpread(s.spread);
   if (
-    s.version !== 1 ||
+    ![1, 2].includes(s.version) ||
+    (s.version === 2 && (!isPersona(s.persona) || !isSpice(s.spice))) ||
     !spread ||
     !spread.topics.includes(s.topic) ||
     !validContext(s.context) ||
@@ -124,7 +136,8 @@ export function validFlow(value: unknown): value is FlowState {
 }
 export function flowReading(state: FlowState): Reading {
   return {
-    version: 1,
+    version: state.version,
+    ...(state.version === 2 ? { persona: state.persona, spice: state.spice } : {}),
     topic: state.topic,
     spread: state.spread,
     cards: state.selected.map((index) => state.deck[index]),

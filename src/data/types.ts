@@ -1,4 +1,6 @@
 import { topicIds } from './topic-ids';
+import type { Persona, Spice } from './cards/phase2-types';
+export type { Persona, Spice } from './cards/phase2-types';
 export type Topic = (typeof topicIds)[number];
 export type Suit = 'wands' | 'cups' | 'swords' | 'pentacles';
 export type Orientation = 'upright' | 'reversed';
@@ -50,7 +52,9 @@ export interface DrawnCard {
   reversed: boolean;
 }
 export interface Reading {
-  version: 1;
+  version: 1 | 2;
+  persona?: Persona;
+  spice?: Spice;
   topic: Topic;
   spread: string;
   cards: DrawnCard[];

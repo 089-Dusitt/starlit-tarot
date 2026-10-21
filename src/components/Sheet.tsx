@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef, useId, type ReactNode } from 'react';
 import { th } from '../i18n/th';
 import { Icon } from './Icon';
 export function Sheet({
@@ -11,6 +11,7 @@ export function Sheet({
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
+  const titleId = useId();
   const closeRef = useRef(onClose);
   useEffect(() => {
     closeRef.current = onClose;
@@ -27,7 +28,7 @@ export function Sheet({
     dialog?.querySelector<HTMLElement>('button')?.focus();
     const close = (event: KeyboardEvent) => {
       if (event.key === 'Escape') closeRef.current();
-      if (event.key === 'Tab' && dialog) {
+      if (event.key === 'Tab' && dialog && !dialog.showModal) {
         const controls = Array.from(
           dialog.querySelectorAll<HTMLElement>(
             'button,a[href],input,textarea,select,[tabindex="0"]',
@@ -55,7 +56,7 @@ export function Sheet({
     <dialog
       className="sheet"
       ref={ref}
-      aria-labelledby="sheet-title"
+      aria-labelledby={titleId}
       aria-modal="true"
       onCancel={(event) => {
         event.preventDefault();
@@ -67,7 +68,7 @@ export function Sheet({
     >
       <div className="sheet-inner">
         <div className="section-heading">
-          <h2 id="sheet-title">{title}</h2>
+          <h2 id={titleId}>{title}</h2>
           <button className="icon-button" onClick={onClose} aria-label={th.settings.close}>
             <Icon name="close" />
           </button>

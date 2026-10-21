@@ -2,7 +2,8 @@ import { BrowserRouter, Link, NavLink, Route, Routes, useLocation } from 'react-
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { LazyMotion, domAnimation, MotionConfig } from 'framer-motion';
 import { SITE } from '../config';
-import { th, decor } from '../i18n/th';
+import { th, decor, styleCopy } from '../i18n/th';
+import { StylePicker } from '../components/StylePicker';
 import { Icon } from '../components/Icon';
 import { Sheet } from '../components/Sheet';
 import { SettingsProvider, useSettings } from './settings';
@@ -73,6 +74,10 @@ function Shell() {
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState(false);
   const { settings, update } = useSettings();
+  const location = useLocation();
+  function finishStyle() {
+    update('onboarded', true);
+  }
   return (
     <MotionConfig reducedMotion={settings.motion ? 'always' : 'user'}>
       <LazyMotion features={domAnimation}>
@@ -182,6 +187,7 @@ function Shell() {
           </footer>
           {open && (
             <Sheet title={th.settings.title} onClose={() => setOpen(false)}>
+              <StylePicker />
               {(['reversed', 'motion', 'history'] as const).map((key) => (
                 <label className="setting-row" key={key}>
                   <span>{th.settings[key]}</span>
@@ -204,6 +210,25 @@ function Shell() {
                 }}
               >
                 {th.settings.clear}
+              </button>
+            </Sheet>
+          )}
+          {!settings.onboarded && location.pathname === '/' && !open && (
+            <Sheet title={styleCopy.title} onClose={finishStyle}>
+              <p>{styleCopy.intro}</p>
+              <StylePicker />
+              <button className="button gold" onClick={finishStyle}>
+                {styleCopy.ready}
+              </button>
+              <button
+                className="text-button"
+                onClick={() => {
+                  update('persona', 'blunt');
+                  update('spice', 2);
+                  finishStyle();
+                }}
+              >
+                {styleCopy.skip}
               </button>
             </Sheet>
           )}

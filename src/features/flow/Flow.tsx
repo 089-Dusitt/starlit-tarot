@@ -19,6 +19,7 @@ import { randomIndex } from '../../engine/rng';
 import { TarotCard } from '../../components/cards/TarotCard';
 import { CardArt } from '../../components/cards/CardArt';
 import { Icon } from '../../components/Icon';
+import { StylePicker } from '../../components/StylePicker';
 import { ReadingView } from '../../components/reading/ReadingView';
 import {
   createFlow,
@@ -108,7 +109,7 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
     return saved?.topic === topic &&
       (saved.spread === initialSpread || getSpread(saved.spread)?.baseId === initialSpread)
       ? saved
-      : createFlow(topic, initialSpread, settings.reversed);
+      : createFlow(topic, initialSpread, settings.reversed, settings.persona, settings.spice);
   });
   const [announcement, setAnnouncement] = useState('');
   const [storageWarning, setStorageWarning] = useState(false);
@@ -158,6 +159,9 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
       ...old,
       context,
       seed: topic === 'exam' ? examSeed(old.seed, context.days) : old.seed,
+      version: 2,
+      persona: settings.persona,
+      spice: settings.spice,
       deck: draw(78, settings.reversed),
       spread: adapted,
       stage: 'breathe',
@@ -273,6 +277,7 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
           <p className="eyebrow">{decor.context}</p>
           <h1>{th.flow.context}</h1>
           <p className="muted">{th.flow.contextSub}</p>
+          <StylePicker />
           <label className="field-label" htmlFor="question">
             {th.flow.question}
             <small>{th.common.optional}</small>
@@ -555,7 +560,7 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
           reading={flowReading(state)}
           context={state.context}
           onNew={restart}
-          actions={<ShareActions reading={flowReading(state)} />}
+          actions={(reading) => <ShareActions reading={reading} />}
           weather={
             topic === 'weather' ? (
               <WeatherPanel place={state.context.place} count={count} />

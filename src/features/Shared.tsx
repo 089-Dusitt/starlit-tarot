@@ -24,7 +24,7 @@ export default function Shared() {
       <ReadingView
         reading={reading}
         shared
-        actions={<ShareActions reading={reading} />}
+        actions={(current) => <ShareActions reading={current} />}
         weather={
           reading.topic === 'weather' ? (
             <WeatherPanel place={defaultContext.place} count={reading.cards.length} manual />

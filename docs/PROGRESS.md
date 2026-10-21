@@ -2,7 +2,7 @@
 
 ## Wave checklist
 - [x] W0: preserve brief, inspect v1, install and establish green baseline
-- [ ] W1.1: persona/spice settings, migration, share v2, onboarding, same-card restyle
+- [x] W1.1: persona/spice settings, migration, share v2, onboarding, same-card restyle
 - [ ] W1.2: audit traditional meanings and tones; retain gentle voice
 - [ ] W1.3: all 78 cards bite/voice/omen; coverage and validation
 - [ ] W1.4: at least 80 topic-aware combinations
@@ -32,4 +32,7 @@ None identified. The existing public GitHub repository is authorized by the owne
 - Saved the complete Phase 2 brief verbatim. Read AGENTS, README, PLAN and Git history.
 
 - W0 complete: locked dependency install, lint/typecheck/40 tests/content/build green; live GitHub root HTTP 200 and local app launched.
+
+
+- W1.1 complete: five persona choices, random choice, three chilli levels with first-use confirmation, skippable onboarding and same-card restyle. Share v2 retains style; v1 links/history/settings migrate to gentle/1. All 44 tests plus lint/typecheck/content/build pass. Mobile 390x844 and desktop 1440x900 screenshots reviewed; no horizontal overflow.
 

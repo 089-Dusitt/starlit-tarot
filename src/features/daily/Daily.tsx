@@ -9,7 +9,12 @@ import { TarotCard } from '../../components/cards/TarotCard';
 import { ReadingView } from '../../components/reading/ReadingView';
 export default function Daily() {
   const { settings } = useSettings();
-  const [reading] = useState(() => dailyReading(settings.reversed));
+  const [reading] = useState(() => ({
+    ...dailyReading(settings.reversed),
+    version: 2 as const,
+    persona: settings.persona,
+    spice: settings.spice,
+  }));
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (open && settings.history) saveHistory(reading);
@@ -38,7 +43,10 @@ export default function Daily() {
               <small>{th.daily.colorNote}</small>
             </div>
           </div>
-          <ReadingView reading={reading} actions={<ShareActions reading={reading} />} />
+          <ReadingView
+            reading={reading}
+            actions={(current) => <ShareActions reading={current} />}
+          />
         </>
       )}
     </div>

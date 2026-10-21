@@ -9,6 +9,7 @@ import { encodeReading, decodeReading, validReading } from './share-code';
 import { cards } from '../data/cards';
 import { spreads } from '../data/spreads';
 import type { Reading } from '../data/types';
+import { upgradeReading } from '../data/personas';
 const reading: Reading = {
   version: 1,
   topic: 'love',
@@ -118,7 +119,7 @@ describe('compact untrusted share codes', () => {
         cards: draw(spread.positions.length, true, seededRng(11)),
       };
       const result = decodeReading(encodeReading(r));
-      expect(result).toEqual(r);
+      expect(result).toEqual(upgradeReading(r));
       expect(compose(result!)).toEqual(compose(r));
     }
   });

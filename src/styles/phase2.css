@@ -1,0 +1,73 @@
+.style-picker {
+  text-align: left;
+  margin-block: 1rem;
+}
+.style-picker fieldset {
+  border: 0;
+  padding: 0;
+  margin: 1.2rem 0;
+  min-width: 0;
+}
+.style-picker legend {
+  color: var(--gold);
+  margin-bottom: 0.7rem;
+  font-weight: 600;
+}
+.persona-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 0.65rem;
+}
+.persona-choice {
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+  text-align: left;
+  border: 1px solid #ffffff26;
+  padding: 0.8rem;
+  border-radius: 14px;
+  background: #141125;
+  color: #eee5db;
+  min-height: 110px;
+}
+.persona-choice small {
+  color: #bcb3c9;
+  line-height: 1.6;
+}
+.persona-symbol {
+  color: #efba76;
+  font-size: 1.5rem;
+}
+.persona-choice.active,
+.spice-choice.active {
+  border-color: #efba76;
+  background: #322438;
+}
+.spice-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+.spice-choice {
+  display: grid;
+  gap: 0.3rem;
+  justify-items: center;
+  min-height: 66px;
+  border: 1px solid #ffffff26;
+  border-radius: 12px;
+  background: #141125;
+  color: #eee5db;
+  padding: 0.6rem 0.2rem;
+}
+.spice-choice span {
+  display: flex;
+  color: #f6a67e;
+}
+.restyle-controls {
+  max-width: 760px;
+  margin-inline: auto;
+  margin-block: 1.5rem;
+}
+.sheet .button.gold {
+  margin-block: 0.8rem;
+}

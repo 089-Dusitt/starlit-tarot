@@ -1,18 +1,12 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
-import { readStored, writeStored, validSettings, type Settings } from '../services/storage';
-const defaults = () => ({
-  reversed: true,
-  motion:
-    typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches,
-  history: true,
-});
+import { loadSettings, defaultSettings, writeStored, type Settings } from '../services/storage';
 const Context = createContext<{
   settings: Settings;
-  update: (key: keyof Settings, value: boolean) => void;
-}>({ settings: { reversed: true, motion: false, history: true }, update: () => {} });
+  update: <K extends keyof Settings>(key: K, value: Settings[K]) => void;
+}>({ settings: defaultSettings(), update: () => {} });
 export function SettingsProvider({ children }: { children: ReactNode }) {
-  const [settings, setSettings] = useState(() => readStored('settings', defaults(), validSettings));
-  function update(key: keyof Settings, value: boolean) {
+  const [settings, setSettings] = useState(loadSettings);
+  function update<K extends keyof Settings>(key: K, value: Settings[K]) {
     setSettings((old) => {
       const next = { ...old, [key]: value };
       writeStored('settings', next);
