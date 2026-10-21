@@ -3,8 +3,10 @@ import { workMajor } from './work-major';
 import { workWands } from './work-wands';
 import { workCups } from './work-cups';
 import { workSwords } from './work-swords';
+import { workPentacles } from './work-pentacles';
 it('audits every staged work meaning and bite', () => {
-  const rows = [...workMajor, ...workWands, ...workCups, ...workSwords];
+  const rows = [...workMajor, ...workWands, ...workCups, ...workSwords, ...workPentacles];
+  expect(rows).toHaveLength(78);
   expect(new Set(rows.map((r) => r.index)).size).toBe(rows.length);
   const seen = new Set<string>();
   for (const row of rows) {
