@@ -12,6 +12,7 @@ import { Pendulum } from './Pendulum';
 import { StylePicker } from '../StylePicker';
 import { readingStyle, personas } from '../../data/personas';
 import type { ReadingContext } from '../../features/flow/state';
+import { CheckInControls } from './CheckInControls';
 export function ReadingView({
   reading: initialReading,
   context,
@@ -201,6 +202,7 @@ export function ReadingView({
         {th.disclaimer}
       </p>
       {actions?.(reading)}
+      <CheckInControls reading={reading} place={context?.place} />
       <div className="reading-end">
         {onNew ? (
           <button className="button gold" onClick={onNew}>

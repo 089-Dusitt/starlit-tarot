@@ -138,3 +138,20 @@ export async function getForecast(place: Place, retry = false): Promise<Forecast
   cache.set(url, { expires: Date.now() + 900000, value: result });
   return result;
 }
+export async function getPastWeather(place: Place, date: string): Promise<number | null> {
+  if (!validPlace(place) || !/^\d{4}-\d{2}-\d{2}$/.test(date))
+    throw Error('Invalid weather comparison');
+  const age = Math.ceil((Date.now() - Date.parse(`${date}T00:00:00Z`)) / 86400000);
+  if (age < 1 || age > 91) return null;
+  const body = record(
+    await request(
+      `https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&timezone=auto&past_days=${Math.min(92, age + 1)}&forecast_days=0&daily=weather_code`,
+    ),
+  );
+  const daily = record(body.daily);
+  if (!Array.isArray(daily.time) || !Array.isArray(daily.weather_code))
+    throw Error('Invalid past weather');
+  const index = daily.time.indexOf(date);
+  const code = index < 0 ? null : finite(daily.weather_code[index]);
+  return code !== null && Number.isInteger(code) ? code : null;
+}

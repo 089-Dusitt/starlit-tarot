@@ -12,6 +12,9 @@ import { clearData } from '../services/storage';
 import { identities } from '../data/cards/identities';
 import { getSpread } from '../data/spreads';
 import { isTopic } from '../data/topics';
+import { CheckInBanner } from '../components/CheckInBanner';
+import { checkinCopy } from '../i18n/checkins';
+const CheckIns = lazy(() => import('../features/CheckIns'));
 const Shared = lazy(() => import('../features/Shared'));
 const History = lazy(() => import('../features/history/History'));
 const About = lazy(() => import('../features/About'));
@@ -31,27 +34,29 @@ function Meta() {
     const [, key, detail, spreadId] = location.pathname.split('/');
     const card = key === 'cards' ? identities.find((c) => c.id === detail) : undefined;
     const title =
-      key === 'oracle'
-        ? playCopy.oracle
-        : key === 'collection'
-          ? playCopy.collection
-          : key === 'duel'
-            ? playCopy.duel
-            : key === 'read' && isTopic(detail)
-              ? `${th.topics[detail].name}${spreadId ? ` · ${getSpread(spreadId)?.name.th || th.common.start}` : ` · ${th.common.start}`}`
-              : key === 'r'
-                ? th.reading.shared
-                : key === 'daily'
-                  ? th.daily.title
-                  : key === 'cards'
-                    ? card?.name.th || th.nav.cards
-                    : key === 'history'
-                      ? th.history.title
-                      : key === 'about'
-                        ? th.about.title
-                        : key
-                          ? th.common.error
-                          : th.hero.first;
+      key === 'checkins'
+        ? checkinCopy.title
+        : key === 'oracle'
+          ? playCopy.oracle
+          : key === 'collection'
+            ? playCopy.collection
+            : key === 'duel'
+              ? playCopy.duel
+              : key === 'read' && isTopic(detail)
+                ? `${th.topics[detail].name}${spreadId ? ` · ${getSpread(spreadId)?.name.th || th.common.start}` : ` · ${th.common.start}`}`
+                : key === 'r'
+                  ? th.reading.shared
+                  : key === 'daily'
+                    ? th.daily.title
+                    : key === 'cards'
+                      ? card?.name.th || th.nav.cards
+                      : key === 'history'
+                        ? th.history.title
+                        : key === 'about'
+                          ? th.about.title
+                          : key
+                            ? th.common.error
+                            : th.hero.first;
     document.title = `${title} · ${SITE.name} | ${SITE.thaiName} · ${th.seo.titleSuffix}`;
     const description = `${title} — ${th.seo.description}`;
     for (const selector of [
@@ -70,7 +75,7 @@ function Meta() {
       .querySelector('meta[name="robots"]')
       ?.setAttribute(
         'content',
-        ['r', 'history'].includes(key) ? 'noindex, nofollow' : 'index, follow',
+        ['r', 'history', 'checkins'].includes(key) ? 'noindex, nofollow' : 'index, follow',
       );
     try {
       window.scrollTo?.({ top: 0, behavior: 'instant' });
@@ -163,6 +168,7 @@ function Shell() {
             </div>
           </header>
           <main id="main" tabIndex={-1}>
+            <CheckInBanner />
             <Suspense fallback={<div className="loading">{th.common.loading}</div>}>
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -175,6 +181,7 @@ function Shell() {
                 <Route path="/oracle" element={<Oracle />} />
                 <Route path="/duel" element={<Duel />} />
                 <Route path="/collection" element={<Collection />} />
+                <Route path="/checkins" element={<CheckIns />} />
                 <Route path="/cards" element={<Library />} />
                 <Route path="/cards/:id" element={<CardDetail />} />
                 <Route
@@ -202,6 +209,7 @@ function Shell() {
               <p>{th.footer}</p>
               <Link to="/about">{th.nav.about}</Link>
               <Link to="/oracle">{playCopy.oracle}</Link>
+              <Link to="/checkins">{checkinCopy.title}</Link>
             </div>
             <p className="disclaimer">
               <Icon name="shield" size={15} />

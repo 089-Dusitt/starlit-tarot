@@ -19,3 +19,5 @@
 - Duel scores are a deterministic comparison of actualtones, labelled symbolicpoints, never real-world probabilities. Shared URLs hold two validated readings and only explicitlytyped displaynames. Result can be copied without a messaging service or backend. New guarded writes preserve corrupt/unsupported existing values.
 
 - Collection stores compact validated readingcodes only, canonicalized without voice/spice so restyling cannot inflate counts. Foil is deterministic perdraw/slot, purely visual and never sold. It does not alter cards/tones/answers. Cardbacks use SVG/CSS without importing deckcontent into the homepage. Optional cardBack keeps existing v2settings compatible.
+
+- Check-ins retain readingcodes/dates/votes, never questions. A canonical reading can have only one appointment/vote; restyling does not inflate scores. Calendar due dates use local date with UTC calendar arithmetic. Open-Meteo past_days contains archived model output, so UI compares symbolic wet/dry only and explicitly avoids claiming observed accuracy or a scientifically valid forecast contest. City retention requires a separate checkbox; no notifications/backend.

@@ -23,3 +23,5 @@
 ## W2.4 — collection
 
 -78slots,30achievements, foilvariants, personalstats and3unlockableSVGbacks;3newtests.
+
+- W2.5: local follow-up appointments, due banner, user feedback scoreboard and opt-in archived weather comparison.
