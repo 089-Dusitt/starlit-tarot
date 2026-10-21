@@ -58,3 +58,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W1.9 meter calibration complete: all24 topic/spread combinations simulate20,000 unique-card draws at50% reversal, plus future4/7/10-card layouts. Lower buckets36.810-40.525%, upper30.890-32.240%. Added30 deterministic/sign/weight/distribution tests; total74 tests pass. Remaining W1.9 work: composer/template/tone integration tests.
 
 - W1.7 complete: ominous vignette, finite Tower tremor, slow Moon ink, persona accent; CSS pauses in hidden tabs and obeys reduced motion. Optional20ms haptics require opt-in. Spice3 reveal order holds the lowest-tone card last with a short suspense beat, preserving original positions and refresh state. Browser run at390/1440 verified order1,2,0 for Tower/Sun/Moon; screenshots reviewed and no overflow. All75 tests/full checks pass.
+
+- W1 content safety/editorial fix: replaced12 weak lines across4batches, removing coercion-blame implications, recovery commands, topic-specific email leakage and repetitive weather reminders. Tones/identities unchanged; all145 tests/full checks pass.
