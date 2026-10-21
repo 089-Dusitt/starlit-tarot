@@ -3,8 +3,10 @@ import { gamingMajor } from './gaming-major';
 import { gamingWands } from './gaming-wands';
 import { gamingCups } from './gaming-cups';
 import { gamingSwords } from './gaming-swords';
+import { gamingPentacles } from './gaming-pentacles';
 it('audits staged new-topic meanings and bites before their topic is enabled', () => {
-  const rows = [...gamingMajor, ...gamingWands, ...gamingCups, ...gamingSwords];
+  const rows = [...gamingMajor, ...gamingWands, ...gamingCups, ...gamingSwords, ...gamingPentacles];
+  expect(rows).toHaveLength(78);
   expect(new Set(rows.map((r) => r.index)).size).toBe(rows.length);
   const seen = new Set<string>();
   for (const row of rows) {

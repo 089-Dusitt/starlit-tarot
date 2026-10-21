@@ -88,3 +88,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W2.7 gaming Cups staged:14cards about team trust, boredom, nostalgia, choice, leaving, satisfaction and emotional boundaries.50/78 authored;180tests/fullchecks pass.
 
 - W2.7 gaming Swords staged:14cards about evidence, chatconflict, rest, overthinking and honest leadership.64/78 authored;180tests/fullchecks pass.
+
+- W2.7 gaming Pentacles staged:final14cards cover training, time/resources, equipment and sustainable teamplay.78/78 gaming meanings/bites complete;180tests/fullchecks pass before activation.
