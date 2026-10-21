@@ -82,3 +82,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W2.6 complete: appended CelticCross10 (crossing pair and four-card staff), loveautopsy5, examaudit4 and nextseven-days7. Frozen codec order retained. Selection fan expands to13 accessible choices for10card draws; roving keyboard controls and persisted validation adapt to count.179tests/fullchecks pass including20k distributions for every new spread; eight mobile/desktop browser flows and screenshots reviewed, manual10card pick/reload verified.
 
 - W2.7 gaming MajorArcana staged:22card-specific upright/reversed meanings and bites audited for length, uniqueness and restricted claims. New topic stays hidden until all78cards are ready.180tests/fullchecks pass.
+
+- W2.7 gaming Wands staged:14cards cover initiative, teamcalls, conflict, recognition, overload and court leadership.36/78 authored;180tests/fullchecks pass.

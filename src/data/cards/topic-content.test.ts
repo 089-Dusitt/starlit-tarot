@@ -1,7 +1,8 @@
 import { expect, it } from 'vitest';
 import { gamingMajor } from './gaming-major';
+import { gamingWands } from './gaming-wands';
 it('audits staged new-topic meanings and bites before their topic is enabled', () => {
-  const rows = [...gamingMajor];
+  const rows = [...gamingMajor, ...gamingWands];
   expect(new Set(rows.map((r) => r.index)).size).toBe(rows.length);
   const seen = new Set<string>();
   for (const row of rows) {
