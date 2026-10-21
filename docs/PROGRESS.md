@@ -4,8 +4,8 @@
 
 - [x] W0: preserve brief, inspect v1, install and establish green baseline
 - [x] W1.1: persona/spice settings, migration, share v2, onboarding, same-card restyle
-- [ ] W1.2: audit traditional meanings and tones; retain gentle voice
-- [ ] W1.3: all 78 cards bite/voice/omen; coverage and validation
+- [x] W1.2: audit traditional meanings and tones; retain gentle voice
+- [x] W1.3: all 78 cards bite/voice/omen; coverage and validation
 - [ ] W1.4: at least 80 topic-aware combinations
 - [ ] W1.5: deterministic persona/spice composer and template banks
 - [ ] W1.6: accessible pendulum gauge
@@ -48,3 +48,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W1.2/W1.3 Cups complete: 14 cards with attraction, disappointment, nostalgia, avoidance and honest court reversals. Coverage 50/78 (64.1%). Full checks/tone lint pass; gentle preserved.
 
 - W1.2/W1.3 Swords complete: 14 cards retain conflict, heartbreak, exhausted arguments and endings. Roasts target avoidance and reasoning, never distress. Coverage 64/78 (82.1%). Full checks and tone lint pass.
+
+- W1.2/W1.3 Pentacles complete: final14 cards audit scarcity, hoarding, work and exchange without predicting financial outcomes. All78 cards now have all meanings/bites/voices/omens, 100% coverage. Validator requires every card audited. Full checks and tone lint pass.

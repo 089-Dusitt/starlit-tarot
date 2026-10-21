@@ -12,6 +12,7 @@ export function validateContent(deck: TarotCard[] = cards): string[] {
     /TODO|lorem|xxx|เสียชีวิต|ป่วยหนัก|ตั้งครรภ์|ถูกหวย|รับรองผล|แน่นอน|เลขเด็ด|[\u4e00-\u9fff]/i;
   if (deck.length !== 78) errors.push(`Expected 78 cards, got ${deck.length}`);
   for (const c of deck) {
+    if (c.contentVersion !== 2) errors.push(`${c.id}: Phase 2 content audit incomplete`);
     if (ids.has(c.id)) errors.push(`Duplicate id ${c.id}`);
     ids.add(c.id);
     if (
