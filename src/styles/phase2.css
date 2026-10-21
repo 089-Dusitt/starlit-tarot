@@ -299,3 +299,91 @@ hard-truth {
     margin-inline: auto;
   }
 }
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 1.2rem 0.8rem;
+}
+.album-slot {
+  text-align: center;
+  min-width: 0;
+}
+.album-slot p {
+  font-size: 0.75rem;
+  margin-top: 0.6rem;
+}
+.album-slot .tarot-card {
+  width: 100%;
+}
+.locked-card {
+  aspect-ratio: 7/12;
+  display: grid;
+  place-items: center;
+  border: 1px dashed #ffffff24;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #21162d, #100d19);
+  color: #696074;
+}
+.locked-card span {
+  font-size: 2rem;
+}
+.achievement-section {
+  margin-top: 3rem;
+}
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.achievement {
+  opacity: 0.6;
+  margin: 0;
+}
+.achievement.earned {
+  opacity: 1;
+  border-color: #e6c36a77;
+}
+.achievement small {
+  color: #bcb3c9;
+}
+.collection-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.foil-card::after {
+  content: '';
+  position: absolute;
+  inset: 1%;
+  border-radius: 12px;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.25;
+  background: conic-gradient(from 30deg, #e496b7, #59bfc4, #e6c36a, #a691e3, #e496b7);
+}
+.foil-badge {
+  position: absolute;
+  top: 6px;
+  left: 4px;
+  right: 4px;
+  z-index: 2;
+  color: #f9eec7;
+  background: #141024de;
+  font-size: 0.65rem;
+  border-radius: 8px;
+  padding: 0.2rem;
+}
+.back-design:not(.classic) {
+  display: none;
+}
+.site[data-back='moon'] .back-design.classic,
+.site[data-back='thorns'] .back-design.classic,
+.site[data-back='solar'] .back-design.classic {
+  display: none;
+}
+.site[data-back='moon'] .back-design.moon,
+.site[data-back='thorns'] .back-design.thorns,
+.site[data-back='solar'] .back-design.solar {
+  display: initial;
+}

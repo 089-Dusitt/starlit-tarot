@@ -17,3 +17,5 @@
 - Oracle repeat detection is intentionally session-memory only so questions never become stored fingerprints. Only a versioned cooldown timestamp persists. Refusal is a game mechanic, not an anti-abuse/security system. Sensitive real-world outcome questions are redirected to action/preparation questions; the caring crisis path takes precedence.
 
 - Duel scores are a deterministic comparison of actualtones, labelled symbolicpoints, never real-world probabilities. Shared URLs hold two validated readings and only explicitlytyped displaynames. Result can be copied without a messaging service or backend. New guarded writes preserve corrupt/unsupported existing values.
+
+- Collection stores compact validated readingcodes only, canonicalized without voice/spice so restyling cannot inflate counts. Foil is deterministic perdraw/slot, purely visual and never sold. It does not alter cards/tones/answers. Cardbacks use SVG/CSS without importing deckcontent into the homepage. Optional cardBack keeps existing v2settings compatible.

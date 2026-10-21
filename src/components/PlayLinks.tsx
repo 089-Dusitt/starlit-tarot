@@ -13,6 +13,10 @@ export function PlayLinks() {
           <h3>{playCopy.duel}</h3>
           <p>{playCopy.duelHint}</p>
         </Link>
+        <Link className="reading-panel" to="/collection">
+          <h3>{playCopy.collection}</h3>
+          <p>{playCopy.collectionHint}</p>
+        </Link>
       </div>
     </section>
   );

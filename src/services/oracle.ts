@@ -6,6 +6,7 @@ import { randomSeed } from '../engine/rng';
 import { localDate } from './daily';
 import { needsSupport } from './crisis';
 import { readStored, writeStored } from './storage';
+import { recordCollection } from './collection';
 const seen = new Map<string, number>();
 let memoryAt = 0;
 import { oracleCopy } from '../i18n/oracle';
@@ -65,17 +66,16 @@ export function askOracle(
   memoryAt = now;
   writeStored('oracle-clock', { version: 1, at: now });
   if (count >= 3) return { kind: 'refusal' };
-  return {
-    kind: 'reading',
-    reading: {
-      version: 2,
-      persona,
-      spice,
-      topic: 'general',
-      spread: 'one',
-      cards: draw(1, reversed),
-      seed: randomSeed(),
-      date: localDate(),
-    },
+  const reading: Reading = {
+    version: 2,
+    persona,
+    spice,
+    topic: 'general',
+    spread: 'one',
+    cards: draw(1, reversed),
+    seed: randomSeed(),
+    date: localDate(),
   };
+  recordCollection(reading);
+  return { kind: 'reading', reading };
 }

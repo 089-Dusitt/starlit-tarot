@@ -4,6 +4,7 @@ import { saveHistory } from '../../services/history';
 import { getDailyReading, recordDailyOpen, dailyStats } from '../../services/daily-fate';
 import { DailyFatePanel, dailyFeature } from '../../components/reading/DailyFatePanel';
 import { playCopy } from '../../i18n/play';
+import { recordCollection } from '../../services/collection';
 import { useSettings } from '../../app/settings';
 import { cards } from '../../data/cards';
 import { th } from '../../i18n/th';
@@ -22,6 +23,7 @@ export default function Daily() {
   const [warning, setWarning] = useState(false);
   useEffect(() => {
     if (open) {
+      recordCollection(reading);
       const next = recordDailyOpen(reading);
       setStats(next);
       setWarning(!next.saved);

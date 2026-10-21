@@ -61,6 +61,7 @@ export interface Settings {
   spiceConfirmed: boolean;
   sound: boolean;
   haptics: boolean;
+  cardBack?: 'classic' | 'moon' | 'thorns' | 'solar';
 }
 export const validSettings = (v: unknown): v is Settings =>
   typeof v === 'object' &&
@@ -68,6 +69,8 @@ export const validSettings = (v: unknown): v is Settings =>
   (v as Settings).version === 2 &&
   isPersona((v as Settings).persona) &&
   isSpice((v as Settings).spice) &&
+  ((v as Settings).cardBack === undefined ||
+    ['classic', 'moon', 'thorns', 'solar'].includes((v as Settings).cardBack!)) &&
   ['reversed', 'motion', 'history', 'onboarded', 'spiceConfirmed', 'sound', 'haptics'].every(
     (k) => typeof (v as Record<string, unknown>)[k] === 'boolean',
   );

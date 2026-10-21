@@ -2,6 +2,7 @@ import { PlacePicker } from '../../components/weather/PlacePicker';
 import { WeatherPanel } from '../../components/weather/WeatherPanel';
 import { ShareActions } from '../../components/reading/ShareActions';
 import { saveHistory } from '../../services/history';
+import { recordCollection, foilFace } from '../../services/collection';
 import { needsSupport } from '../../services/crisis';
 import { examSeed } from '../../engine/compose';
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
@@ -144,6 +145,7 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
     if (state.stage === 'pick' && state.selected.length > 0) fanRefs.current[active]?.focus();
   }, [active, state.stage, state.selected.length]);
   useEffect(() => {
+    if (state.stage === 'reading') recordCollection(flowReading(state));
     setStorageWarning(!writeStored(key, state, true));
   }, [key, state]);
   useEffect(() => {
@@ -468,6 +470,11 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
                     >
                       <TarotCard
                         card={cards[drawn.index]}
+                        foil={
+                          faceUp && state.selected.length === count
+                            ? foilFace(flowReading(state), i)
+                            : false
+                        }
                         faceUp={faceUp}
                         reversed={drawn.reversed}
                         onFlip={

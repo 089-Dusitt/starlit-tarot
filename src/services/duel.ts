@@ -7,13 +7,14 @@ import { readingStyle } from '../data/personas';
 import { localDate } from './daily';
 import { SITE } from '../config';
 import { duelCopy } from '../i18n/duel';
+import { recordCollection } from './collection';
 export const validDuelReading = (v: unknown): v is Reading =>
   validReading(v) && v.topic === 'general' && v.spread === 'timeline';
 export function newDuelReading(
   style: Pick<Reading, 'persona' | 'spice'>,
   reversed: boolean,
 ): Reading {
-  return {
+  const reading: Reading = {
     version: 2,
     topic: 'general',
     spread: 'timeline',
@@ -23,6 +24,8 @@ export function newDuelReading(
     persona: style.persona || 'blunt',
     spice: style.spice || 2,
   };
+  recordCollection(reading);
+  return reading;
 }
 export function duelName(name: string) {
   const value = name.trim();

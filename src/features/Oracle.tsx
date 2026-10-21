@@ -5,6 +5,7 @@ import { TarotCard } from '../components/cards/TarotCard';
 import { ShareActions } from '../components/reading/ShareActions';
 import { cards } from '../data/cards';
 import { th } from '../i18n/th';
+import { foilFace } from '../services/collection';
 import {
   askOracle,
   oracleAnswer,
@@ -85,7 +86,11 @@ export default function Oracle() {
         <section className="oracle-result center" aria-live="polite">
           <h2>{answer.title}</h2>
           <div className="daily-card">
-            <TarotCard card={cards[reading.cards[0].index]} reversed={reading.cards[0].reversed} />
+            <TarotCard
+              card={cards[reading.cards[0].index]}
+              reversed={reading.cards[0].reversed}
+              foil={foilFace(reading, 0)}
+            />
           </div>
           <p>{answer.body}</p>
           <ShareActions reading={reading} feature={answer} oracle />

@@ -5,6 +5,7 @@ import type { Reading } from '../../data/types';
 import { getSpread } from '../../data/spreads';
 import { th, engineCopy, decor, styleCopy } from '../../i18n/th';
 import { ritualCopy } from '../../i18n/ritual';
+import { foilFace } from '../../services/collection';
 import { TarotCard } from '../cards/TarotCard';
 import { Icon } from '../Icon';
 import { Pendulum } from './Pendulum';
@@ -77,10 +78,10 @@ export function ReadingView({
         </section>
       )}
       <div className={`reading-spread count-${reading.cards.length}`}>
-        {result.slots.map((slot) => (
+        {result.slots.map((slot, i) => (
           <div className="spread-slot" key={slot.position.id}>
             <p className="slot-label">{slot.position.label}</p>
-            <TarotCard card={slot.card} reversed={slot.reversed} />
+            <TarotCard card={slot.card} reversed={slot.reversed} foil={foilFace(reading, i)} />
           </div>
         ))}
       </div>

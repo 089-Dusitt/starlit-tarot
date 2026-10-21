@@ -10,6 +10,7 @@ export function TarotCard({
   onFlip,
   label,
   style,
+  foil = false,
 }: {
   card?: CardIdentity;
   faceUp?: boolean;
@@ -17,6 +18,7 @@ export function TarotCard({
   onFlip?: () => void;
   label?: string;
   style?: CSSProperties;
+  foil?: boolean;
 }) {
   const content = (
     <>
@@ -38,13 +40,14 @@ export function TarotCard({
         </div>
       </div>
       {reversed && faceUp && <span className="reversed-label">{th.common.reversed}</span>}
+      {foil && faceUp && <span className="foil-badge">✦ ประกายพิเศษ</span>}
     </>
   );
   return onFlip ? (
     <button
       type="button"
       style={style}
-      className="tarot-card card-button"
+      className={`tarot-card card-button ${foil && faceUp ? 'foil-card' : ''}`}
       onClick={onFlip}
       aria-label={
         label ||
@@ -54,7 +57,7 @@ export function TarotCard({
       {content}
     </button>
   ) : (
-    <div className="tarot-card" style={style}>
+    <div className={`tarot-card ${foil && faceUp ? 'foil-card' : ''}`} style={style}>
       {content}
     </div>
   );

@@ -383,7 +383,7 @@ export const CardArt = memo(function CardArt({
           strokeLinecap="round"
         >
           {back ? (
-            <>
+            <g className="back-design classic">
               <rect x="38" y="65" width="134" height="230" rx="70" />
               <rect x="48" y="77" width="114" height="206" rx="58" opacity=".5" />
               <circle cx="105" cy="180" r="51" />
@@ -396,7 +396,7 @@ export const CardArt = memo(function CardArt({
               ))}
               <Moon x={105} y={87} r={11} />
               <Star x={105} y={275} r={11} />
-            </>
+            </g>
           ) : card?.arcana === 'major' ? (
             <MajorEmblem number={card.number} />
           ) : card?.suit ? (
@@ -435,6 +435,27 @@ export const CardArt = memo(function CardArt({
             )
           ) : null}
         </g>
+        {back && (
+          <g stroke={color} fill="none" strokeWidth="1.2">
+            <g className="back-design moon">
+              <Moon x={105} y={175} r={65} />
+              <circle cx="105" cy="175" r="85" strokeDasharray="2 7" />
+              <Star x={150} y={100} r={15} />
+              <path d="M35 270q70-40 140 0M35 285q70-40 140 0" />
+            </g>
+            <g className="back-design thorns">
+              <path d="M65 285Q15 185 85 90Q145 40 155 140Q185 230 110 285M50 230l-18-12m24-13-17-16m32-20-20-12m38-22-20-13m68 83 22-16m-18 48 20-3m-31 41 22 3" />
+              <Eye />
+              <Star x={105} y={75} r={16} />
+            </g>
+            <g className="back-design solar">
+              <Sun x={105} y={170} r={55} />
+              <circle cx="105" cy="170" r="91" />
+              <path d="M38 280Q105 215 172 280M38 65Q105 115 172 65" />
+              <Star x={105} y={275} r={15} />
+            </g>
+          </g>
+        )}
         {!back && (
           <g stroke={color} strokeWidth=".7" fill="none" opacity=".45">
             <path d="M31 278 66 247 89 269 127 243 177 278m-141 6h138" />

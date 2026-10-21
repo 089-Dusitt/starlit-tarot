@@ -19,3 +19,7 @@
 ## W2.3 — duel
 
 - Three-card challenges, optional names, a symbolic scoreboard, compatibilityline and reproducible sharedresults;3newtests.
+
+## W2.4 — collection
+
+-78slots,30achievements, foilvariants, personalstats and3unlockableSVGbacks;3newtests.

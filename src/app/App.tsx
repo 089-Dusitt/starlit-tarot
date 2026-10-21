@@ -24,6 +24,7 @@ const CardDetail = lazy(() =>
 const Home = lazy(() => import('../features/Home'));
 const Oracle = lazy(() => import('../features/Oracle'));
 const Duel = lazy(() => import('../features/Duel'));
+const Collection = lazy(() => import('../features/Collection'));
 function Meta() {
   const location = useLocation();
   useEffect(() => {
@@ -32,23 +33,25 @@ function Meta() {
     const title =
       key === 'oracle'
         ? playCopy.oracle
-        : key === 'duel'
-          ? playCopy.duel
-          : key === 'read' && isTopic(detail)
-            ? `${th.topics[detail].name}${spreadId ? ` · ${getSpread(spreadId)?.name.th || th.common.start}` : ` · ${th.common.start}`}`
-            : key === 'r'
-              ? th.reading.shared
-              : key === 'daily'
-                ? th.daily.title
-                : key === 'cards'
-                  ? card?.name.th || th.nav.cards
-                  : key === 'history'
-                    ? th.history.title
-                    : key === 'about'
-                      ? th.about.title
-                      : key
-                        ? th.common.error
-                        : th.hero.first;
+        : key === 'collection'
+          ? playCopy.collection
+          : key === 'duel'
+            ? playCopy.duel
+            : key === 'read' && isTopic(detail)
+              ? `${th.topics[detail].name}${spreadId ? ` · ${getSpread(spreadId)?.name.th || th.common.start}` : ` · ${th.common.start}`}`
+              : key === 'r'
+                ? th.reading.shared
+                : key === 'daily'
+                  ? th.daily.title
+                  : key === 'cards'
+                    ? card?.name.th || th.nav.cards
+                    : key === 'history'
+                      ? th.history.title
+                      : key === 'about'
+                        ? th.about.title
+                        : key
+                          ? th.common.error
+                          : th.hero.first;
     document.title = `${title} · ${SITE.name} | ${SITE.thaiName} · ${th.seo.titleSuffix}`;
     const description = `${title} — ${th.seo.description}`;
     for (const selector of [
@@ -96,7 +99,11 @@ function Shell() {
   return (
     <MotionConfig reducedMotion={settings.motion ? 'always' : 'user'}>
       <LazyMotion features={domAnimation}>
-        <div className="site" data-reduced={settings.motion}>
+        <div
+          className="site"
+          data-reduced={settings.motion}
+          data-back={settings.cardBack || 'classic'}
+        >
           <Meta />
           <div className="stars" aria-hidden="true">
             {Array.from({ length: 48 }, (_, i) => (
@@ -167,6 +174,7 @@ function Shell() {
                 <Route path="/daily" element={<Daily />} />
                 <Route path="/oracle" element={<Oracle />} />
                 <Route path="/duel" element={<Duel />} />
+                <Route path="/collection" element={<Collection />} />
                 <Route path="/cards" element={<Library />} />
                 <Route path="/cards/:id" element={<CardDetail />} />
                 <Route
