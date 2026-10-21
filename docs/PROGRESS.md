@@ -86,3 +86,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W2.7 gaming Wands staged:14cards cover initiative, teamcalls, conflict, recognition, overload and court leadership.36/78 authored;180tests/fullchecks pass.
 
 - W2.7 gaming Cups staged:14cards about team trust, boredom, nostalgia, choice, leaving, satisfaction and emotional boundaries.50/78 authored;180tests/fullchecks pass.
+
+- W2.7 gaming Swords staged:14cards about evidence, chatconflict, rest, overthinking and honest leadership.64/78 authored;180tests/fullchecks pass.
