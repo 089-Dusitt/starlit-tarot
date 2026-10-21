@@ -98,3 +98,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W2.7 work Wands staged:14cards about initiative, plans, disagreement, recognition and workload.36/78 authored;199tests/fullchecks pass.
 
 - W2.7 work Cups staged:14cards about collaboration, belonging, boredom, feedback and emotional boundaries.50/78 authored;199tests/fullchecks pass. Pages deployment39657601487 succeeded for completed gaming build40b0a0d.
+
+- W2.7 work Swords staged:14cards about clarity, feedback, evidence, limits and ending broken processes.64/78 authored;199tests/fullchecks pass.

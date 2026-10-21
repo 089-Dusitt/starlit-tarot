@@ -2,8 +2,9 @@ import { expect, it } from 'vitest';
 import { workMajor } from './work-major';
 import { workWands } from './work-wands';
 import { workCups } from './work-cups';
+import { workSwords } from './work-swords';
 it('audits every staged work meaning and bite', () => {
-  const rows = [...workMajor, ...workWands, ...workCups];
+  const rows = [...workMajor, ...workWands, ...workCups, ...workSwords];
   expect(new Set(rows.map((r) => r.index)).size).toBe(rows.length);
   const seen = new Set<string>();
   for (const row of rows) {
