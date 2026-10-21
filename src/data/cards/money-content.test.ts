@@ -2,8 +2,9 @@ import { expect, it } from 'vitest';
 import { moneyMajor } from './money-major';
 import { moneyWands } from './money-wands';
 import { moneyCups } from './money-cups';
+import { moneySwords } from './money-swords';
 it('audits every staged money meaning and bite', () => {
-  const rows = [...moneyMajor, ...moneyWands, ...moneyCups];
+  const rows = [...moneyMajor, ...moneyWands, ...moneyCups, ...moneySwords];
 
   expect(new Set(rows.map((r) => r.index)).size).toBe(rows.length);
   const seen = new Set<string>();
