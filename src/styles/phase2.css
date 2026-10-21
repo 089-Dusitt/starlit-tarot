@@ -228,3 +228,23 @@ hard-truth {
   color: #cec4da;
   font-size: 0.9rem;
 }
+.daily-fate {
+  background: radial-gradient(ellipse at top right, #43305466, #171124);
+  border-color: var(--persona-accent, #e6c36a);
+}
+.daily-fate h2 {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  line-height: 1.9;
+}
+.daily-fate.curse {
+  background: radial-gradient(ellipse at top right, #61384655, #171124);
+}
+.fate-streak {
+  color: #e6c36a;
+  font-weight: 500;
+}
+.mu-item {
+  border-top: 1px solid #ffffff24;
+  margin-top: 1rem;
+  padding-top: 1rem;
+}

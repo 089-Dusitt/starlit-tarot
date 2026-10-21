@@ -5,11 +5,23 @@ import { SITE } from '../../config';
 import { shareUrl, readingText, copyText, exportReadingImage } from '../../services/share';
 import { Icon } from '../Icon';
 import { Sheet } from '../Sheet';
-export function ShareActions({ reading }: { reading: Reading }) {
+import { playCopy } from '../../i18n/play';
+export function ShareActions({
+  reading,
+  feature,
+  daily = false,
+}: {
+  reading: Reading;
+  feature?: { title: string; body: string };
+  daily?: boolean;
+}) {
   const [status, setStatus] = useState('');
   const [fallback, setFallback] = useState('');
   const [busy, setBusy] = useState(false);
-  const url = shareUrl(reading);
+  const url = shareUrl(reading) + (daily ? '?daily=1' : '');
+  const text = feature
+    ? `${SITE.name}\n${feature.title}: ${feature.body}\n${playCopy.caption}\n${url}`
+    : readingText(reading);
   async function copy() {
     if (await copyText(url)) setStatus(th.reading.copied);
     else setFallback(url);
@@ -17,7 +29,7 @@ export function ShareActions({ reading }: { reading: Reading }) {
   async function image() {
     setBusy(true);
     try {
-      const blob = await exportReadingImage(reading);
+      const blob = await exportReadingImage(reading, feature);
       const objectUrl = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = objectUrl;
@@ -28,7 +40,6 @@ export function ShareActions({ reading }: { reading: Reading }) {
       setTimeout(() => URL.revokeObjectURL(objectUrl), 10000);
       setStatus(th.reading.savedImage);
     } catch {
-      const text = readingText(reading);
       setStatus(th.reading.imageFailed);
       if (!(await copyText(text))) setFallback(text);
     } finally {
@@ -40,7 +51,9 @@ export function ShareActions({ reading }: { reading: Reading }) {
       if (navigator.share) {
         await navigator.share({
           title: SITE.name,
-          text: `${th.topics[reading.topic].name} · ${th.reading.shared}`,
+          text: feature
+            ? `${feature.title}: ${feature.body}\n${playCopy.caption}`
+            : `${th.topics[reading.topic].name} · ${th.reading.shared}`,
           url,
         });
         return;
@@ -48,7 +61,7 @@ export function ShareActions({ reading }: { reading: Reading }) {
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') return;
     }
-    setFallback(readingText(reading));
+    setFallback(text);
   }
   return (
     <>
@@ -65,7 +78,7 @@ export function ShareActions({ reading }: { reading: Reading }) {
           className="button line-button"
           target="_blank"
           rel="noreferrer"
-          href={`https://line.me/R/msg/text/?${encodeURIComponent(`${SITE.name}\n${url}`)}`}
+          href={`https://line.me/R/msg/text/?${encodeURIComponent(feature ? text : `${SITE.name}\n${url}`)}`}
         >
           <Icon name="share" />
           {th.reading.line}

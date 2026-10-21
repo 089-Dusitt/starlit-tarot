@@ -1,4 +1,5 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { DailyFatePanel, dailyFeature } from '../components/reading/DailyFatePanel';
 import { decodeReading } from '../engine/share-code';
 import { th, decor } from '../i18n/th';
 import { ReadingView } from '../components/reading/ReadingView';
@@ -7,6 +8,7 @@ import { WeatherPanel } from '../components/weather/WeatherPanel';
 import { defaultContext } from './flow/state';
 export default function Shared() {
   const { code } = useParams();
+  const [params] = useSearchParams();
   const reading = decodeReading(code || '');
   if (!reading)
     return (
@@ -25,7 +27,24 @@ export default function Shared() {
         key={code}
         reading={reading}
         shared
-        actions={(current) => <ShareActions reading={current} />}
+        feature={
+          params.get('daily') === '1' && reading.topic === 'general' && reading.spread === 'one'
+            ? (current) => <DailyFatePanel reading={current} />
+            : undefined
+        }
+        actions={(current) => (
+          <ShareActions
+            reading={current}
+            daily={
+              params.get('daily') === '1' && reading.topic === 'general' && reading.spread === 'one'
+            }
+            feature={
+              params.get('daily') === '1' && reading.topic === 'general' && reading.spread === 'one'
+                ? dailyFeature(current)
+                : undefined
+            }
+          />
+        )}
         weather={
           reading.topic === 'weather' ? (
             <WeatherPanel place={defaultContext.place} count={reading.cards.length} manual />

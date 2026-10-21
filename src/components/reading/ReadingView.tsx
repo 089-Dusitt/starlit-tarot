@@ -18,6 +18,7 @@ export function ReadingView({
   onNew,
   actions,
   weather,
+  feature,
 }: {
   reading: Reading;
   context?: ReadingContext;
@@ -25,6 +26,7 @@ export function ReadingView({
   onNew?: () => void;
   actions?: (reading: Reading) => ReactNode;
   weather?: ReactNode;
+  feature?: (reading: Reading) => ReactNode;
 }) {
   const [style, setStyle] = useState(() => readingStyle(initialReading));
   const [editing, setEditing] = useState(false);
@@ -67,6 +69,7 @@ export function ReadingView({
           <p>{context.question}</p>
         </div>
       )}
+      {feature?.(reading)}
       {style.spice >= 2 && (
         <section className="reading-panel hard-truth">
           <p className="eyebrow">{ritualCopy.hardTruth}</p>

@@ -3,6 +3,7 @@ import type { Reading } from '../data/types';
 import { encodeReading } from '../engine/share-code';
 import { compose } from '../engine/compose';
 import { th } from '../i18n/th';
+import { playCopy } from '../i18n/play';
 export function shareUrl(reading: Reading) {
   return new URL(`r/${encodeReading(reading)}`, `${SITE.url.replace(/\/$/, '')}/`).href;
 }
@@ -83,7 +84,10 @@ async function svgImage(svg: SVGSVGElement) {
   });
   return image;
 }
-export async function exportReadingImage(reading: Reading): Promise<Blob> {
+export async function exportReadingImage(
+  reading: Reading,
+  feature?: { title: string; body: string },
+): Promise<Blob> {
   await document.fonts?.ready;
   const canvas = document.createElement('canvas');
   canvas.width = 1080;
@@ -131,7 +135,18 @@ export async function exportReadingImage(reading: Reading): Promise<Blob> {
     ctx.drawImage(image, start + i * (cardWidth + gap), 320, cardWidth, (cardWidth * 12) / 7);
   }
   let y = reading.cards.length > 3 ? 590 : 635;
-  for (const slot of composed.slots) {
+  if (feature) {
+    ctx.font = '26px "Noto Sans Thai"';
+    ctx.fillStyle = '#e6c36a';
+    paragraph(ctx, feature.title, 70, y, 940, 40, 1);
+    ctx.font = '48px "Noto Serif Thai"';
+    ctx.fillStyle = '#f3efff';
+    paragraph(ctx, feature.body, 70, y + 80, 940, 75, 5);
+    ctx.font = '24px "Noto Sans Thai"';
+    ctx.fillStyle = '#b9b2d6';
+    paragraph(ctx, playCopy.caption, 70, 1120, 940, 40, 1);
+  }
+  for (const slot of feature ? [] : composed.slots) {
     ctx.font = '22px "Noto Sans Thai"';
     ctx.fillStyle = '#e6c36a';
     y += paragraph(
@@ -149,7 +164,18 @@ export async function exportReadingImage(reading: Reading): Promise<Blob> {
   }
   ctx.fillStyle = '#e6c36a';
   ctx.font = '20px "Noto Sans Thai"';
-  paragraph(ctx, `${th.reading.tips}: ${composed.tips[0]}`, 70, Math.min(y + 18, 1210), 940, 32, 2);
+  if (!feature)
+    paragraph(
+      ctx,
+      `${th.reading.tips}: ${composed.tips[0]}`,
+      70,
+      Math.min(y + 18, 1210),
+      940,
+      32,
+      2,
+    );
+  ctx.font = '18px "Noto Sans Thai"';
+  paragraph(ctx, SITE.url, 70, 1220, 940, 25, 1);
   ctx.fillStyle = '#b9b2d6';
   ctx.font = '17px "Noto Sans Thai"';
   paragraph(ctx, th.disclaimer, 70, 1265, 940, 26, 2);
