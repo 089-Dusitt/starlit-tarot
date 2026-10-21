@@ -15,3 +15,7 @@
 ## W2.2 — yes/no oracle
 
 - Persona-aware answers, sixty-second cooldown, repeat-question refusal and private question handling;3new regressiontests.
+
+## W2.3 — duel
+
+- Three-card challenges, optional names, a symbolic scoreboard, compatibilityline and reproducible sharedresults;3newtests.

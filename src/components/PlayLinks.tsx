@@ -9,6 +9,10 @@ export function PlayLinks() {
           <h3>{playCopy.oracle}</h3>
           <p>{playCopy.oracleHint}</p>
         </Link>
+        <Link className="reading-panel" to="/duel">
+          <h3>{playCopy.duel}</h3>
+          <p>{playCopy.duelHint}</p>
+        </Link>
       </div>
     </section>
   );

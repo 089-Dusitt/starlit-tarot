@@ -15,3 +15,5 @@
 - W2.1 uses same-origin SVG plus widely supported Canvas2D export; no experimental HTML-in-Canvas or new dependency is needed. Fate kind reflects actualface tone and card suit; neutralfaces choose a stable comic kind byseed. The local ledger retains all days and never overwrites corrupt/unsupported bytes. Share links add a validated daily-purpose flag; questions/device IDs/streak are excluded. Preserved remote Pages workflow update with a merge and deployed Wave1 successfully (run39578306326).
 
 - Oracle repeat detection is intentionally session-memory only so questions never become stored fingerprints. Only a versioned cooldown timestamp persists. Refusal is a game mechanic, not an anti-abuse/security system. Sensitive real-world outcome questions are redirected to action/preparation questions; the caring crisis path takes precedence.
+
+- Duel scores are a deterministic comparison of actualtones, labelled symbolicpoints, never real-world probabilities. Shared URLs hold two validated readings and only explicitlytyped displaynames. Result can be copied without a messaging service or backend. New guarded writes preserve corrupt/unsupported existing values.

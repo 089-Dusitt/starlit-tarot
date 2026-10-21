@@ -24,6 +24,20 @@ export function writeStored(key: string, value: unknown, session = false): boole
     return false;
   }
 }
+export function writeGuarded<T>(
+  key: string,
+  value: T,
+  validate: (value: unknown) => value is T,
+): boolean {
+  if (!validate(value)) return false;
+  try {
+    const old = localStorage.getItem(PREFIX + key);
+    if (old !== null && !validate(JSON.parse(old))) return false;
+    return writeStored(key, value);
+  } catch {
+    return false;
+  }
+}
 export function clearData() {
   for (const key of ['localStorage', 'sessionStorage'] as const) {
     try {

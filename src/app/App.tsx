@@ -23,27 +23,32 @@ const CardDetail = lazy(() =>
 );
 const Home = lazy(() => import('../features/Home'));
 const Oracle = lazy(() => import('../features/Oracle'));
+const Duel = lazy(() => import('../features/Duel'));
 function Meta() {
   const location = useLocation();
   useEffect(() => {
     const [, key, detail, spreadId] = location.pathname.split('/');
     const card = key === 'cards' ? identities.find((c) => c.id === detail) : undefined;
     const title =
-      key === 'read' && isTopic(detail)
-        ? `${th.topics[detail].name}${spreadId ? ` · ${getSpread(spreadId)?.name.th || th.common.start}` : ` · ${th.common.start}`}`
-        : key === 'r'
-          ? th.reading.shared
-          : key === 'daily'
-            ? th.daily.title
-            : key === 'cards'
-              ? card?.name.th || th.nav.cards
-              : key === 'history'
-                ? th.history.title
-                : key === 'about'
-                  ? th.about.title
-                  : key
-                    ? th.common.error
-                    : th.hero.first;
+      key === 'oracle'
+        ? playCopy.oracle
+        : key === 'duel'
+          ? playCopy.duel
+          : key === 'read' && isTopic(detail)
+            ? `${th.topics[detail].name}${spreadId ? ` · ${getSpread(spreadId)?.name.th || th.common.start}` : ` · ${th.common.start}`}`
+            : key === 'r'
+              ? th.reading.shared
+              : key === 'daily'
+                ? th.daily.title
+                : key === 'cards'
+                  ? card?.name.th || th.nav.cards
+                  : key === 'history'
+                    ? th.history.title
+                    : key === 'about'
+                      ? th.about.title
+                      : key
+                        ? th.common.error
+                        : th.hero.first;
     document.title = `${title} · ${SITE.name} | ${SITE.thaiName} · ${th.seo.titleSuffix}`;
     const description = `${title} — ${th.seo.description}`;
     for (const selector of [
@@ -161,6 +166,7 @@ function Shell() {
                 <Route path="/read/:topic/:spread" element={<Flow />} />
                 <Route path="/daily" element={<Daily />} />
                 <Route path="/oracle" element={<Oracle />} />
+                <Route path="/duel" element={<Duel />} />
                 <Route path="/cards" element={<Library />} />
                 <Route path="/cards/:id" element={<CardDetail />} />
                 <Route
