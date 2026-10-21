@@ -71,6 +71,14 @@ function Meta() {
   return null;
 }
 function Shell() {
+  useEffect(() => {
+    const visibility = () => {
+      document.documentElement.dataset.pageHidden = String(document.hidden);
+    };
+    visibility();
+    document.addEventListener('visibilitychange', visibility);
+    return () => document.removeEventListener('visibilitychange', visibility);
+  }, []);
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState(false);
   const { settings, update } = useSettings();

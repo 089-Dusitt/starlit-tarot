@@ -20,6 +20,8 @@ import { TarotCard } from '../../components/cards/TarotCard';
 import { CardArt } from '../../components/cards/CardArt';
 import { Icon } from '../../components/Icon';
 import { StylePicker } from '../../components/StylePicker';
+import { revealOrder } from '../../engine/reveal';
+import { ritualCopy } from '../../i18n/ritual';
 import { ReadingView } from '../../components/reading/ReadingView';
 import {
   createFlow,
@@ -114,6 +116,14 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
   const [announcement, setAnnouncement] = useState('');
   const [storageWarning, setStorageWarning] = useState(false);
   const [active, setActive] = useState(0);
+  const [waiting, setWaiting] = useState(false);
+  const suspenseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(
+    () => () => {
+      if (suspenseTimer.current) clearTimeout(suspenseTimer.current);
+    },
+    [],
+  );
   const fanRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [redraws, setRedraws] = useState(() =>
     readStored(
@@ -125,6 +135,11 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
   );
   const spread = getSpread(state.spread)!;
   const count = spread.positions.length;
+  const revealSequence = revealOrder(
+    state.selected.map((i) => state.deck[i]),
+    state.spice || 1,
+  );
+  const nextReveal = revealSequence.find((i) => !state.revealed.includes(i));
   useLayoutEffect(() => {
     if (state.stage === 'pick' && state.selected.length > 0) fanRefs.current[active]?.focus();
   }, [active, state.stage, state.selected.length]);
@@ -194,12 +209,31 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
   }
   function flip(index: number) {
     if (state.revealed.includes(index)) return;
+    if (state.spice === 3 && index !== nextReveal) return;
     const drawn = state.deck[state.selected[index]];
     const card = cards[drawn.index];
     setState((old) => ({ ...old, revealed: [...old.revealed, index] }));
+    if (settings.haptics) {
+      try {
+        navigator.vibrate?.(20);
+      } catch {
+        /* Optional tactile response. */
+      }
+    }
     setAnnouncement(
       `${spread.positions[index].label}: ${card.name.th}${drawn.reversed ? `, ${th.common.reversed}` : ''} ${card.keywords[drawn.reversed ? 'reversed' : 'upright'].join(', ')}`,
     );
+  }
+  function flipNext() {
+    if (nextReveal === undefined || waiting) return;
+    if (state.revealed.length === count - 1 && !settings.motion) {
+      setWaiting(true);
+      setAnnouncement(ritualCopy.suspense);
+      suspenseTimer.current = setTimeout(() => {
+        flip(nextReveal);
+        setWaiting(false);
+      }, 850);
+    } else flip(nextReveal);
   }
   useEffect(() => {
     if (state.stage === 'reading' && settings.history) {
@@ -436,9 +470,24 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
                         card={cards[drawn.index]}
                         faceUp={faceUp}
                         reversed={drawn.reversed}
-                        onFlip={state.stage === 'reveal' ? () => flip(i) : undefined}
+                        onFlip={
+                          state.stage === 'reveal' &&
+                          !waiting &&
+                          (state.spice !== 3 || i === nextReveal)
+                            ? () => {
+                                if (state.spice === 3) flipNext();
+                                else flip(i);
+                              }
+                            : undefined
+                        }
                         label={`${position.label}: ${faceUp ? `${cards[drawn.index].name.th}${drawn.reversed ? ` ${th.common.reversed}` : ''}` : th.flow.tap}`}
                       />
+                      {state.spice === 3 &&
+                        !faceUp &&
+                        i === revealSequence.at(-1) &&
+                        state.revealed.length < count - 1 && (
+                          <p className="small muted">{ritualCopy.finalCard}</p>
+                        )}
                     </m.div>
                   ) : (
                     <div className="empty-slot">
@@ -514,7 +563,12 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
               {state.revealed.length < count ? (
                 <button
                   className="button gold"
+                  disabled={waiting}
                   onClick={() => {
+                    if (state.spice === 3) {
+                      flipNext();
+                      return;
+                    }
                     setState((old) => ({ ...old, revealed: state.selected.map((_, i) => i) }));
                     setAnnouncement(
                       state.selected
@@ -526,7 +580,11 @@ function FlowSession({ topic, initialSpread }: { topic: Topic; initialSpread: st
                     );
                   }}
                 >
-                  {th.flow.revealAll}
+                  {state.spice === 3
+                    ? waiting
+                      ? ritualCopy.suspense
+                      : ritualCopy.nextReveal
+                    : th.flow.revealAll}
                   <Icon name="sparkles" />
                 </button>
               ) : (

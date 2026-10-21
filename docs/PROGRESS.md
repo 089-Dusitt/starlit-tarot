@@ -9,7 +9,7 @@
 - [ ] W1.4: at least 80 topic-aware combinations
 - [ ] W1.5: deterministic persona/spice composer and template banks
 - [x] W1.6: accessible pendulum gauge
-- [ ] W1.7: reduced-motion-safe ominous theatre and accents
+- [x] W1.7: reduced-motion-safe ominous theatre and accents
 - [x] W1.8: UI microcopy sweep
 - [ ] W1.9: tone lint, 20k distribution simulations, migrations and compatibility tests
 - [ ] W1.10: 30 sample readings and skeptical fun review
@@ -56,3 +56,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W1.8 complete: Thai UI now uses short witty language across home, buttons, flows, errors, empty states, library, history and404. Crisis support remains caring. New disclaimer is on every reading. Reviewed mobile/desktop screenshots; full74 tests/checks pass.
 
 - W1.9 meter calibration complete: all24 topic/spread combinations simulate20,000 unique-card draws at50% reversal, plus future4/7/10-card layouts. Lower buckets36.810-40.525%, upper30.890-32.240%. Added30 deterministic/sign/weight/distribution tests; total74 tests pass. Remaining W1.9 work: composer/template/tone integration tests.
+
+- W1.7 complete: ominous vignette, finite Tower tremor, slow Moon ink, persona accent; CSS pauses in hidden tabs and obeys reduced motion. Optional20ms haptics require opt-in. Spice3 reveal order holds the lowest-tone card last with a short suspense beat, preserving original positions and refresh state. Browser run at390/1440 verified order1,2,0 for Tower/Sun/Moon; screenshots reviewed and no overflow. All75 tests/full checks pass.

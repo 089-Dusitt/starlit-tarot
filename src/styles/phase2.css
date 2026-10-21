@@ -126,3 +126,57 @@
     transform: rotate(var(--settle));
   }
 }
+.ominous {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.ominous::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(ellipse at center, transparent, #17071399);
+}
+.theatre-moon::after {
+  background: radial-gradient(ellipse at bottom, #67568c44, transparent 65%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-reduced='false'] .theatre-tower .meaning-art {
+    animation: tower-tremor 1.3s ease-out 1;
+  }
+  [data-reduced='false'] .theatre-moon::after {
+    animation: moon-ink 3s ease-in-out 2 alternate;
+  }
+}
+@keyframes tower-tremor {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-3px) rotate(-1deg);
+  }
+  40% {
+    transform: translateX(3px) rotate(1deg);
+  }
+  65% {
+    transform: translateX(-1px);
+  }
+}
+@keyframes moon-ink {
+  from {
+    transform: scale(0.9);
+    opacity: 0.35;
+  }
+  to {
+    transform: scale(1.1);
+    opacity: 0.6;
+  }
+}
+html[data-page-hidden='true'] *,
+html[data-page-hidden='true'] *::before,
+html[data-page-hidden='true'] *::after {
+  animation-play-state: paused !important;
+}

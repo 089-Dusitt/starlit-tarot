@@ -5,6 +5,7 @@ import type { Persona, Spice } from '../data/types';
 import { randomIndex } from '../engine/rng';
 import { styleCopy } from '../i18n/th';
 import { Sheet } from './Sheet';
+import { ritualCopy } from '../i18n/ritual';
 type Style = { persona: Persona; spice: Spice };
 export function Chilli({ active }: { active: boolean }) {
   return (
@@ -95,6 +96,16 @@ export function StylePicker({
           ))}
         </div>
       </fieldset>
+      {!value && (
+        <label className="check-label">
+          <input
+            type="checkbox"
+            checked={settings.haptics}
+            onChange={(event) => update('haptics', event.target.checked)}
+          />
+          {ritualCopy.haptics}
+        </label>
+      )}
       {confirm && (
         <Sheet title={styleCopy.confirm} onClose={() => setConfirm(false)}>
           <p>{styleCopy.confirmBody}</p>

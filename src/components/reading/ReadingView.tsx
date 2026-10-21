@@ -94,7 +94,10 @@ export function ReadingView({
       </section>
       <div className="meaning-list">
         {result.slots.map((slot, i) => (
-          <article className="meaning-card" key={slot.position.id}>
+          <article
+            className={`meaning-card ${style.spice === 3 && (slot.card.tone[slot.reversed ? 'reversed' : 'upright'] === -2 || slot.card.id === 'major-18-moon') ? `ominous theatre-${slot.card.id === 'major-16-tower' ? 'tower' : slot.card.id === 'major-18-moon' ? 'moon' : 'shadow'}` : ''}`}
+            key={slot.position.id}
+          >
             <Link
               to={`/cards/${slot.card.id}`}
               className="meaning-art"
