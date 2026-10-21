@@ -5,6 +5,7 @@ import { engineCopy, th } from '../i18n/th';
 import { seededRng } from './rng';
 import { patterns } from './patterns';
 import { meter } from './meter';
+import { readingStyle } from '../data/personas';
 // Two high bits preserve the coarse study-plan window without sharing an exam date.
 export function examSeed(seed: number, days: string): number {
   const bucket = days === '' ? 0 : Number(days) <= 3 ? 1 : Number(days) <= 14 ? 2 : 3;
@@ -14,19 +15,23 @@ export function compose(reading: Reading) {
   const spread = getSpread(reading.spread);
   if (!spread) throw Error('Unknown spread');
   const rng = seededRng(reading.seed);
+  const { persona } = readingStyle(reading);
   const slots = reading.cards.map((drawn, i) => {
     const card = cards[drawn.index];
     const orientation = drawn.reversed ? 'reversed' : 'upright';
     const position = spread.positions[i];
     const prefix = engineCopy.slots[Math.floor(rng() * 3)];
+    const meaning = (persona === 'gentle' ? card.gentleMeanings : card.meanings)[reading.topic][
+      orientation
+    ];
     return {
       ...drawn,
       card,
       position,
-      meaning: card.meanings[reading.topic][orientation],
+      meaning,
       advice: card.advice[orientation],
       keywords: card.keywords[orientation],
-      summary: `${prefix} “${position.label}” ${card.name.th}${drawn.reversed ? ` (${th.common.reversed})` : ''} ${card.meanings[reading.topic][orientation]}`,
+      summary: `${prefix} “${position.label}” ${card.name.th}${drawn.reversed ? ` (${th.common.reversed})` : ''} ${meaning}`,
     };
   });
   const headline = engineCopy.headlines[reading.topic][Math.floor(rng() * 3)];
