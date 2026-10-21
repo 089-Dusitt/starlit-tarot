@@ -94,3 +94,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W2.7 gaming shipped:all78cards have156originalmeanings/156bites; topic appended without codec index changes,1/3card flows, library and share replay integrated. Core content types preserve legacy624meanings exactly; newtopic gentle uses its new authored copy. No unrelated core-topic combo fallback.198tests/fullchecks pass and30browser persona/spice/mobile-desktop cases/screenshots reviewed. Next:work, then spending/saving.
 
 - W2.7 work MajorArcana staged:22card-specific meanings and bites about scope, evidence, collaboration, change and delivery.199tests/fullchecks pass; topic hidden until complete. Pushed completed features through gaming to main40b0a0d for Pages deployment.
+
+- W2.7 work Wands staged:14cards about initiative, plans, disagreement, recognition and workload.36/78 authored;199tests/fullchecks pass.
