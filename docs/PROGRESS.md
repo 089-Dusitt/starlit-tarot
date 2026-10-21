@@ -112,3 +112,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W2.7 money Cups staged:14cards about emotionalspending, sharedbills, gifts, nostalgia and enoughness.50/78 authored;218tests/fullchecks pass.
 
 - W2.7 money Swords staged:14cards about evidence, avoidance, boundaries and spendingworry; vulnerable situations receive care rather than roasts.64/78 authored;218tests/fullchecks pass.
+
+- W2.7 money Pentacles staged:final14cards about dailyhabits, sharing, enoughness and resources.78/78 originalupright/reversed meanings/bites complete;218tests/fullchecks pass before activation.
