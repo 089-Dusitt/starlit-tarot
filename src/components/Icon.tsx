@@ -28,6 +28,7 @@ import {
   RefreshCw,
   Gamepad2,
   BriefcaseBusiness,
+  Wallet,
 } from 'lucide-react';
 const icons = {
   arrow: ArrowRight,
@@ -59,6 +60,7 @@ const icons = {
   refresh: RefreshCw,
   game: Gamepad2,
   work: BriefcaseBusiness,
+  money: Wallet,
 };
 export type IconName = keyof typeof icons;
 export function Icon({ name, size = 20 }: { name: IconName; size?: number }) {

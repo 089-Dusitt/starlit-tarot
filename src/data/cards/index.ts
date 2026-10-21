@@ -20,6 +20,12 @@ import { workWands } from './work-wands';
 import { workCups } from './work-cups';
 import { workSwords } from './work-swords';
 import { workPentacles } from './work-pentacles';
+import { moneyMajor } from './money-major';
+import { moneyWands } from './money-wands';
+import { moneyCups } from './money-cups';
+import { moneySwords } from './money-swords';
+import { moneyPentacles } from './money-pentacles';
+const money = [...moneyMajor, ...moneyWands, ...moneyCups, ...moneySwords, ...moneyPentacles];
 const work = [...workMajor, ...workWands, ...workCups, ...workSwords, ...workPentacles];
 const gaming = [...gamingMajor, ...gamingWands, ...gamingCups, ...gamingSwords, ...gamingPentacles];
 export const cards: TarotCard[] = applyUpgrades(
@@ -30,10 +36,22 @@ export const cards: TarotCard[] = applyUpgrades(
   if (!entry) throw Error(`Missing gaming content ${index}`);
   const job = work.find((e) => e.index === index);
   if (!job) throw Error(`Missing work content ${index}`);
+  const spending = money.find((e) => e.index === index);
+  if (!spending) throw Error(`Missing money content ${index}`);
   return {
     ...card,
-    meanings: { ...card.meanings, gaming: entry.meanings, work: job.meanings },
-    gentleMeanings: { ...card.gentleMeanings, gaming: entry.meanings, work: job.meanings },
-    bite: { ...card.bite, gaming: entry.bite, work: job.bite },
+    meanings: {
+      ...card.meanings,
+      gaming: entry.meanings,
+      work: job.meanings,
+      money: spending.meanings,
+    },
+    gentleMeanings: {
+      ...card.gentleMeanings,
+      gaming: entry.meanings,
+      work: job.meanings,
+      money: spending.meanings,
+    },
+    bite: { ...card.bite, gaming: entry.bite, work: job.bite, money: spending.bite },
   };
 });

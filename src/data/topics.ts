@@ -11,6 +11,7 @@ export const topics: Record<
   general: { ...th.topics.general, icon: 'sparkles', accent: '#e6c36a' },
   gaming: { ...th.topics.gaming, icon: 'game', accent: '#b5a1ff' },
   work: { ...th.topics.work, icon: 'work', accent: '#f6b47f' },
+  money: { ...th.topics.money, icon: 'money', accent: '#9cdeb5' },
 };
 export const isTopic = (value: unknown): value is Topic =>
   typeof value === 'string' && Object.hasOwn(topics, value);

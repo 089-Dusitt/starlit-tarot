@@ -303,3 +303,7 @@ npm run sample:readings   # regenerate30 deterministic editorial samples
 The fun review records24/30 passes after a candid18/30 first pass and targeted fixes.
 This is an editorial simulation, not a real user study. Six weaker low-spice/gentle
 samples remain documented for later content passes; no claim of universal accuracy is made.
+
+## Phase 2 Wave 2
+
+Seven topics now include complete gaming, work and spending/saving interpretations for all78cards. Daily blessings/mini-curses, yes/no oracle, friend duels, a78slot collection with30achievements and unlockable backs, local1/3/7day check-ins, and four additional spreads are available. The originalv1/v2share links and opt-in history remain compatible. Full progress is in docs/PROGRESS.md.

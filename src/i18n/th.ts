@@ -220,6 +220,12 @@ export const th = {
     reload: 'โหลดอีกครั้ง',
   },
   topics: {
+    money: {
+      name: 'เงินทอง',
+      en: 'SPEND, SAVE & PAUSE',
+      desc: 'ไพ่ขอดูนิสัย ไม่ได้ให้เลขรวย',
+      placeholder: 'นิสัยใช้จ่ายหรือการออมไหนที่ฉันควรมองให้ชัด',
+    },
     work: {
       name: 'การงาน',
       en: 'WORK & BOUNDARIES',

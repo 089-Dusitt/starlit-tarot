@@ -31,3 +31,5 @@
 - W2.7 gaming: complete78card meanings/bites, teamplay/rank/tilt/resource themes and deterministic persona/share support.
 
 - W2.7 work: complete78card interpretations about scope, workload, evidence and collaboration.
+
+- Wave2 complete: money topic joins gaming/work with full78card content; check-ins, fournewspreads and allplayfeatures available.

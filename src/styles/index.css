@@ -540,6 +540,9 @@ header {
 .work {
   --accent: #f6b47f;
 }
+.money {
+  --accent: #9cdeb5;
+}
 .topic-tile:hover {
   transform: translateY(-5px);
   border-color: var(--accent);

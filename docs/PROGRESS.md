@@ -13,7 +13,7 @@
 - [x] W1.8: UI microcopy sweep
 - [x] W1.9: tone lint, 20k distribution simulations, migrations and compatibility tests
 - [x] W1.10: 30 sample readings and skeptical fun review
-- [ ] W2: daily blessing/curse; oracle; duel; collection; check-in; spreads; topics
+- [x] W2: daily blessing/curse; oracle; duel; collection; check-in; spreads; topics
 - [ ] W3: original art; sound; motion; share images; home
 - [ ] W4: prerender; PWA; CI; optional English UI
 - [ ] W5: accessibility, e2e, performance, failure resilience, documentation
@@ -21,13 +21,13 @@
 
 ## Next up
 
-1. W2.1 daily blessings/mini-curses, streak and harmless mu item.
-2. W2.2 yes/no oracle with cooldown and repeat-question refusal.
-3. W2.3 backend-free duel links and comparison.
-4. W2.4 collection, achievements, foil and personal stats.
-5. W2.5 check-ins and weather comparison.
+1. W3.1 layered Major Arcana and distinctive courts; full-deck visual audit.
+2. W3.2 synthesized opt-in sound and persistent mute.
+3. W3.3 tilt, sheen, particles and table atmosphere.
+4. W3.4 six share templates in portrait and story formats.
+5. W3.5 dramatic home scene and persona preview.
 
-Blockers
+## Blockers
 
 None identified. The existing public GitHub repository is authorized by the owner.
 
@@ -114,3 +114,6 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W2.7 money Swords staged:14cards about evidence, avoidance, boundaries and spendingworry; vulnerable situations receive care rather than roasts.64/78 authored;218tests/fullchecks pass.
 
 - W2.7 money Pentacles staged:final14cards about dailyhabits, sharing, enoughness and resources.78/78 originalupright/reversed meanings/bites complete;218tests/fullchecks pass before activation.
+
+
+- W2.7 money shipped; Wave2 complete:7topics,1092authoredmeaning variants,156newbites pernewtopic. Money stays spending/saving only.236tests/fullchecks pass,90newtopic persona/spice/browser cases across390/1440 and all screenshots reviewed. Alloriginalv1/v2links retained. Proceeding toWave3.
