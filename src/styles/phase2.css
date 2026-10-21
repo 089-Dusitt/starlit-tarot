@@ -71,3 +71,58 @@
 .sheet .button.gold {
   margin-block: 0.8rem;
 }
+.reading-view {
+  --persona-accent: #efba76;
+}
+.pendulum {
+  color: var(--persona-accent);
+  width: min(100%, 300px);
+  margin: 0 auto 1rem;
+  text-align: center;
+}
+.pendulum svg {
+  width: 100%;
+  height: 180px;
+}
+.pendulum-arm {
+  transform-origin: 150px 25px;
+  transform: rotate(var(--settle));
+}
+.pendulum figcaption {
+  display: grid;
+  gap: 0.2rem;
+}
+.pendulum figcaption span {
+  font-size: 0.8rem;
+  color: #bcb3c9;
+}
+.pendulum figcaption strong {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+}
+.pendulum figcaption small {
+  font-size: 0.7rem;
+  color: #bcb3c9;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-reduced='false'] .pendulum-arm {
+    animation: pendulum-settle 2.4s cubic-bezier(0.2, 0.5, 0.2, 1) both;
+  }
+}
+@keyframes pendulum-settle {
+  0% {
+    transform: rotate(-65deg);
+  }
+  25% {
+    transform: rotate(55deg);
+  }
+  50% {
+    transform: rotate(-35deg);
+  }
+  75% {
+    transform: rotate(22deg);
+  }
+  100% {
+    transform: rotate(var(--settle));
+  }
+}

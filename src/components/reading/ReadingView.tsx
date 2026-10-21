@@ -1,4 +1,5 @@
-import { useState, type ReactNode } from 'react';
+import { useState, type ReactNode, type CSSProperties } from 'react';
+import { Pendulum } from './Pendulum';
 import { readingStyle, personas } from '../../data/personas';
 import { StylePicker } from '../StylePicker';
 import { styleCopy } from '../../i18n/th';
@@ -34,7 +35,10 @@ export function ReadingView({
   const situationIndex = situation ? th.situations.indexOf(situation) : -1;
   const tips = [...result.tips, ...engineCopy.tips].slice(0, 3);
   return (
-    <div className={`reading-view ${reading.topic}`}>
+    <div
+      className={`reading-view ${reading.topic}`}
+      style={{ '--persona-accent': personas[style.persona].accent } as CSSProperties}
+    >
       <div className="reading-heading center">
         <p className="eyebrow">{shared ? th.reading.shared : th.reading.eyebrow}</p>
         <h1>{result.headline}</h1>
@@ -48,6 +52,7 @@ export function ReadingView({
           })}
         </p>
       </div>
+      <Pendulum step={result.meter.step} persona={style.persona} />
       <div className="restyle-controls center">
         <button
           className="text-button"
@@ -141,21 +146,7 @@ export function ReadingView({
         {reading.topic === 'exam' && <p className="small muted">{th.reading.examNote}</p>}
         {reading.topic === 'love' && <p className="small muted">{th.reading.loveNote}</p>}
       </section>
-      {reading.topic !== 'weather' ? (
-        <section
-          className="meter-panel center"
-          aria-label={`${th.reading.meter[reading.topic]}: ${result.meter.label}`}
-        >
-          <h2>{th.reading.meter[reading.topic]}</h2>
-          <p className="small muted">{th.reading.trend}</p>
-          <div className="mood-meter" aria-hidden="true">
-            {Array.from({ length: 5 }, (_, i) => (
-              <span key={i} className={i <= result.meter.step ? 'lit' : ''} />
-            ))}
-          </div>
-          <p>{result.meter.label}</p>
-        </section>
-      ) : (
+      {reading.topic === 'weather' && (
         <section className="sky-moods">
           <h2>{th.weather.symbol}</h2>
           <div>

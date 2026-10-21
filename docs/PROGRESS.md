@@ -8,7 +8,7 @@
 - [x] W1.3: all 78 cards bite/voice/omen; coverage and validation
 - [ ] W1.4: at least 80 topic-aware combinations
 - [ ] W1.5: deterministic persona/spice composer and template banks
-- [ ] W1.6: accessible pendulum gauge
+- [x] W1.6: accessible pendulum gauge
 - [ ] W1.7: reduced-motion-safe ominous theatre and accents
 - [ ] W1.8: UI microcopy sweep
 - [ ] W1.9: tone lint, 20k distribution simulations, migrations and compatibility tests
@@ -50,3 +50,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W1.2/W1.3 Swords complete: 14 cards retain conflict, heartbreak, exhausted arguments and endings. Roasts target avoidance and reasoning, never distress. Coverage 64/78 (82.1%). Full checks and tone lint pass.
 
 - W1.2/W1.3 Pentacles complete: final14 cards audit scarcity, hoarding, work and exchange without predicting financial outcomes. All78 cards now have all meanings/bites/voices/omens, 100% coverage. Validator requires every card audited. Full checks and tone lint pass.
+
+- W1.6 complete: accessible ordinal meter text plus an original SVG pendulum, persona labels/accents, finite settling animation and static reduced-motion state. Reviewed 390x844 and1440x900 screenshots, fixed pendulum direction, no overflow. Full74 tests/checks pass.
