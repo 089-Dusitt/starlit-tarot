@@ -54,3 +54,5 @@ None identified. The existing public GitHub repository is authorized by the owne
 - W1.6 complete: accessible ordinal meter text plus an original SVG pendulum, persona labels/accents, finite settling animation and static reduced-motion state. Reviewed 390x844 and1440x900 screenshots, fixed pendulum direction, no overflow. Full74 tests/checks pass.
 
 - W1.8 complete: Thai UI now uses short witty language across home, buttons, flows, errors, empty states, library, history and404. Crisis support remains caring. New disclaimer is on every reading. Reviewed mobile/desktop screenshots; full74 tests/checks pass.
+
+- W1.9 meter calibration complete: all24 topic/spread combinations simulate20,000 unique-card draws at50% reversal, plus future4/7/10-card layouts. Lower buckets36.810-40.525%, upper30.890-32.240%. Added30 deterministic/sign/weight/distribution tests; total74 tests pass. Remaining W1.9 work: composer/template/tone integration tests.
